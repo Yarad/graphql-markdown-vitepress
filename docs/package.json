@@ -1,0 +1,14 @@
+{
+  "name": "graphql-docs-demo",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vitepress dev",
+    "build": "vitepress build",
+    "preview": "vitepress preview"
+  },
+  "dependencies": {
+    "graphql-markdown-vitepress": "file:..",
+    "vitepress": "^1.0.0"
+  }
+}

@@ -1,0 +1,4086 @@
+{
+    "data": {
+        "__schema": {
+            "queryType": {
+                "kind": "OBJECT",
+                "name": "Query",
+                "description": null,
+                "fields": [
+                    {
+                        "name": "tournament",
+                        "description": "Find a tournament by its code.",
+                        "isDeprecated": false,
+                        "deprecationReason": null,
+                        "args": [
+                            {
+                                "name": "code",
+                                "description": "The unique tournament code.",
+                                "isDeprecated": false,
+                                "deprecationReason": null,
+                                "type": {
+                                    "kind": "NON_NULL",
+                                    "name": null,
+                                    "ofType": {
+                                        "kind": "SCALAR",
+                                        "name": "String",
+                                        "ofType": null
+                                    }
+                                },
+                                "defaultValue": null
+                            }
+                        ],
+                        "type": {
+                            "kind": "OBJECT",
+                            "name": "Tournament",
+                            "ofType": null
+                        }
+                    },
+                    {
+                        "name": "tournaments",
+                        "description": "List tournaments with optional filters and sorting.",
+                        "isDeprecated": false,
+                        "deprecationReason": null,
+                        "args": [
+                            {
+                                "name": "filter",
+                                "description": "Filter tournaments.",
+                                "isDeprecated": false,
+                                "deprecationReason": null,
+                                "type": {
+                                    "kind": "INPUT_OBJECT",
+                                    "name": "TournamentFilterInput",
+                                    "ofType": null
+                                },
+                                "defaultValue": null
+                            },
+                            {
+                                "name": "order",
+                                "description": "Order tournaments.",
+                                "isDeprecated": false,
+                                "deprecationReason": null,
+                                "type": {
+                                    "kind": "INPUT_OBJECT",
+                                    "name": "TournamentOrderInput",
+                                    "ofType": null
+                                },
+                                "defaultValue": null
+                            },
+                            {
+                                "name": "pagination",
+                                "description": "Pagination parameters.",
+                                "isDeprecated": false,
+                                "deprecationReason": null,
+                                "type": {
+                                    "kind": "NON_NULL",
+                                    "name": null,
+                                    "ofType": {
+                                        "kind": "INPUT_OBJECT",
+                                        "name": "PaginationInput",
+                                        "ofType": null
+                                    }
+                                },
+                                "defaultValue": null
+                            }
+                        ],
+                        "type": {
+                            "kind": "OBJECT",
+                            "name": "TournamentPagination",
+                            "ofType": null
+                        }
+                    },
+                    {
+                        "name": "game",
+                        "description": "Find a game by its ID.",
+                        "isDeprecated": false,
+                        "deprecationReason": null,
+                        "args": [
+                            {
+                                "name": "id",
+                                "description": "The unique game ID.",
+                                "isDeprecated": false,
+                                "deprecationReason": null,
+                                "type": {
+                                    "kind": "NON_NULL",
+                                    "name": null,
+                                    "ofType": {
+                                        "kind": "SCALAR",
+                                        "name": "Int",
+                                        "ofType": null
+                                    }
+                                },
+                                "defaultValue": null
+                            }
+                        ],
+                        "type": {
+                            "kind": "OBJECT",
+                            "name": "Game",
+                            "ofType": null
+                        }
+                    },
+                    {
+                        "name": "games",
+                        "description": "List games with optional filters and sorting.",
+                        "isDeprecated": false,
+                        "deprecationReason": null,
+                        "args": [
+                            {
+                                "name": "filter",
+                                "description": "Filter games.",
+                                "isDeprecated": false,
+                                "deprecationReason": null,
+                                "type": {
+                                    "kind": "INPUT_OBJECT",
+                                    "name": "GameFilterInput",
+                                    "ofType": null
+                                },
+                                "defaultValue": null
+                            },
+                            {
+                                "name": "order",
+                                "description": "Order games.",
+                                "isDeprecated": false,
+                                "deprecationReason": null,
+                                "type": {
+                                    "kind": "INPUT_OBJECT",
+                                    "name": "GameOrderInput",
+                                    "ofType": null
+                                },
+                                "defaultValue": null
+                            },
+                            {
+                                "name": "pagination",
+                                "description": "Pagination parameters.",
+                                "isDeprecated": false,
+                                "deprecationReason": null,
+                                "type": {
+                                    "kind": "NON_NULL",
+                                    "name": null,
+                                    "ofType": {
+                                        "kind": "INPUT_OBJECT",
+                                        "name": "PaginationInput",
+                                        "ofType": null
+                                    }
+                                },
+                                "defaultValue": null
+                            }
+                        ],
+                        "type": {
+                            "kind": "OBJECT",
+                            "name": "GamePagination",
+                            "ofType": null
+                        }
+                    },
+                    {
+                        "name": "player",
+                        "description": "Find a player by PIN.",
+                        "isDeprecated": false,
+                        "deprecationReason": null,
+                        "args": [
+                            {
+                                "name": "pin",
+                                "description": "The unique player PIN.",
+                                "isDeprecated": false,
+                                "deprecationReason": null,
+                                "type": {
+                                    "kind": "NON_NULL",
+                                    "name": null,
+                                    "ofType": {
+                                        "kind": "SCALAR",
+                                        "name": "Int",
+                                        "ofType": null
+                                    }
+                                },
+                                "defaultValue": null
+                            }
+                        ],
+                        "type": {
+                            "kind": "OBJECT",
+                            "name": "Player",
+                            "ofType": null
+                        }
+                    },
+                    {
+                        "name": "players",
+                        "description": "List players with optional filters and sorting.",
+                        "isDeprecated": false,
+                        "deprecationReason": null,
+                        "args": [
+                            {
+                                "name": "filter",
+                                "description": "Filter players.",
+                                "isDeprecated": false,
+                                "deprecationReason": null,
+                                "type": {
+                                    "kind": "INPUT_OBJECT",
+                                    "name": "PlayerFilterInput",
+                                    "ofType": null
+                                },
+                                "defaultValue": null
+                            },
+                            {
+                                "name": "order",
+                                "description": "Order players.",
+                                "isDeprecated": false,
+                                "deprecationReason": null,
+                                "type": {
+                                    "kind": "INPUT_OBJECT",
+                                    "name": "PlayerOrderInput",
+                                    "ofType": null
+                                },
+                                "defaultValue": null
+                            },
+                            {
+                                "name": "pagination",
+                                "description": "Pagination parameters.",
+                                "isDeprecated": false,
+                                "deprecationReason": null,
+                                "type": {
+                                    "kind": "NON_NULL",
+                                    "name": null,
+                                    "ofType": {
+                                        "kind": "INPUT_OBJECT",
+                                        "name": "PaginationInput",
+                                        "ofType": null
+                                    }
+                                },
+                                "defaultValue": null
+                            }
+                        ],
+                        "type": {
+                            "kind": "OBJECT",
+                            "name": "PlayerPagination",
+                            "ofType": null
+                        }
+                    },
+                    {
+                        "name": "playersSearch",
+                        "description": "Search players by text (typo-tolerant) with optional filters and sorting.",
+                        "isDeprecated": false,
+                        "deprecationReason": null,
+                        "args": [
+                            {
+                                "name": "search",
+                                "description": "Search term (matches last name, first name, country, club, PIN).",
+                                "isDeprecated": false,
+                                "deprecationReason": null,
+                                "type": {
+                                    "kind": "NON_NULL",
+                                    "name": null,
+                                    "ofType": {
+                                        "kind": "SCALAR",
+                                        "name": "String",
+                                        "ofType": null
+                                    }
+                                },
+                                "defaultValue": null
+                            },
+                            {
+                                "name": "filter",
+                                "description": "Filter players.",
+                                "isDeprecated": false,
+                                "deprecationReason": null,
+                                "type": {
+                                    "kind": "INPUT_OBJECT",
+                                    "name": "PlayerFilterInput",
+                                    "ofType": null
+                                },
+                                "defaultValue": null
+                            },
+                            {
+                                "name": "order",
+                                "description": "Order players.",
+                                "isDeprecated": false,
+                                "deprecationReason": null,
+                                "type": {
+                                    "kind": "INPUT_OBJECT",
+                                    "name": "PlayerOrderInput",
+                                    "ofType": null
+                                },
+                                "defaultValue": null
+                            },
+                            {
+                                "name": "pagination",
+                                "description": "Pagination parameters.",
+                                "isDeprecated": false,
+                                "deprecationReason": null,
+                                "type": {
+                                    "kind": "NON_NULL",
+                                    "name": null,
+                                    "ofType": {
+                                        "kind": "INPUT_OBJECT",
+                                        "name": "PaginationInput",
+                                        "ofType": null
+                                    }
+                                },
+                                "defaultValue": null
+                            }
+                        ],
+                        "type": {
+                            "kind": "OBJECT",
+                            "name": "PlayerPagination",
+                            "ofType": null
+                        }
+                    }
+                ],
+                "inputFields": null,
+                "interfaces": [],
+                "enumValues": null,
+                "possibleTypes": null
+            },
+            "mutationType": null,
+            "subscriptionType": null,
+            "types": [
+                {
+                    "kind": "OBJECT",
+                    "name": "Tournament",
+                    "description": "A Go tournament registered in the EGD system.",
+                    "fields": [
+                        {
+                            "name": "code",
+                            "description": "Unique tournament identifier code.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "String",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "reliability",
+                            "description": "Reliability score of the tournament data.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "Int",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "description",
+                            "description": "Human-readable tournament description/name.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "categoriesDescription",
+                            "description": "Description of tournament categories.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "date",
+                            "description": "Date the tournament was held.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "String",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "city",
+                            "description": "City where the tournament took place.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "String",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "nation",
+                            "description": "2-letter country code where the tournament was held.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "String",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "tournamentClass",
+                            "description": "Tournament class (A, B, C, D).",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "ENUM",
+                                    "name": "TournamentClassEnum",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "rounds",
+                            "description": "Number of rounds played.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "Int",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "totalPlayers",
+                            "description": "Total number of players that participated.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "Int",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "status",
+                            "description": "Current status of the tournament.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "ENUM",
+                                    "name": "TournamentStatusEnum",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "games",
+                            "description": "Games played in this tournament.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [
+                                {
+                                    "name": "filter",
+                                    "description": "Filter games.",
+                                    "isDeprecated": false,
+                                    "deprecationReason": null,
+                                    "type": {
+                                        "kind": "INPUT_OBJECT",
+                                        "name": "GameFilterInput",
+                                        "ofType": null
+                                    },
+                                    "defaultValue": null
+                                },
+                                {
+                                    "name": "order",
+                                    "description": "Order games.",
+                                    "isDeprecated": false,
+                                    "deprecationReason": null,
+                                    "type": {
+                                        "kind": "INPUT_OBJECT",
+                                        "name": "GameOrderInput",
+                                        "ofType": null
+                                    },
+                                    "defaultValue": null
+                                }
+                            ],
+                            "type": {
+                                "kind": "OBJECT",
+                                "name": "GameList",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "placements",
+                            "description": "Player placements in this tournament.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "OBJECT",
+                                "name": "PlacementList",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "players",
+                            "description": "Players who participated in this tournament (via placements).",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [
+                                {
+                                    "name": "filter",
+                                    "description": "Filter players.",
+                                    "isDeprecated": false,
+                                    "deprecationReason": null,
+                                    "type": {
+                                        "kind": "INPUT_OBJECT",
+                                        "name": "PlayerFilterInput",
+                                        "ofType": null
+                                    },
+                                    "defaultValue": null
+                                },
+                                {
+                                    "name": "order",
+                                    "description": "Order players.",
+                                    "isDeprecated": false,
+                                    "deprecationReason": null,
+                                    "type": {
+                                        "kind": "INPUT_OBJECT",
+                                        "name": "PlayerOrderInput",
+                                        "ofType": null
+                                    },
+                                    "defaultValue": null
+                                }
+                            ],
+                            "type": {
+                                "kind": "OBJECT",
+                                "name": "PlayerList",
+                                "ofType": null
+                            }
+                        }
+                    ],
+                    "inputFields": null,
+                    "interfaces": [],
+                    "enumValues": null,
+                    "possibleTypes": null
+                },
+                {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "description": "The `String` scalar type represents textual data, represented as UTF-8\ncharacter sequences. The String type is most often used by GraphQL to\nrepresent free-form human-readable text.",
+                    "fields": null,
+                    "inputFields": null,
+                    "interfaces": null,
+                    "enumValues": null,
+                    "possibleTypes": null
+                },
+                {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "description": "The `Int` scalar type represents non-fractional signed whole numeric\nvalues. Int can represent values between -(2^31) and 2^31 - 1. ",
+                    "fields": null,
+                    "inputFields": null,
+                    "interfaces": null,
+                    "enumValues": null,
+                    "possibleTypes": null
+                },
+                {
+                    "kind": "INPUT_OBJECT",
+                    "name": "GameFilterInput",
+                    "description": "Filter games.",
+                    "fields": null,
+                    "inputFields": [
+                        {
+                            "name": "tournamentCode",
+                            "description": "Filter by tournament code.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
+                            },
+                            "defaultValue": null
+                        },
+                        {
+                            "name": "round",
+                            "description": "Filter by round number.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "Int",
+                                "ofType": null
+                            },
+                            "defaultValue": null
+                        },
+                        {
+                            "name": "result",
+                            "description": "Filter by game result.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
+                            },
+                            "defaultValue": null
+                        },
+                        {
+                            "name": "pinPlayer1",
+                            "description": "Filter by player 1 PIN.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "Int",
+                                "ofType": null
+                            },
+                            "defaultValue": null
+                        },
+                        {
+                            "name": "pinPlayer2",
+                            "description": "Filter by player 2 PIN.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "Int",
+                                "ofType": null
+                            },
+                            "defaultValue": null
+                        },
+                        {
+                            "name": "pinPlayer",
+                            "description": "Filter games where either player has this PIN.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "Int",
+                                "ofType": null
+                            },
+                            "defaultValue": null
+                        },
+                        {
+                            "name": "dateFrom",
+                            "description": "Filter games on or after this date.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
+                            },
+                            "defaultValue": null
+                        },
+                        {
+                            "name": "dateTo",
+                            "description": "Filter games on or before this date.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
+                            },
+                            "defaultValue": null
+                        }
+                    ],
+                    "interfaces": null,
+                    "enumValues": null,
+                    "possibleTypes": null
+                },
+                {
+                    "kind": "INPUT_OBJECT",
+                    "name": "GameOrderInput",
+                    "description": "Order games.",
+                    "fields": null,
+                    "inputFields": [
+                        {
+                            "name": "field",
+                            "description": "Column to sort by.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "type": {
+                                "kind": "ENUM",
+                                "name": "GameOrderFieldEnum",
+                                "ofType": null
+                            },
+                            "defaultValue": null
+                        },
+                        {
+                            "name": "direction",
+                            "description": "Sort direction.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "type": {
+                                "kind": "ENUM",
+                                "name": "OrderDirectionEnum",
+                                "ofType": null
+                            },
+                            "defaultValue": null
+                        }
+                    ],
+                    "interfaces": null,
+                    "enumValues": null,
+                    "possibleTypes": null
+                },
+                {
+                    "kind": "OBJECT",
+                    "name": "GameList",
+                    "description": null,
+                    "fields": [
+                        {
+                            "name": "data",
+                            "description": "List of related items",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "LIST",
+                                    "name": null,
+                                    "ofType": {
+                                        "kind": "NON_NULL",
+                                        "name": null,
+                                        "ofType": {
+                                            "kind": "OBJECT",
+                                            "name": "Game",
+                                            "ofType": null
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "name": "total",
+                            "description": "Number of items in the relation",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "Int",
+                                    "ofType": null
+                                }
+                            }
+                        }
+                    ],
+                    "inputFields": null,
+                    "interfaces": [],
+                    "enumValues": null,
+                    "possibleTypes": null
+                },
+                {
+                    "kind": "OBJECT",
+                    "name": "PlacementList",
+                    "description": null,
+                    "fields": [
+                        {
+                            "name": "data",
+                            "description": "List of related items",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "LIST",
+                                    "name": null,
+                                    "ofType": {
+                                        "kind": "NON_NULL",
+                                        "name": null,
+                                        "ofType": {
+                                            "kind": "OBJECT",
+                                            "name": "Placement",
+                                            "ofType": null
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "name": "total",
+                            "description": "Number of items in the relation",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "Int",
+                                    "ofType": null
+                                }
+                            }
+                        }
+                    ],
+                    "inputFields": null,
+                    "interfaces": [],
+                    "enumValues": null,
+                    "possibleTypes": null
+                },
+                {
+                    "kind": "SCALAR",
+                    "name": "Float",
+                    "description": "The `Float` scalar type represents signed double-precision fractional\nvalues as specified by\n[IEEE 754](http://en.wikipedia.org/wiki/IEEE_floating_point). ",
+                    "fields": null,
+                    "inputFields": null,
+                    "interfaces": null,
+                    "enumValues": null,
+                    "possibleTypes": null
+                },
+                {
+                    "kind": "INPUT_OBJECT",
+                    "name": "TournamentFilterInput",
+                    "description": "Filter tournaments.",
+                    "fields": null,
+                    "inputFields": [
+                        {
+                            "name": "code",
+                            "description": "Filter by exact tournament code.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
+                            },
+                            "defaultValue": null
+                        },
+                        {
+                            "name": "nation",
+                            "description": "Filter by 2-letter country code.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
+                            },
+                            "defaultValue": null
+                        },
+                        {
+                            "name": "tournamentClass",
+                            "description": "Filter by tournament class (A, B, C, D).",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "type": {
+                                "kind": "ENUM",
+                                "name": "TournamentClassEnum",
+                                "ofType": null
+                            },
+                            "defaultValue": null
+                        },
+                        {
+                            "name": "categoryType",
+                            "description": "Filter by category type.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
+                            },
+                            "defaultValue": null
+                        },
+                        {
+                            "name": "status",
+                            "description": "Filter by status.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "type": {
+                                "kind": "ENUM",
+                                "name": "TournamentStatusEnum",
+                                "ofType": null
+                            },
+                            "defaultValue": null
+                        },
+                        {
+                            "name": "rounds",
+                            "description": "Filter by number of rounds.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "Int",
+                                "ofType": null
+                            },
+                            "defaultValue": null
+                        },
+                        {
+                            "name": "description",
+                            "description": "Search tournament description (SQL LIKE).",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
+                            },
+                            "defaultValue": null
+                        },
+                        {
+                            "name": "city",
+                            "description": "Search city name (SQL LIKE).",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
+                            },
+                            "defaultValue": null
+                        },
+                        {
+                            "name": "dateFrom",
+                            "description": "Filter tournaments on or after this date.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
+                            },
+                            "defaultValue": null
+                        },
+                        {
+                            "name": "dateTo",
+                            "description": "Filter tournaments on or before this date.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
+                            },
+                            "defaultValue": null
+                        }
+                    ],
+                    "interfaces": null,
+                    "enumValues": null,
+                    "possibleTypes": null
+                },
+                {
+                    "kind": "INPUT_OBJECT",
+                    "name": "TournamentOrderInput",
+                    "description": "Order tournaments.",
+                    "fields": null,
+                    "inputFields": [
+                        {
+                            "name": "field",
+                            "description": "Column to sort by.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "type": {
+                                "kind": "ENUM",
+                                "name": "TournamentOrderFieldEnum",
+                                "ofType": null
+                            },
+                            "defaultValue": null
+                        },
+                        {
+                            "name": "direction",
+                            "description": "Sort direction.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "type": {
+                                "kind": "ENUM",
+                                "name": "OrderDirectionEnum",
+                                "ofType": null
+                            },
+                            "defaultValue": null
+                        }
+                    ],
+                    "interfaces": null,
+                    "enumValues": null,
+                    "possibleTypes": null
+                },
+                {
+                    "kind": "OBJECT",
+                    "name": "TournamentList",
+                    "description": null,
+                    "fields": [
+                        {
+                            "name": "data",
+                            "description": "List of related items",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "LIST",
+                                    "name": null,
+                                    "ofType": {
+                                        "kind": "NON_NULL",
+                                        "name": null,
+                                        "ofType": {
+                                            "kind": "OBJECT",
+                                            "name": "Tournament",
+                                            "ofType": null
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "name": "total",
+                            "description": "Number of items in the relation",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "Int",
+                                    "ofType": null
+                                }
+                            }
+                        }
+                    ],
+                    "inputFields": null,
+                    "interfaces": [],
+                    "enumValues": null,
+                    "possibleTypes": null
+                },
+                {
+                    "kind": "INPUT_OBJECT",
+                    "name": "PlayerFilterInput",
+                    "description": "Filter players.",
+                    "fields": null,
+                    "inputFields": [
+                        {
+                            "name": "pin",
+                            "description": "Filter by exact player PIN.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "Int",
+                                "ofType": null
+                            },
+                            "defaultValue": null
+                        },
+                        {
+                            "name": "countryCode",
+                            "description": "Filter by 2-letter country code.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
+                            },
+                            "defaultValue": null
+                        },
+                        {
+                            "name": "grade",
+                            "description": "Filter by grade (e.g. 1d, 5k).",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
+                            },
+                            "defaultValue": null
+                        },
+                        {
+                            "name": "club",
+                            "description": "Filter by club.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
+                            },
+                            "defaultValue": null
+                        },
+                        {
+                            "name": "lastName",
+                            "description": "Search last name (SQL LIKE).",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
+                            },
+                            "defaultValue": null
+                        },
+                        {
+                            "name": "firstName",
+                            "description": "Search first name (SQL LIKE).",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
+                            },
+                            "defaultValue": null
+                        },
+                        {
+                            "name": "ratingFrom",
+                            "description": "Filter players with rating >= this value.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "Int",
+                                "ofType": null
+                            },
+                            "defaultValue": null
+                        },
+                        {
+                            "name": "ratingTo",
+                            "description": "Filter players with rating <= this value.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "Int",
+                                "ofType": null
+                            },
+                            "defaultValue": null
+                        }
+                    ],
+                    "interfaces": null,
+                    "enumValues": null,
+                    "possibleTypes": null
+                },
+                {
+                    "kind": "INPUT_OBJECT",
+                    "name": "PlayerOrderInput",
+                    "description": "Order players.",
+                    "fields": null,
+                    "inputFields": [
+                        {
+                            "name": "field",
+                            "description": "Column to sort by.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "type": {
+                                "kind": "ENUM",
+                                "name": "PlayerOrderFieldEnum",
+                                "ofType": null
+                            },
+                            "defaultValue": null
+                        },
+                        {
+                            "name": "direction",
+                            "description": "Sort direction.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "type": {
+                                "kind": "ENUM",
+                                "name": "OrderDirectionEnum",
+                                "ofType": null
+                            },
+                            "defaultValue": null
+                        }
+                    ],
+                    "interfaces": null,
+                    "enumValues": null,
+                    "possibleTypes": null
+                },
+                {
+                    "kind": "OBJECT",
+                    "name": "PlayerList",
+                    "description": null,
+                    "fields": [
+                        {
+                            "name": "data",
+                            "description": "List of related items",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "LIST",
+                                    "name": null,
+                                    "ofType": {
+                                        "kind": "NON_NULL",
+                                        "name": null,
+                                        "ofType": {
+                                            "kind": "OBJECT",
+                                            "name": "Player",
+                                            "ofType": null
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "name": "total",
+                            "description": "Number of items in the relation",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "Int",
+                                    "ofType": null
+                                }
+                            }
+                        }
+                    ],
+                    "inputFields": null,
+                    "interfaces": [],
+                    "enumValues": null,
+                    "possibleTypes": null
+                },
+                {
+                    "kind": "OBJECT",
+                    "name": "Game",
+                    "description": "A game (individual match) played between two players in a tournament.",
+                    "fields": [
+                        {
+                            "name": "id",
+                            "description": "Unique game identifier.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "Int",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "tournamentCode",
+                            "description": "Code of the tournament this game belongs to.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "String",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "date",
+                            "description": "Date the game was played.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "round",
+                            "description": "Round number within the tournament.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "Int",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "pinPlayer1",
+                            "description": "PIN of the first player.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "Int",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "color1",
+                            "description": "Color assigned to player 1 (b = black, w = white).",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "ENUM",
+                                "name": "GameColorEnum",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "pinPlayer2",
+                            "description": "PIN of the second player.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "Int",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "color2",
+                            "description": "Color assigned to player 2 (b = black, w = white).",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "ENUM",
+                                "name": "GameColorEnum",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "handicap",
+                            "description": "Handicap stones for this game.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "Int",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "result",
+                            "description": "Game result (1 = player 1 wins, 2 = player 2 wins, 0 = jigo, ? = unknown).",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "String",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "sgfCode",
+                            "description": "SGF game record code, if available.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "tournament",
+                            "description": "The tournament this game was played in.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "OBJECT",
+                                "name": "Tournament",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "player1",
+                            "description": "Player 1 details.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "OBJECT",
+                                "name": "Player",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "player2",
+                            "description": "Player 2 details.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "OBJECT",
+                                "name": "Player",
+                                "ofType": null
+                            }
+                        }
+                    ],
+                    "inputFields": null,
+                    "interfaces": [],
+                    "enumValues": null,
+                    "possibleTypes": null
+                },
+                {
+                    "kind": "OBJECT",
+                    "name": "Player",
+                    "description": "A Go player registered in the European Go Database.",
+                    "fields": [
+                        {
+                            "name": "pin",
+                            "description": "Unique player identification number (PIN).",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "Int",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "agaId",
+                            "description": "AGA (American Go Association) ID.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "Int",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "lastName",
+                            "description": "Player's last name.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "String",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "firstName",
+                            "description": "Player's first name.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "String",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "countryCode",
+                            "description": "2-letter country code.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "String",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "club",
+                            "description": "Club the player belongs to.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "grade",
+                            "description": "Current grade (e.g. 1d, 5k).",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "String",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "egfPlacement",
+                            "description": "EGF placement ranking.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "Int",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "rating",
+                            "description": "Current GoR (Go Rating) value.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "Int",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "deltaRating",
+                            "description": "Delta GoR (rating change).",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "Int",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "proposedGrade",
+                            "description": "Proposed grade based on rating calculations.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "String",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "totalTournaments",
+                            "description": "Total number of rated tournaments played.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "Int",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "lastAppearance",
+                            "description": "Date of the player's last tournament appearance.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "gamesAsPlayer1",
+                            "description": "Games where this player is player 1.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [
+                                {
+                                    "name": "filter",
+                                    "description": "Filter games.",
+                                    "isDeprecated": false,
+                                    "deprecationReason": null,
+                                    "type": {
+                                        "kind": "INPUT_OBJECT",
+                                        "name": "GameFilterInput",
+                                        "ofType": null
+                                    },
+                                    "defaultValue": null
+                                },
+                                {
+                                    "name": "order",
+                                    "description": "Order games.",
+                                    "isDeprecated": false,
+                                    "deprecationReason": null,
+                                    "type": {
+                                        "kind": "INPUT_OBJECT",
+                                        "name": "GameOrderInput",
+                                        "ofType": null
+                                    },
+                                    "defaultValue": null
+                                }
+                            ],
+                            "type": {
+                                "kind": "OBJECT",
+                                "name": "GameList",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "gamesAsPlayer2",
+                            "description": "Games where this player is player 2.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [
+                                {
+                                    "name": "filter",
+                                    "description": "Filter games.",
+                                    "isDeprecated": false,
+                                    "deprecationReason": null,
+                                    "type": {
+                                        "kind": "INPUT_OBJECT",
+                                        "name": "GameFilterInput",
+                                        "ofType": null
+                                    },
+                                    "defaultValue": null
+                                },
+                                {
+                                    "name": "order",
+                                    "description": "Order games.",
+                                    "isDeprecated": false,
+                                    "deprecationReason": null,
+                                    "type": {
+                                        "kind": "INPUT_OBJECT",
+                                        "name": "GameOrderInput",
+                                        "ofType": null
+                                    },
+                                    "defaultValue": null
+                                }
+                            ],
+                            "type": {
+                                "kind": "OBJECT",
+                                "name": "GameList",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "placements",
+                            "description": "Tournament placements for this player.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "OBJECT",
+                                "name": "PlacementList",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "tournaments",
+                            "description": "Tournaments this player participated in (via placements).",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [
+                                {
+                                    "name": "filter",
+                                    "description": "Filter tournaments.",
+                                    "isDeprecated": false,
+                                    "deprecationReason": null,
+                                    "type": {
+                                        "kind": "INPUT_OBJECT",
+                                        "name": "TournamentFilterInput",
+                                        "ofType": null
+                                    },
+                                    "defaultValue": null
+                                },
+                                {
+                                    "name": "order",
+                                    "description": "Order tournaments.",
+                                    "isDeprecated": false,
+                                    "deprecationReason": null,
+                                    "type": {
+                                        "kind": "INPUT_OBJECT",
+                                        "name": "TournamentOrderInput",
+                                        "ofType": null
+                                    },
+                                    "defaultValue": null
+                                }
+                            ],
+                            "type": {
+                                "kind": "OBJECT",
+                                "name": "TournamentList",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "biography",
+                            "description": "Biography if available.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "OBJECT",
+                                "name": "Biography",
+                                "ofType": null
+                            }
+                        }
+                    ],
+                    "inputFields": null,
+                    "interfaces": [],
+                    "enumValues": null,
+                    "possibleTypes": null
+                },
+                {
+                    "kind": "OBJECT",
+                    "name": "Placement",
+                    "description": "A player's placement (participation record) in a tournament.",
+                    "fields": [
+                        {
+                            "name": "id",
+                            "description": "Unique placement identifier.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "Int",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "pinPlayer",
+                            "description": "PIN of the player.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "Int",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "tournamentCode",
+                            "description": "Code of the tournament.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "String",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "lastName",
+                            "description": "Player's last name as registered for this tournament.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "firstName",
+                            "description": "Player's first name as registered for this tournament.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "countryCode",
+                            "description": "Country code at time of the tournament.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "String",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "club",
+                            "description": "Club at time of the tournament.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "String",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "placement",
+                            "description": "Final placement/rank in the tournament.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "Int",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "gradeDeclared",
+                            "description": "Grade declared at the time of registration.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "String",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "wonGames",
+                            "description": "Number of games won.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "Int",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "lostGames",
+                            "description": "Number of games lost.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "Int",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "jigoGames",
+                            "description": "Number of drawn games (jigo).",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "Int",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "precedentRating",
+                            "description": "Rating before this tournament.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "Float",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "followingRating",
+                            "description": "Rating after this tournament.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "Float",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "player",
+                            "description": "The player who participated.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "OBJECT",
+                                "name": "Player",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "tournament",
+                            "description": "The tournament this placement belongs to.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "OBJECT",
+                                "name": "Tournament",
+                                "ofType": null
+                            }
+                        }
+                    ],
+                    "inputFields": null,
+                    "interfaces": [],
+                    "enumValues": null,
+                    "possibleTypes": null
+                },
+                {
+                    "kind": "OBJECT",
+                    "name": "Biography",
+                    "description": "Biography text and photo for a player.",
+                    "fields": [
+                        {
+                            "name": "type",
+                            "description": "Type of biography content.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "String",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "biography",
+                            "description": "Biography text.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "photo",
+                            "description": "Photo identifier or URL.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
+                            }
+                        }
+                    ],
+                    "inputFields": null,
+                    "interfaces": [],
+                    "enumValues": null,
+                    "possibleTypes": null
+                },
+                {
+                    "kind": "ENUM",
+                    "name": "GameColorEnum",
+                    "description": null,
+                    "fields": null,
+                    "inputFields": null,
+                    "interfaces": null,
+                    "enumValues": [
+                        {
+                            "name": "Black",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "White",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        }
+                    ],
+                    "possibleTypes": null
+                },
+                {
+                    "kind": "ENUM",
+                    "name": "TournamentClassEnum",
+                    "description": null,
+                    "fields": null,
+                    "inputFields": null,
+                    "interfaces": null,
+                    "enumValues": [
+                        {
+                            "name": "A",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "B",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "C",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "D",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        }
+                    ],
+                    "possibleTypes": null
+                },
+                {
+                    "kind": "ENUM",
+                    "name": "TournamentStatusEnum",
+                    "description": null,
+                    "fields": null,
+                    "inputFields": null,
+                    "interfaces": null,
+                    "enumValues": [
+                        {
+                            "name": "Rejected",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "Approved",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "AwaitingValidation",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "Validated",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        }
+                    ],
+                    "possibleTypes": null
+                },
+                {
+                    "kind": "ENUM",
+                    "name": "OrderDirectionEnum",
+                    "description": null,
+                    "fields": null,
+                    "inputFields": null,
+                    "interfaces": null,
+                    "enumValues": [
+                        {
+                            "name": "ASC",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "DESC",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        }
+                    ],
+                    "possibleTypes": null
+                },
+                {
+                    "kind": "ENUM",
+                    "name": "TournamentOrderFieldEnum",
+                    "description": null,
+                    "fields": null,
+                    "inputFields": null,
+                    "interfaces": null,
+                    "enumValues": [
+                        {
+                            "name": "code",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "date",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "city",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "nation",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "tournamentClass",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "rounds",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "totalPlayers",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "status",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        }
+                    ],
+                    "possibleTypes": null
+                },
+                {
+                    "kind": "ENUM",
+                    "name": "GameOrderFieldEnum",
+                    "description": null,
+                    "fields": null,
+                    "inputFields": null,
+                    "interfaces": null,
+                    "enumValues": [
+                        {
+                            "name": "date",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "round",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "handicap",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "result",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "tournamentCode",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        }
+                    ],
+                    "possibleTypes": null
+                },
+                {
+                    "kind": "ENUM",
+                    "name": "PlayerOrderFieldEnum",
+                    "description": null,
+                    "fields": null,
+                    "inputFields": null,
+                    "interfaces": null,
+                    "enumValues": [
+                        {
+                            "name": "pin",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "lastName",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "firstName",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "countryCode",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "rating",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "totalTournaments",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        }
+                    ],
+                    "possibleTypes": null
+                },
+                {
+                    "kind": "OBJECT",
+                    "name": "TournamentPagination",
+                    "description": null,
+                    "fields": [
+                        {
+                            "name": "data",
+                            "description": "List of items on the current page",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "LIST",
+                                    "name": null,
+                                    "ofType": {
+                                        "kind": "NON_NULL",
+                                        "name": null,
+                                        "ofType": {
+                                            "kind": "OBJECT",
+                                            "name": "Tournament",
+                                            "ofType": null
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "name": "total",
+                            "description": "Number of total items selected by the query",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "Int",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "from",
+                            "description": "Number of the first item returned",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "Int",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "to",
+                            "description": "Number of the last item returned",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "Int",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "perPage",
+                            "description": "Number of items returned per page",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "Int",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "currentPage",
+                            "description": "Current page of the cursor",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "Int",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "lastPage",
+                            "description": "The last page (number of pages)",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "Int",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "hasMorePages",
+                            "description": "Determines if cursor has more pages after the current page",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "Boolean",
+                                    "ofType": null
+                                }
+                            }
+                        }
+                    ],
+                    "inputFields": null,
+                    "interfaces": [],
+                    "enumValues": null,
+                    "possibleTypes": null
+                },
+                {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "description": "The `Boolean` scalar type represents `true` or `false`.",
+                    "fields": null,
+                    "inputFields": null,
+                    "interfaces": null,
+                    "enumValues": null,
+                    "possibleTypes": null
+                },
+                {
+                    "kind": "OBJECT",
+                    "name": "GamePagination",
+                    "description": null,
+                    "fields": [
+                        {
+                            "name": "data",
+                            "description": "List of items on the current page",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "LIST",
+                                    "name": null,
+                                    "ofType": {
+                                        "kind": "NON_NULL",
+                                        "name": null,
+                                        "ofType": {
+                                            "kind": "OBJECT",
+                                            "name": "Game",
+                                            "ofType": null
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "name": "total",
+                            "description": "Number of total items selected by the query",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "Int",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "from",
+                            "description": "Number of the first item returned",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "Int",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "to",
+                            "description": "Number of the last item returned",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "Int",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "perPage",
+                            "description": "Number of items returned per page",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "Int",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "currentPage",
+                            "description": "Current page of the cursor",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "Int",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "lastPage",
+                            "description": "The last page (number of pages)",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "Int",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "hasMorePages",
+                            "description": "Determines if cursor has more pages after the current page",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "Boolean",
+                                    "ofType": null
+                                }
+                            }
+                        }
+                    ],
+                    "inputFields": null,
+                    "interfaces": [],
+                    "enumValues": null,
+                    "possibleTypes": null
+                },
+                {
+                    "kind": "OBJECT",
+                    "name": "PlayerPagination",
+                    "description": null,
+                    "fields": [
+                        {
+                            "name": "data",
+                            "description": "List of items on the current page",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "LIST",
+                                    "name": null,
+                                    "ofType": {
+                                        "kind": "NON_NULL",
+                                        "name": null,
+                                        "ofType": {
+                                            "kind": "OBJECT",
+                                            "name": "Player",
+                                            "ofType": null
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "name": "total",
+                            "description": "Number of total items selected by the query",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "Int",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "from",
+                            "description": "Number of the first item returned",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "Int",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "to",
+                            "description": "Number of the last item returned",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "Int",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "perPage",
+                            "description": "Number of items returned per page",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "Int",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "currentPage",
+                            "description": "Current page of the cursor",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "Int",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "lastPage",
+                            "description": "The last page (number of pages)",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "Int",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "hasMorePages",
+                            "description": "Determines if cursor has more pages after the current page",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "Boolean",
+                                    "ofType": null
+                                }
+                            }
+                        }
+                    ],
+                    "inputFields": null,
+                    "interfaces": [],
+                    "enumValues": null,
+                    "possibleTypes": null
+                },
+                {
+                    "kind": "OBJECT",
+                    "name": "Query",
+                    "description": null,
+                    "fields": [
+                        {
+                            "name": "tournament",
+                            "description": "Find a tournament by its code.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [
+                                {
+                                    "name": "code",
+                                    "description": "The unique tournament code.",
+                                    "isDeprecated": false,
+                                    "deprecationReason": null,
+                                    "type": {
+                                        "kind": "NON_NULL",
+                                        "name": null,
+                                        "ofType": {
+                                            "kind": "SCALAR",
+                                            "name": "String",
+                                            "ofType": null
+                                        }
+                                    },
+                                    "defaultValue": null
+                                }
+                            ],
+                            "type": {
+                                "kind": "OBJECT",
+                                "name": "Tournament",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "tournaments",
+                            "description": "List tournaments with optional filters and sorting.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [
+                                {
+                                    "name": "filter",
+                                    "description": "Filter tournaments.",
+                                    "isDeprecated": false,
+                                    "deprecationReason": null,
+                                    "type": {
+                                        "kind": "INPUT_OBJECT",
+                                        "name": "TournamentFilterInput",
+                                        "ofType": null
+                                    },
+                                    "defaultValue": null
+                                },
+                                {
+                                    "name": "order",
+                                    "description": "Order tournaments.",
+                                    "isDeprecated": false,
+                                    "deprecationReason": null,
+                                    "type": {
+                                        "kind": "INPUT_OBJECT",
+                                        "name": "TournamentOrderInput",
+                                        "ofType": null
+                                    },
+                                    "defaultValue": null
+                                },
+                                {
+                                    "name": "pagination",
+                                    "description": "Pagination parameters.",
+                                    "isDeprecated": false,
+                                    "deprecationReason": null,
+                                    "type": {
+                                        "kind": "NON_NULL",
+                                        "name": null,
+                                        "ofType": {
+                                            "kind": "INPUT_OBJECT",
+                                            "name": "PaginationInput",
+                                            "ofType": null
+                                        }
+                                    },
+                                    "defaultValue": null
+                                }
+                            ],
+                            "type": {
+                                "kind": "OBJECT",
+                                "name": "TournamentPagination",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "game",
+                            "description": "Find a game by its ID.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [
+                                {
+                                    "name": "id",
+                                    "description": "The unique game ID.",
+                                    "isDeprecated": false,
+                                    "deprecationReason": null,
+                                    "type": {
+                                        "kind": "NON_NULL",
+                                        "name": null,
+                                        "ofType": {
+                                            "kind": "SCALAR",
+                                            "name": "Int",
+                                            "ofType": null
+                                        }
+                                    },
+                                    "defaultValue": null
+                                }
+                            ],
+                            "type": {
+                                "kind": "OBJECT",
+                                "name": "Game",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "games",
+                            "description": "List games with optional filters and sorting.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [
+                                {
+                                    "name": "filter",
+                                    "description": "Filter games.",
+                                    "isDeprecated": false,
+                                    "deprecationReason": null,
+                                    "type": {
+                                        "kind": "INPUT_OBJECT",
+                                        "name": "GameFilterInput",
+                                        "ofType": null
+                                    },
+                                    "defaultValue": null
+                                },
+                                {
+                                    "name": "order",
+                                    "description": "Order games.",
+                                    "isDeprecated": false,
+                                    "deprecationReason": null,
+                                    "type": {
+                                        "kind": "INPUT_OBJECT",
+                                        "name": "GameOrderInput",
+                                        "ofType": null
+                                    },
+                                    "defaultValue": null
+                                },
+                                {
+                                    "name": "pagination",
+                                    "description": "Pagination parameters.",
+                                    "isDeprecated": false,
+                                    "deprecationReason": null,
+                                    "type": {
+                                        "kind": "NON_NULL",
+                                        "name": null,
+                                        "ofType": {
+                                            "kind": "INPUT_OBJECT",
+                                            "name": "PaginationInput",
+                                            "ofType": null
+                                        }
+                                    },
+                                    "defaultValue": null
+                                }
+                            ],
+                            "type": {
+                                "kind": "OBJECT",
+                                "name": "GamePagination",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "player",
+                            "description": "Find a player by PIN.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [
+                                {
+                                    "name": "pin",
+                                    "description": "The unique player PIN.",
+                                    "isDeprecated": false,
+                                    "deprecationReason": null,
+                                    "type": {
+                                        "kind": "NON_NULL",
+                                        "name": null,
+                                        "ofType": {
+                                            "kind": "SCALAR",
+                                            "name": "Int",
+                                            "ofType": null
+                                        }
+                                    },
+                                    "defaultValue": null
+                                }
+                            ],
+                            "type": {
+                                "kind": "OBJECT",
+                                "name": "Player",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "players",
+                            "description": "List players with optional filters and sorting.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [
+                                {
+                                    "name": "filter",
+                                    "description": "Filter players.",
+                                    "isDeprecated": false,
+                                    "deprecationReason": null,
+                                    "type": {
+                                        "kind": "INPUT_OBJECT",
+                                        "name": "PlayerFilterInput",
+                                        "ofType": null
+                                    },
+                                    "defaultValue": null
+                                },
+                                {
+                                    "name": "order",
+                                    "description": "Order players.",
+                                    "isDeprecated": false,
+                                    "deprecationReason": null,
+                                    "type": {
+                                        "kind": "INPUT_OBJECT",
+                                        "name": "PlayerOrderInput",
+                                        "ofType": null
+                                    },
+                                    "defaultValue": null
+                                },
+                                {
+                                    "name": "pagination",
+                                    "description": "Pagination parameters.",
+                                    "isDeprecated": false,
+                                    "deprecationReason": null,
+                                    "type": {
+                                        "kind": "NON_NULL",
+                                        "name": null,
+                                        "ofType": {
+                                            "kind": "INPUT_OBJECT",
+                                            "name": "PaginationInput",
+                                            "ofType": null
+                                        }
+                                    },
+                                    "defaultValue": null
+                                }
+                            ],
+                            "type": {
+                                "kind": "OBJECT",
+                                "name": "PlayerPagination",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "playersSearch",
+                            "description": "Search players by text (typo-tolerant) with optional filters and sorting.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [
+                                {
+                                    "name": "search",
+                                    "description": "Search term (matches last name, first name, country, club, PIN).",
+                                    "isDeprecated": false,
+                                    "deprecationReason": null,
+                                    "type": {
+                                        "kind": "NON_NULL",
+                                        "name": null,
+                                        "ofType": {
+                                            "kind": "SCALAR",
+                                            "name": "String",
+                                            "ofType": null
+                                        }
+                                    },
+                                    "defaultValue": null
+                                },
+                                {
+                                    "name": "filter",
+                                    "description": "Filter players.",
+                                    "isDeprecated": false,
+                                    "deprecationReason": null,
+                                    "type": {
+                                        "kind": "INPUT_OBJECT",
+                                        "name": "PlayerFilterInput",
+                                        "ofType": null
+                                    },
+                                    "defaultValue": null
+                                },
+                                {
+                                    "name": "order",
+                                    "description": "Order players.",
+                                    "isDeprecated": false,
+                                    "deprecationReason": null,
+                                    "type": {
+                                        "kind": "INPUT_OBJECT",
+                                        "name": "PlayerOrderInput",
+                                        "ofType": null
+                                    },
+                                    "defaultValue": null
+                                },
+                                {
+                                    "name": "pagination",
+                                    "description": "Pagination parameters.",
+                                    "isDeprecated": false,
+                                    "deprecationReason": null,
+                                    "type": {
+                                        "kind": "NON_NULL",
+                                        "name": null,
+                                        "ofType": {
+                                            "kind": "INPUT_OBJECT",
+                                            "name": "PaginationInput",
+                                            "ofType": null
+                                        }
+                                    },
+                                    "defaultValue": null
+                                }
+                            ],
+                            "type": {
+                                "kind": "OBJECT",
+                                "name": "PlayerPagination",
+                                "ofType": null
+                            }
+                        }
+                    ],
+                    "inputFields": null,
+                    "interfaces": [],
+                    "enumValues": null,
+                    "possibleTypes": null
+                },
+                {
+                    "kind": "INPUT_OBJECT",
+                    "name": "PaginationInput",
+                    "description": "Pagination parameters.",
+                    "fields": null,
+                    "inputFields": [
+                        {
+                            "name": "page",
+                            "description": "Page number (defaults to 1).",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "Int",
+                                "ofType": null
+                            },
+                            "defaultValue": null
+                        },
+                        {
+                            "name": "limit",
+                            "description": "Items per page (defaults to 30, max 100).",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "Int",
+                                "ofType": null
+                            },
+                            "defaultValue": null
+                        }
+                    ],
+                    "interfaces": null,
+                    "enumValues": null,
+                    "possibleTypes": null
+                },
+                {
+                    "kind": "OBJECT",
+                    "name": "__Schema",
+                    "description": "A GraphQL Schema defines the capabilities of a GraphQL server. It exposes all available types and directives on the server, as well as the entry points for query, mutation, and subscription operations.",
+                    "fields": [
+                        {
+                            "name": "description",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "types",
+                            "description": "A list of all types supported by this server.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "LIST",
+                                    "name": null,
+                                    "ofType": {
+                                        "kind": "NON_NULL",
+                                        "name": null,
+                                        "ofType": {
+                                            "kind": "OBJECT",
+                                            "name": "__Type",
+                                            "ofType": null
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "name": "queryType",
+                            "description": "The type that query operations will be rooted at.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "OBJECT",
+                                    "name": "__Type",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "mutationType",
+                            "description": "If this server supports mutation, the type that mutation operations will be rooted at.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "OBJECT",
+                                "name": "__Type",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "subscriptionType",
+                            "description": "If this server support subscription, the type that subscription operations will be rooted at.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "OBJECT",
+                                "name": "__Type",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "directives",
+                            "description": "A list of all directives supported by this server.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "LIST",
+                                    "name": null,
+                                    "ofType": {
+                                        "kind": "NON_NULL",
+                                        "name": null,
+                                        "ofType": {
+                                            "kind": "OBJECT",
+                                            "name": "__Directive",
+                                            "ofType": null
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "inputFields": null,
+                    "interfaces": [],
+                    "enumValues": null,
+                    "possibleTypes": null
+                },
+                {
+                    "kind": "OBJECT",
+                    "name": "__Type",
+                    "description": "The fundamental unit of any GraphQL Schema is the type. There are many kinds of types in GraphQL as represented by the `__TypeKind` enum.\n\nDepending on the kind of a type, certain fields describe information about that type. Scalar types provide no information beyond a name and description, while Enum types provide their values. Object and Interface types provide the fields they describe. Abstract types, Union and Interface, provide the Object types possible at runtime. List and NonNull types compose other types.",
+                    "fields": [
+                        {
+                            "name": "kind",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "ENUM",
+                                    "name": "__TypeKind",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "name",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "description",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "fields",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [
+                                {
+                                    "name": "includeDeprecated",
+                                    "description": null,
+                                    "isDeprecated": false,
+                                    "deprecationReason": null,
+                                    "type": {
+                                        "kind": "NON_NULL",
+                                        "name": null,
+                                        "ofType": {
+                                            "kind": "SCALAR",
+                                            "name": "Boolean",
+                                            "ofType": null
+                                        }
+                                    },
+                                    "defaultValue": "false"
+                                }
+                            ],
+                            "type": {
+                                "kind": "LIST",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "NON_NULL",
+                                    "name": null,
+                                    "ofType": {
+                                        "kind": "OBJECT",
+                                        "name": "__Field",
+                                        "ofType": null
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "name": "interfaces",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "LIST",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "NON_NULL",
+                                    "name": null,
+                                    "ofType": {
+                                        "kind": "OBJECT",
+                                        "name": "__Type",
+                                        "ofType": null
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "name": "possibleTypes",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "LIST",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "NON_NULL",
+                                    "name": null,
+                                    "ofType": {
+                                        "kind": "OBJECT",
+                                        "name": "__Type",
+                                        "ofType": null
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "name": "enumValues",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [
+                                {
+                                    "name": "includeDeprecated",
+                                    "description": null,
+                                    "isDeprecated": false,
+                                    "deprecationReason": null,
+                                    "type": {
+                                        "kind": "NON_NULL",
+                                        "name": null,
+                                        "ofType": {
+                                            "kind": "SCALAR",
+                                            "name": "Boolean",
+                                            "ofType": null
+                                        }
+                                    },
+                                    "defaultValue": "false"
+                                }
+                            ],
+                            "type": {
+                                "kind": "LIST",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "NON_NULL",
+                                    "name": null,
+                                    "ofType": {
+                                        "kind": "OBJECT",
+                                        "name": "__EnumValue",
+                                        "ofType": null
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "name": "inputFields",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [
+                                {
+                                    "name": "includeDeprecated",
+                                    "description": null,
+                                    "isDeprecated": false,
+                                    "deprecationReason": null,
+                                    "type": {
+                                        "kind": "NON_NULL",
+                                        "name": null,
+                                        "ofType": {
+                                            "kind": "SCALAR",
+                                            "name": "Boolean",
+                                            "ofType": null
+                                        }
+                                    },
+                                    "defaultValue": "false"
+                                }
+                            ],
+                            "type": {
+                                "kind": "LIST",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "NON_NULL",
+                                    "name": null,
+                                    "ofType": {
+                                        "kind": "OBJECT",
+                                        "name": "__InputValue",
+                                        "ofType": null
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "name": "ofType",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "OBJECT",
+                                "name": "__Type",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "isOneOf",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "Boolean",
+                                "ofType": null
+                            }
+                        }
+                    ],
+                    "inputFields": null,
+                    "interfaces": [],
+                    "enumValues": null,
+                    "possibleTypes": null
+                },
+                {
+                    "kind": "ENUM",
+                    "name": "__TypeKind",
+                    "description": "An enum describing what kind of type a given `__Type` is.",
+                    "fields": null,
+                    "inputFields": null,
+                    "interfaces": null,
+                    "enumValues": [
+                        {
+                            "name": "SCALAR",
+                            "description": "Indicates this type is a scalar.",
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "OBJECT",
+                            "description": "Indicates this type is an object. `fields` and `interfaces` are valid fields.",
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "INTERFACE",
+                            "description": "Indicates this type is an interface. `fields`, `interfaces`, and `possibleTypes` are valid fields.",
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "UNION",
+                            "description": "Indicates this type is a union. `possibleTypes` is a valid field.",
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "ENUM",
+                            "description": "Indicates this type is an enum. `enumValues` is a valid field.",
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "INPUT_OBJECT",
+                            "description": "Indicates this type is an input object. `inputFields` is a valid field.",
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "LIST",
+                            "description": "Indicates this type is a list. `ofType` is a valid field.",
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "NON_NULL",
+                            "description": "Indicates this type is a non-null. `ofType` is a valid field.",
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        }
+                    ],
+                    "possibleTypes": null
+                },
+                {
+                    "kind": "OBJECT",
+                    "name": "__Field",
+                    "description": "Object and Interface types are described by a list of Fields, each of which has a name, potentially a list of arguments, and a return type.",
+                    "fields": [
+                        {
+                            "name": "name",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "String",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "description",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "args",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [
+                                {
+                                    "name": "includeDeprecated",
+                                    "description": null,
+                                    "isDeprecated": false,
+                                    "deprecationReason": null,
+                                    "type": {
+                                        "kind": "NON_NULL",
+                                        "name": null,
+                                        "ofType": {
+                                            "kind": "SCALAR",
+                                            "name": "Boolean",
+                                            "ofType": null
+                                        }
+                                    },
+                                    "defaultValue": "false"
+                                }
+                            ],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "LIST",
+                                    "name": null,
+                                    "ofType": {
+                                        "kind": "NON_NULL",
+                                        "name": null,
+                                        "ofType": {
+                                            "kind": "OBJECT",
+                                            "name": "__InputValue",
+                                            "ofType": null
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "name": "type",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "OBJECT",
+                                    "name": "__Type",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "isDeprecated",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "Boolean",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "deprecationReason",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
+                            }
+                        }
+                    ],
+                    "inputFields": null,
+                    "interfaces": [],
+                    "enumValues": null,
+                    "possibleTypes": null
+                },
+                {
+                    "kind": "OBJECT",
+                    "name": "__InputValue",
+                    "description": "Arguments provided to Fields or Directives and the input fields of an InputObject are represented as Input Values which describe their type and optionally a default value.",
+                    "fields": [
+                        {
+                            "name": "name",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "String",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "description",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "type",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "OBJECT",
+                                    "name": "__Type",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "defaultValue",
+                            "description": "A GraphQL-formatted string representing the default value for this input value.",
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "isDeprecated",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "Boolean",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "deprecationReason",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
+                            }
+                        }
+                    ],
+                    "inputFields": null,
+                    "interfaces": [],
+                    "enumValues": null,
+                    "possibleTypes": null
+                },
+                {
+                    "kind": "OBJECT",
+                    "name": "__EnumValue",
+                    "description": "One possible value for a given Enum. Enum values are unique values, not a placeholder for a string or numeric value. However an Enum value is returned in a JSON response as a string.",
+                    "fields": [
+                        {
+                            "name": "name",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "String",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "description",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "isDeprecated",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "Boolean",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "deprecationReason",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
+                            }
+                        }
+                    ],
+                    "inputFields": null,
+                    "interfaces": [],
+                    "enumValues": null,
+                    "possibleTypes": null
+                },
+                {
+                    "kind": "OBJECT",
+                    "name": "__Directive",
+                    "description": "A Directive provides a way to describe alternate runtime execution and type validation behavior in a GraphQL document.\n\nIn some cases, you need to provide options to alter GraphQL's execution behavior in ways field arguments will not suffice, such as conditionally including or skipping a field. Directives provide this by describing additional information to the executor.",
+                    "fields": [
+                        {
+                            "name": "name",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "String",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "description",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
+                            }
+                        },
+                        {
+                            "name": "isRepeatable",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "Boolean",
+                                    "ofType": null
+                                }
+                            }
+                        },
+                        {
+                            "name": "locations",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "LIST",
+                                    "name": null,
+                                    "ofType": {
+                                        "kind": "NON_NULL",
+                                        "name": null,
+                                        "ofType": {
+                                            "kind": "ENUM",
+                                            "name": "__DirectiveLocation",
+                                            "ofType": null
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "name": "args",
+                            "description": null,
+                            "isDeprecated": false,
+                            "deprecationReason": null,
+                            "args": [
+                                {
+                                    "name": "includeDeprecated",
+                                    "description": null,
+                                    "isDeprecated": false,
+                                    "deprecationReason": null,
+                                    "type": {
+                                        "kind": "NON_NULL",
+                                        "name": null,
+                                        "ofType": {
+                                            "kind": "SCALAR",
+                                            "name": "Boolean",
+                                            "ofType": null
+                                        }
+                                    },
+                                    "defaultValue": "false"
+                                }
+                            ],
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "LIST",
+                                    "name": null,
+                                    "ofType": {
+                                        "kind": "NON_NULL",
+                                        "name": null,
+                                        "ofType": {
+                                            "kind": "OBJECT",
+                                            "name": "__InputValue",
+                                            "ofType": null
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "inputFields": null,
+                    "interfaces": [],
+                    "enumValues": null,
+                    "possibleTypes": null
+                },
+                {
+                    "kind": "ENUM",
+                    "name": "__DirectiveLocation",
+                    "description": "A Directive can be adjacent to many parts of the GraphQL language, a __DirectiveLocation describes one such possible adjacencies.",
+                    "fields": null,
+                    "inputFields": null,
+                    "interfaces": null,
+                    "enumValues": [
+                        {
+                            "name": "QUERY",
+                            "description": "Location adjacent to a query operation.",
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "MUTATION",
+                            "description": "Location adjacent to a mutation operation.",
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "SUBSCRIPTION",
+                            "description": "Location adjacent to a subscription operation.",
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "FIELD",
+                            "description": "Location adjacent to a field.",
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "FRAGMENT_DEFINITION",
+                            "description": "Location adjacent to a fragment definition.",
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "FRAGMENT_SPREAD",
+                            "description": "Location adjacent to a fragment spread.",
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "INLINE_FRAGMENT",
+                            "description": "Location adjacent to an inline fragment.",
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "VARIABLE_DEFINITION",
+                            "description": "Location adjacent to a variable definition.",
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "SCHEMA",
+                            "description": "Location adjacent to a schema definition.",
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "SCALAR",
+                            "description": "Location adjacent to a scalar definition.",
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "OBJECT",
+                            "description": "Location adjacent to an object type definition.",
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "FIELD_DEFINITION",
+                            "description": "Location adjacent to a field definition.",
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "ARGUMENT_DEFINITION",
+                            "description": "Location adjacent to an argument definition.",
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "INTERFACE",
+                            "description": "Location adjacent to an interface definition.",
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "UNION",
+                            "description": "Location adjacent to a union definition.",
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "ENUM",
+                            "description": "Location adjacent to an enum definition.",
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "ENUM_VALUE",
+                            "description": "Location adjacent to an enum value definition.",
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "INPUT_OBJECT",
+                            "description": "Location adjacent to an input object type definition.",
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "INPUT_FIELD_DEFINITION",
+                            "description": "Location adjacent to an input object field definition.",
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        }
+                    ],
+                    "possibleTypes": null
+                }
+            ]
+        }
+    }
+}
