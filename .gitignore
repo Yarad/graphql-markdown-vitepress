@@ -6,6 +6,6 @@ dist
 .env.*
 docs/graphql
 docs/node_modules
-.vitepress/cache
+docs/.vitepress/cache
 .cursor
 .devcontainer
