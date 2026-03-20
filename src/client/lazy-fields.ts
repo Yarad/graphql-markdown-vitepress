@@ -11,9 +11,9 @@
 type FieldsIndex = Record<string, string>;
 
 let fieldsIndex: FieldsIndex | null = null;
-let indexPromise: Promise<FieldsIndex> | null = null;
+let indexPromise: Promise<FieldsIndex | null> | null = null;
 
-function loadIndex(): Promise<FieldsIndex> {
+function loadIndex(): Promise<FieldsIndex | null> {
   if (fieldsIndex) return Promise.resolve(fieldsIndex);
   if (!indexPromise) {
     const base =
@@ -22,10 +22,22 @@ function loadIndex(): Promise<FieldsIndex> {
       "/";
     const url = `${base.replace(/\/$/, "")}/_gql-fields-index.json`;
     indexPromise = fetch(url)
-      .then((r) => r.json())
-      .then((data: FieldsIndex) => {
-        fieldsIndex = data;
+      .then((r) => {
+        if (!r.ok) {
+          console.warn(
+            `[graphql-markdown] Failed to load fields index: ${r.status} ${r.statusText}`,
+          );
+          return null;
+        }
+        return r.json() as Promise<FieldsIndex>;
+      })
+      .then((data) => {
+        if (data) fieldsIndex = data;
         return data;
+      })
+      .catch((err) => {
+        console.warn("[graphql-markdown] Failed to load fields index:", err);
+        return null;
       });
   }
   return indexPromise;
@@ -40,11 +52,7 @@ function stripSelfAnchors(el: Element): void {
   });
 }
 
-function expandLazy(
-  container: HTMLElement,
-  typeUrl: string,
-  visited: Set<string>,
-): void {
+function expandLazy(container: HTMLElement, typeUrl: string, visited: Set<string>): void {
   if (!fieldsIndex?.[typeUrl]) {
     container.remove();
     return;
@@ -73,14 +81,9 @@ function expandLazy(
   attachLazyToChildren(container, newVisited);
 }
 
-function attachLazyToChildren(
-  root: Element,
-  visited: Set<string>,
-): void {
+function attachLazyToChildren(root: Element, visited: Set<string>): void {
   root
-    .querySelectorAll<HTMLDetailsElement>(
-      ":scope > details.gql-inline-field",
-    )
+    .querySelectorAll<HTMLDetailsElement>(":scope > details.gql-inline-field")
     .forEach((details) => {
       if (details.dataset.lazyBound) return;
 
@@ -125,7 +128,8 @@ export function initGqlLazyFields(): void {
       if (!parentDetails) return;
 
       if ((parentDetails as HTMLDetailsElement).open) {
-        loadIndex().then(() => {
+        loadIndex().then((idx) => {
+          if (!idx) return;
           const typeUrl = container.dataset.typeUrl;
           if (typeUrl) expandLazy(container, typeUrl, new Set());
         });
@@ -135,7 +139,8 @@ export function initGqlLazyFields(): void {
       const handler = () => {
         if (!(parentDetails as HTMLDetailsElement).open) return;
         parentDetails.removeEventListener("toggle", handler);
-        loadIndex().then(() => {
+        loadIndex().then((idx) => {
+          if (!idx) return;
           const typeUrl = container.dataset.typeUrl;
           if (typeUrl) expandLazy(container, typeUrl, new Set());
         });

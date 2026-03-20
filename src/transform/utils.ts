@@ -5,10 +5,9 @@
 
 const PERMALINK_RE = /\s*\\?\{#([\w-]+)\\?\}\s*$/;
 
-const MD_LINK_RE = /\[((?:[^\[\]]|\[[^\]]*\])*)\]\(([^)]+)\)/g;
+const MD_LINK_RE = /\[((?:[^[\]]|\[[^\]]*\])*)\]\(([^)]+)\)/g;
 
-const PARENT_PREFIX_RE =
-  /<code class="gqlmd-mdx-entity-parent">[^<]*<\/code>\./g;
+const PARENT_PREFIX_RE = /<code class="gqlmd-mdx-entity-parent">[^<]*<\/code>\./g;
 
 const SELF_ANCHOR_RE = /<a\s+href="#[^"]*"[^>]*>([\s\S]*?)<\/a>/g;
 

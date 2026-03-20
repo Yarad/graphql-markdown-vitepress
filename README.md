@@ -123,16 +123,16 @@ Resolves a partial `TransformOptions` object into a fully-populated `ResolvedTra
 
 All options passed to `generateDocs` and `graphqlDocsPlugin`.
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `schema` | `string` | **required** | Path to GraphQL schema file or URL |
-| `rootPath` | `string` | `"./docs"` | Root folder for generated documentation |
-| `baseURL` | `string` | `"graphql"` | URL segment under `rootPath`; docs go to `rootPath/baseURL/` |
-| `linkRoot` | `string` | `"/"` | Prefix for internal links |
-| `mdxParser` | `string` | built-in formatter | Custom formatter module path |
-| `loaders` | `Record<string, ...>` | auto for `.json` | Schema loaders |
-| `transforms` | `TransformOptions \| false` | `{}` (all enabled) | Transform pipeline configuration; `false` to skip |
-| `onGenerated` | `(outputDir: string) => void \| Promise<void>` | — | Callback after generation and transforms complete |
+| Option        | Type                                           | Default            | Description                                                  |
+| ------------- | ---------------------------------------------- | ------------------ | ------------------------------------------------------------ |
+| `schema`      | `string`                                       | **required**       | Path to GraphQL schema file or URL                           |
+| `rootPath`    | `string`                                       | `"./docs"`         | Root folder for generated documentation                      |
+| `baseURL`     | `string`                                       | `"graphql"`        | URL segment under `rootPath`; docs go to `rootPath/baseURL/` |
+| `linkRoot`    | `string`                                       | `"/"`              | Prefix for internal links                                    |
+| `mdxParser`   | `string`                                       | built-in formatter | Custom formatter module path                                 |
+| `loaders`     | `Record<string, ...>`                          | auto for `.json`   | Schema loaders                                               |
+| `transforms`  | `TransformOptions \| false`                    | `{}` (all enabled) | Transform pipeline configuration; `false` to skip            |
+| `onGenerated` | `(outputDir: string) => void \| Promise<void>` | —                  | Callback after generation and transforms complete            |
 
 All [GraphQL-Markdown config options](https://graphql-markdown.dev/docs/configuration) (`pretty`, `printTypeOptions`, `docOptions`, `groupByDirective`, etc.) are also supported.
 
@@ -142,37 +142,39 @@ Controls the post-generation transform pipeline that converts flat GraphQL-Markd
 
 #### Pipeline control
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `collapsible` | `boolean` | `true` | Enable the collapsible `<details>/<summary>` pass |
-| `inline` | `boolean` | `true` | Enable the inline type expansion pass |
-| `custom` | `((content: string) => string)[]` | `[]` | Custom transform functions applied after built-in passes |
-| `seo` | `boolean` | `true` | Enable the SEO enhancement pass (per-page `title` with category qualifier, `description` from GraphQL schema, H1 heading) |
-| `cleanUrls` | `boolean` | `true` | Strip numeric ordering prefixes from directories (e.g. `01-operations` → `operations`) and rewrite internal links |
-| `structuredData` | `boolean` | `true` | Inject JSON-LD `TechArticle` structured data into each page (requires `seo` to be enabled) |
+| Option           | Type                              | Default | Description                                                                                                               |
+| ---------------- | --------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `collapsible`    | `boolean`                         | `true`  | Enable the collapsible `<details>/<summary>` pass                                                                         |
+| `inline`         | `boolean`                         | `true`  | Enable the inline type expansion pass                                                                                     |
+| `custom`         | `((content: string) => string)[]` | `[]`    | Custom transform functions applied after built-in passes                                                                  |
+| `seo`            | `boolean`                         | `true`  | Enable the SEO enhancement pass (per-page `title` with category qualifier, `description` from GraphQL schema, H1 heading) |
+| `cleanUrls`      | `boolean`                         | `true`  | Strip numeric ordering prefixes from directories (e.g. `01-operations` → `operations`) and rewrite internal links         |
+| `structuredData` | `boolean`                         | `true`  | Inject JSON-LD `TechArticle` structured data into each page (requires `seo` to be enabled)                                |
 
 #### Section configuration
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `collapsibleSections` | `string[]` | `["fields", "arguments", "values", "input fields"]` | H3 titles that become collapsible blocks (case-insensitive) |
-| `responseSections` | `string[]` | `["response", "type"]` | H3 titles treated as response sections for inlining |
-| `fieldSections` | `string[]` | `["fields", "values", "input fields"]` | H3 titles used to extract fields for the type index |
-| `sectionRenames` | `Record<string, string>` | `{ "### Type": "### Response" }` | Exact heading line replacements |
+| Option                | Type                     | Default                                             | Description                                                 |
+| --------------------- | ------------------------ | --------------------------------------------------- | ----------------------------------------------------------- |
+| `collapsibleSections` | `string[]`               | `["fields", "arguments", "values", "input fields"]` | H3 titles that become collapsible blocks (case-insensitive) |
+| `responseSections`    | `string[]`               | `["response", "type"]`                              | H3 titles treated as response sections for inlining         |
+| `fieldSections`       | `string[]`               | `["fields", "values", "input fields"]`              | H3 titles used to extract fields for the type index         |
+| `sectionRenames`      | `Record<string, string>` | `{ "### Type": "### Response" }`                    | Exact heading line replacements                             |
 
 #### Inline expansion
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `baseURL` | `string` | `"graphql"` | Base URL segment for matching type references in links |
-| `inlineTypeCategories` | `string[]` | `["objects", "inputs"]` | Type category folder suffixes eligible for inline expansion. Matched as `\d+-{category}` in URL paths |
+| Option                 | Type       | Default                 | Description                                                                                                                                                  |
+| ---------------------- | ---------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `baseURL`              | `string`   | `"graphql"`             | Base URL segment for matching type references in links                                                                                                       |
+| `inlineDepth`          | `number`   | `3`                     | Maximum nesting depth for recursive inline expansion. `1` reproduces legacy single-level behavior; `0` disables inline expansion entirely                    |
+| `lazyInline`           | `boolean`  | `true`                  | When enabled, only the first level of inline fields is pre-rendered at build time; deeper levels are loaded on demand in the browser via a JSON fields index |
+| `inlineTypeCategories` | `string[]` | `["objects", "inputs"]` | Type category folder suffixes eligible for inline expansion. Matched as `\d+-{category}` in URL paths                                                        |
 
 #### Labels
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `labels.arguments` | `string` | `"Arguments"` | Label for nested argument blocks |
-| `labels.fields` | `string` | `"Fields"` | Label for inlined field containers |
+| Option             | Type     | Default       | Description                        |
+| ------------------ | -------- | ------------- | ---------------------------------- |
+| `labels.arguments` | `string` | `"Arguments"` | Label for nested argument blocks   |
+| `labels.fields`    | `string` | `"Fields"`    | Label for inlined field containers |
 
 #### CSS classes
 
@@ -182,7 +184,7 @@ The `css` option controls CSS class names in rendered HTML. Pass a **string** to
 
 ```ts
 transforms: {
-  css: "api-docs"
+  css: "api-docs";
 }
 // Generates: api-docs-field, api-docs-arg, api-docs-desc, ...
 ```
@@ -201,16 +203,16 @@ transforms: {
 
 **Default class map** (prefix `"gql"`):
 
-| Key | Default class | Used for |
-|-----|---------------|----------|
-| `field` | `gql-field` | Field `<details>` elements |
-| `arg` | `gql-arg` | Argument `<details>` elements |
-| `desc` | `gql-desc` | Description `<p>` elements |
-| `fieldArgs` | `gql-field-args` | Arguments container `<div>` |
-| `argsLabel` | `gql-args-label` | Section label `<span>` ("Arguments", "Fields") |
-| `inlineField` | `gql-inline-field` | Inlined field `<details>` elements |
-| `inlineFields` | `gql-inline-fields` | Inline fields container `<div>` |
-| `responseType` | `gql-response-type` | Response type `<details>` elements |
+| Key            | Default class       | Used for                                       |
+| -------------- | ------------------- | ---------------------------------------------- |
+| `field`        | `gql-field`         | Field `<details>` elements                     |
+| `arg`          | `gql-arg`           | Argument `<details>` elements                  |
+| `desc`         | `gql-desc`          | Description `<p>` elements                     |
+| `fieldArgs`    | `gql-field-args`    | Arguments container `<div>`                    |
+| `argsLabel`    | `gql-args-label`    | Section label `<span>` ("Arguments", "Fields") |
+| `inlineField`  | `gql-inline-field`  | Inlined field `<details>` elements             |
+| `inlineFields` | `gql-inline-fields` | Inline fields container `<div>`                |
+| `responseType` | `gql-response-type` | Response type `<details>` elements             |
 
 ## Examples
 

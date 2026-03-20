@@ -26,10 +26,7 @@ export interface FieldBlock {
  * Each heading at `baseLevel` becomes a block; headings at `baseLevel + 1`
  * become its children (used for nested arguments).
  */
-export function parseFieldBlocks(
-  lines: string[],
-  baseLevel: number,
-): FieldBlock[] {
+export function parseFieldBlocks(lines: string[], baseLevel: number): FieldBlock[] {
   const blocks: FieldBlock[] = [];
   let i = 0;
 
@@ -54,10 +51,7 @@ export function parseFieldBlocks(
 
       while (i < lines.length) {
         const nextLevel = headingLevel(lines[i]);
-        if (
-          nextLevel === baseLevel ||
-          (nextLevel > 0 && nextLevel < baseLevel)
-        ) {
+        if (nextLevel === baseLevel || (nextLevel > 0 && nextLevel < baseLevel)) {
           break;
         }
         if (nextLevel === baseLevel + 1) {
@@ -71,10 +65,7 @@ export function parseFieldBlocks(
         i++;
       }
 
-      while (
-        descLines.length > 0 &&
-        descLines[descLines.length - 1].trim() === ""
-      ) {
+      while (descLines.length > 0 && descLines[descLines.length - 1].trim() === "") {
         descLines.pop();
       }
       while (descLines.length > 0 && descLines[0].trim() === "") {

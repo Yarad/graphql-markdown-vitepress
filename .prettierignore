@@ -1,0 +1,6 @@
+dist/
+node_modules/
+demo/graphql/
+demo/public/
+demo/.vitepress/cache/
+demo/.vitepress/dist/

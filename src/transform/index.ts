@@ -10,27 +10,15 @@
  * Each pass can be individually enabled/disabled via {@link TransformOptions}.
  */
 
-import { readdirSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
-import { join, extname, relative } from "node:path";
+import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { join, relative } from "node:path";
 import type { TransformOptions } from "../types.js";
+import { collectMdFiles } from "../fs.js";
 import { resolveTransformConfig } from "./config.js";
 import { transformMarkdown } from "./collapsible.js";
 import { buildFieldsIndex, inlineTypeFields } from "./inline.js";
 import { enhanceSeo } from "./seo.js";
 import { cleanDirectoryUrls } from "./urls.js";
-
-function collectMdFiles(dir: string): string[] {
-  const files: string[] = [];
-  for (const entry of readdirSync(dir, { withFileTypes: true })) {
-    const full = join(dir, entry.name);
-    if (entry.isDirectory()) {
-      files.push(...collectMdFiles(full));
-    } else if (extname(entry.name) === ".md") {
-      files.push(full);
-    }
-  }
-  return files;
-}
 
 /**
  * Transforms all generated markdown files in-place.

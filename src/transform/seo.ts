@@ -93,8 +93,7 @@ export function enhanceSeo(
   const category = detectCategory(relativePath);
   const description = extractDescription(body);
   const alreadyEnhanced = !!data.sidebar_title;
-  const originalTitle: string =
-    data.sidebar_title ?? data.title ?? data.id ?? "";
+  const originalTitle: string = data.sidebar_title ?? data.title ?? data.id ?? "";
 
   if (category && !alreadyEnhanced) {
     data.sidebar_title = originalTitle;
@@ -105,7 +104,8 @@ export function enhanceSeo(
     data.description = description;
   }
 
-  const hasJsonLd = Array.isArray(data.head) &&
+  const hasJsonLd =
+    Array.isArray(data.head) &&
     data.head.some(
       (h: unknown[]) =>
         Array.isArray(h) &&
@@ -124,11 +124,7 @@ export function enhanceSeo(
       jsonLd.description = description;
     }
     if (!data.head) data.head = [];
-    data.head.push([
-      "script",
-      { type: "application/ld+json" },
-      JSON.stringify(jsonLd),
-    ]);
+    data.head.push(["script", { type: "application/ld+json" }, JSON.stringify(jsonLd)]);
   }
 
   const bodyLines = body.split("\n");

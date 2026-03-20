@@ -46,7 +46,7 @@ export const formatMDXBadge = ({ text, classname }: Badge): MDXString => {
  */
 export const formatMDXAdmonition = (
   { text, title, type }: AdmonitionType,
-  _meta: Maybe<MetaInfo>
+  _meta: Maybe<MetaInfo>,
 ): MDXString => {
   const safeType = type === "caution" ? "warning" : type;
   return `${MARKDOWN_EOP}::: ${safeType} ${title}${MARKDOWN_EOL}${text}${MARKDOWN_EOL}:::${MARKDOWN_EOP}` as MDXString;
@@ -74,11 +74,11 @@ export const formatMDXDetails = ({
  */
 export const formatMDXFrontmatter = (
   _props: Maybe<FrontMatterOptions>,
-  formatted: Maybe<string[]>
+  formatted: Maybe<string[]>,
 ): MDXString => {
   return formatted
     ? ([FRONT_MATTER_DELIMITER, ...formatted, FRONT_MATTER_DELIMITER].join(
-        MARKDOWN_EOL
+        MARKDOWN_EOL,
       ) as MDXString)
     : ("" as MDXString);
 };
@@ -98,7 +98,7 @@ export const formatMDXLink = ({ text, url }: TypeLink): TypeLink => {
  */
 export const formatMDXNameEntity = (
   name: string,
-  parentType?: Maybe<string>
+  parentType?: Maybe<string>,
 ): MDXString => {
   const full = parentType ? `${parentType}.${name}` : name;
   return ` \`${escapeMDX(full)}\` ` as MDXString;

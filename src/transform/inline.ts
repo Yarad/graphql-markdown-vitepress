@@ -26,14 +26,9 @@ function escapeRegExp(s: string): string {
  * Supports both prefixed (`/{baseURL}/{NN}-{group}/{NN}-{category}/{slug}`)
  * and clean (`/{baseURL}/{group}/{category}/{slug}`) URL formats.
  */
-function buildTypeHrefRegex(
-  baseURL: string,
-  categories: string[],
-): RegExp {
+function buildTypeHrefRegex(baseURL: string, categories: string[]): RegExp {
   const escapedBase = escapeRegExp(baseURL);
-  const catPattern = categories
-    .map((c) => `(?:\\d+-)?${escapeRegExp(c)}`)
-    .join("|");
+  const catPattern = categories.map((c) => `(?:\\d+-)?${escapeRegExp(c)}`).join("|");
   return new RegExp(
     `href="(\\/${escapedBase}\\/(?:\\d+-)?[^/]+\\/(?:${catPattern})\\/[^"]+)"`,
   );
@@ -45,10 +40,7 @@ function buildTypeHrefRegex(
  * Extracts the `<details>` HTML from the Fields/Values/Input Fields
  * section of a transformed markdown file.
  */
-function extractFieldsHtml(
-  content: string,
-  fieldSections: string[],
-): string | null {
+function extractFieldsHtml(content: string, fieldSections: string[]): string | null {
   const lines = content.split("\n");
   const fieldLines: string[] = [];
   let inSection = false;
@@ -57,7 +49,10 @@ function extractFieldsHtml(
     const level = headingLevel(lines[i]);
 
     if (level === 3) {
-      const title = lines[i].replace(/^###\s+/, "").trim().toLowerCase();
+      const title = lines[i]
+        .replace(/^###\s+/, "")
+        .trim()
+        .toLowerCase();
       if (fieldSections.includes(title)) {
         inSection = true;
         continue;
@@ -216,18 +211,12 @@ function expandFieldsRecursively(
         if (cl.trim() === "</details>") {
           nestCount--;
           if (nestCount === 0) {
-            const summaryLine = detailLines.find((l) =>
-              l.startsWith("<summary>"),
-            );
-            const typeRef = summaryLine
-              ? extractTypeRef(summaryLine, typeHrefRe)
-              : null;
+            const summaryLine = detailLines.find((l) => l.startsWith("<summary>"));
+            const typeRef = summaryLine ? extractTypeRef(summaryLine, typeHrefRe) : null;
 
             if (typeRef && index.has(typeRef) && !visited.has(typeRef)) {
               if (lazyAfterDepth !== undefined && depth >= lazyAfterDepth) {
-                detailLines.push(
-                  wrapLazyPlaceholder(typeRef, labels.fields, css),
-                );
+                detailLines.push(wrapLazyPlaceholder(typeRef, labels.fields, css));
               } else {
                 const childVisited = new Set(visited);
                 childVisited.add(typeRef);
@@ -242,9 +231,7 @@ function expandFieldsRecursively(
                   childVisited,
                   lazyAfterDepth,
                 );
-                detailLines.push(
-                  wrapInlineFields(expanded, labels.fields, css),
-                );
+                detailLines.push(wrapInlineFields(expanded, labels.fields, css));
               }
             }
 
@@ -293,10 +280,7 @@ export function inlineTypeFields(
 ): string {
   const config = resolveTransformConfig(options);
   const { css, labels, responseSections, inlineDepth, lazyInline } = config;
-  const typeHrefRe = buildTypeHrefRegex(
-    config.baseURL,
-    config.inlineTypeCategories,
-  );
+  const typeHrefRe = buildTypeHrefRegex(config.baseURL, config.inlineTypeCategories);
   const lazyAfterDepth = lazyInline ? 1 : undefined;
 
   const lines = content.split("\n");
@@ -308,7 +292,10 @@ export function inlineTypeFields(
     const level = headingLevel(line);
 
     if (level === 3) {
-      const sectionTitle = line.replace(/^###\s+/, "").trim().toLowerCase();
+      const sectionTitle = line
+        .replace(/^###\s+/, "")
+        .trim()
+        .toLowerCase();
       if (responseSections.includes(sectionTitle)) {
         output.push(line);
         i++;
@@ -331,9 +318,7 @@ export function inlineTypeFields(
             .join(" ");
 
           output.push("");
-          output.push(
-            `<details class="${css.field} ${css.responseType}" open>`,
-          );
+          output.push(`<details class="${css.field} ${css.responseType}" open>`);
           output.push(`<summary>${summaryHtml}</summary>`);
           if (descText) {
             output.push(`<p class="${css.desc}">${descText}</p>`);
@@ -351,9 +336,7 @@ export function inlineTypeFields(
               new Set([typeRef]),
               lazyAfterDepth,
             );
-            output.push(
-              wrapInlineFields(expanded, labels.fields, css),
-            );
+            output.push(wrapInlineFields(expanded, labels.fields, css));
           }
 
           output.push(`</details>`);
@@ -381,12 +364,8 @@ export function inlineTypeFields(
         if (cl.trim() === "</details>") {
           depth--;
           if (depth === 0) {
-            const summaryLine = detailLines.find((l) =>
-              l.startsWith("<summary>"),
-            );
-            const typeRef = summaryLine
-              ? extractTypeRef(summaryLine, typeHrefRe)
-              : null;
+            const summaryLine = detailLines.find((l) => l.startsWith("<summary>"));
+            const typeRef = summaryLine ? extractTypeRef(summaryLine, typeHrefRe) : null;
 
             if (typeRef && index.has(typeRef)) {
               const expanded = expandFieldsRecursively(
@@ -400,9 +379,7 @@ export function inlineTypeFields(
                 new Set([typeRef]),
                 lazyAfterDepth,
               );
-              detailLines.push(
-                wrapInlineFields(expanded, labels.fields, css),
-              );
+              detailLines.push(wrapInlineFields(expanded, labels.fields, css));
             }
 
             detailLines.push(cl);

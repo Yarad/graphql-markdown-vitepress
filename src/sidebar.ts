@@ -1,7 +1,7 @@
-import { readdirSync, readFileSync } from "node:fs";
-import { join } from "node:path";
+import { readFileSync } from "node:fs";
 import matter from "gray-matter";
 import type { SidebarConfig, SidebarItem, SidebarLink } from "./types.js";
+import { scanMdFiles, type ScannedFile } from "./fs.js";
 
 /**
  * Humanizes a category folder name (e.g. "01-objects" -> "Objects").
@@ -32,40 +32,6 @@ function titleFromFile(filePath: string, slug: string): string {
     .join(" ");
 }
 
-interface ScannedFile {
-  relativePath: string;
-  fullPath: string;
-  slug: string;
-}
-
-/**
- * Recursively collect all .md/.mdx files under dir, with relative path from docsDir.
- */
-function collectMdFiles(
-  docsDir: string,
-  currentDir: string,
-  relativePrefix: string
-): ScannedFile[] {
-  const result: ScannedFile[] = [];
-  const entries = readdirSync(currentDir, { withFileTypes: true });
-  for (const e of entries) {
-    const full = join(currentDir, e.name);
-    const rel = relativePrefix ? `${relativePrefix}/${e.name}` : e.name;
-    if (e.isDirectory() && !e.name.startsWith(".")) {
-      result.push(
-        ...collectMdFiles(docsDir, full, rel)
-      );
-    } else if (e.isFile() && (e.name.endsWith(".md") || e.name.endsWith(".mdx"))) {
-      result.push({
-        relativePath: rel,
-        fullPath: full,
-        slug: e.name.replace(/\.(md|mdx)$/, ""),
-      });
-    }
-  }
-  return result;
-}
-
 /**
  * Builds VitePress sidebar config from a generated GraphQL docs directory.
  * Supports nested dirs (e.g. 01-operations/07-queries/, 02-types/06-objects/).
@@ -76,15 +42,19 @@ function collectMdFiles(
  */
 export async function createSidebar(
   docsDir: string,
-  baseURL?: string
+  baseURL?: string,
 ): Promise<SidebarConfig> {
   const base = baseURL ?? docsDir.replace(/\/$/, "").split("/").pop() ?? "graphql";
   const basePath = base.startsWith("/") ? base : `/${base}`;
 
   let files: ScannedFile[];
   try {
-    files = collectMdFiles(docsDir, docsDir, "");
-  } catch {
+    files = scanMdFiles(docsDir);
+  } catch (err) {
+    console.warn(
+      `[graphql-markdown] Could not read docs directory "${docsDir}":`,
+      err instanceof Error ? err.message : err,
+    );
     return [];
   }
 
@@ -112,7 +82,7 @@ export async function createSidebar(
       // Single level: top dir has files directly (e.g. generated.md at root)
       const list = subMap.get(top)!;
       const items: (SidebarLink | SidebarItem)[] = list.map((f) => {
-        const link = `${basePath}/${f.relativePath.replace(/\.(md|mdx)$/, "")}`;
+        const link = `${basePath}/${f.relativePath.replace(/\.md$/, "")}`;
         const text = titleFromFile(f.fullPath, f.slug);
         return { text, link };
       });
@@ -123,7 +93,7 @@ export async function createSidebar(
       for (const sub of subKeys) {
         const list = subMap.get(sub)!;
         const items: (SidebarLink | SidebarItem)[] = list.map((f) => {
-          const link = `${basePath}/${f.relativePath.replace(/\.(md|mdx)$/, "")}`;
+          const link = `${basePath}/${f.relativePath.replace(/\.md$/, "")}`;
           const text = titleFromFile(f.fullPath, f.slug);
           return { text, link };
         });

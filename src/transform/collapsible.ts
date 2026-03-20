@@ -16,12 +16,8 @@ import { parseFieldBlocks, renderFieldBlock } from "./parse.js";
  * @param content - Raw markdown content.
  * @param options - Optional transform config for sections, renames, CSS, and labels.
  */
-export function transformMarkdown(
-  content: string,
-  options?: TransformOptions,
-): string {
-  const { collapsibleSections, sectionRenames, css } =
-    resolveTransformConfig(options);
+export function transformMarkdown(content: string, options?: TransformOptions): string {
+  const { collapsibleSections, sectionRenames, css } = resolveTransformConfig(options);
 
   const lines = content.split("\n");
   const output: string[] = [];
@@ -32,7 +28,10 @@ export function transformMarkdown(
     const level = headingLevel(line);
 
     if (level === 3) {
-      const sectionTitle = line.replace(/^###\s+/, "").trim().toLowerCase();
+      const sectionTitle = line
+        .replace(/^###\s+/, "")
+        .trim()
+        .toLowerCase();
 
       if (collapsibleSections.includes(sectionTitle)) {
         output.push(line);

@@ -13,7 +13,8 @@ import {
   writeFileSync,
   existsSync,
 } from "node:fs";
-import { join, extname } from "node:path";
+import { join } from "node:path";
+import { collectMdFiles } from "../fs.js";
 
 function collectNumberedDirs(dir: string): Map<string, string> {
   const map = new Map<string, string>();
@@ -25,19 +26,6 @@ function collectNumberedDirs(dir: string): Map<string, string> {
     }
   }
   return map;
-}
-
-function collectMdFiles(dir: string): string[] {
-  const files: string[] = [];
-  for (const entry of readdirSync(dir, { withFileTypes: true })) {
-    const full = join(dir, entry.name);
-    if (entry.isDirectory()) {
-      files.push(...collectMdFiles(full));
-    } else if (extname(entry.name) === ".md") {
-      files.push(full);
-    }
-  }
-  return files;
 }
 
 /**

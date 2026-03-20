@@ -64,12 +64,9 @@ export function resolveTransformConfig(
     collapsible: options?.collapsible ?? true,
     inline: options?.inline ?? true,
     inlineDepth: options?.inlineDepth ?? 3,
-    lazyInline: options?.lazyInline ?? false,
+    lazyInline: options?.lazyInline ?? true,
     custom: options?.custom ?? [],
-    inlineTypeCategories: options?.inlineTypeCategories ?? [
-      "objects",
-      "inputs",
-    ],
+    inlineTypeCategories: options?.inlineTypeCategories ?? ["objects", "inputs"],
     sectionRenames: options?.sectionRenames ?? { "### Type": "### Response" },
     collapsibleSections: options?.collapsibleSections ?? [
       "fields",
@@ -78,11 +75,7 @@ export function resolveTransformConfig(
       "input fields",
     ],
     responseSections: options?.responseSections ?? ["response", "type"],
-    fieldSections: options?.fieldSections ?? [
-      "fields",
-      "values",
-      "input fields",
-    ],
+    fieldSections: options?.fieldSections ?? ["fields", "values", "input fields"],
     labels: {
       arguments: options?.labels?.arguments ?? "Arguments",
       fields: options?.labels?.fields ?? "Fields",

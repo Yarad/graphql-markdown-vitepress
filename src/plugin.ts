@@ -23,7 +23,15 @@ export function graphqlDocsPlugin(options: GraphQLDocsOptions): Plugin {
     name: PLUGIN_NAME,
     enforce: "pre",
     async buildStart() {
-      await runGeneration();
+      try {
+        await runGeneration();
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : String(err);
+        throw new Error(
+          `[${PLUGIN_NAME}] Documentation generation failed during build: ${msg}`,
+          { cause: err },
+        );
+      }
     },
     configureServer() {
       runGeneration().catch((err) => {
