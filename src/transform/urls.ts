@@ -16,7 +16,7 @@ import {
 import { join } from "node:path";
 import { collectMdFiles } from "../fs.js";
 
-function collectNumberedDirs(dir: string): Map<string, string> {
+export function collectNumberedDirs(dir: string): Map<string, string> {
   const map = new Map<string, string>();
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
     if (entry.isDirectory() && /^\d+-/.test(entry.name)) {
@@ -48,12 +48,20 @@ function renameDirs(dir: string): void {
 }
 
 /**
+ * Strips `.md` extensions from internal `<a href>` attributes so that
+ * links resolve correctly under VitePress `cleanUrls: true`.
+ */
+export function stripMdExtensionFromHrefs(content: string): string {
+  return content.replace(/href="(\/[^"]+?)\.md"/g, 'href="$1"');
+}
+
+/**
  * Strips numeric ordering prefixes from all directories under `docsDir`
  * and rewrites every internal link in the markdown files to match.
+ * Also removes `.md` extensions from HTML href attributes for cleanUrls support.
  */
 export function cleanDirectoryUrls(docsDir: string): void {
   const dirMap = collectNumberedDirs(docsDir);
-  if (dirMap.size === 0) return;
 
   const files = collectMdFiles(docsDir);
   for (const filePath of files) {
@@ -68,10 +76,18 @@ export function cleanDirectoryUrls(docsDir: string): void {
       }
     }
 
+    const cleaned = stripMdExtensionFromHrefs(content);
+    if (cleaned !== content) {
+      content = cleaned;
+      changed = true;
+    }
+
     if (changed) {
       writeFileSync(filePath, content, "utf-8");
     }
   }
 
-  renameDirs(docsDir);
+  if (dirMap.size > 0) {
+    renameDirs(docsDir);
+  }
 }

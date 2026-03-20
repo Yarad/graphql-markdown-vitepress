@@ -18,7 +18,11 @@ import { resolveTransformConfig } from "./config.js";
 import { transformMarkdown } from "./collapsible.js";
 import { buildFieldsIndex, inlineTypeFields } from "./inline.js";
 import { enhanceSeo } from "./seo.js";
-import { cleanDirectoryUrls } from "./urls.js";
+import {
+  cleanDirectoryUrls,
+  collectNumberedDirs,
+  stripMdExtensionFromHrefs,
+} from "./urls.js";
 
 /**
  * Transforms all generated markdown files in-place.
@@ -52,6 +56,8 @@ export async function transformGeneratedDocs(
     }
   }
 
+  let fieldsIndex: Map<string, string> | undefined;
+
   if (config.inline) {
     const index = buildFieldsIndex(docsDir, config.baseURL, options);
 
@@ -64,17 +70,7 @@ export async function transformGeneratedDocs(
     }
 
     if (config.lazyInline) {
-      const publicDir = join(docsDir, "..", "public");
-      mkdirSync(publicDir, { recursive: true });
-      const jsonIndex: Record<string, string> = {};
-      for (const [url, html] of index.entries()) {
-        jsonIndex[url] = html;
-      }
-      writeFileSync(
-        join(publicDir, "_gql-fields-index.json"),
-        JSON.stringify(jsonIndex),
-        "utf-8",
-      );
+      fieldsIndex = index;
     }
   }
 
@@ -100,7 +96,41 @@ export async function transformGeneratedDocs(
   }
 
   if (config.cleanUrls) {
-    cleanDirectoryUrls(docsDir);
+    if (fieldsIndex) {
+      const dirMap = collectNumberedDirs(docsDir);
+      cleanDirectoryUrls(docsDir);
+
+      const cleanedIndex = new Map<string, string>();
+      for (const [url, html] of fieldsIndex.entries()) {
+        let cleanUrl = url;
+        let cleanHtml = html;
+        for (const [numbered, clean] of dirMap) {
+          const seg = `/${numbered}/`;
+          const rep = `/${clean}/`;
+          cleanUrl = cleanUrl.split(seg).join(rep);
+          cleanHtml = cleanHtml.split(seg).join(rep);
+        }
+        cleanHtml = stripMdExtensionFromHrefs(cleanHtml);
+        cleanedIndex.set(cleanUrl, cleanHtml);
+      }
+      fieldsIndex = cleanedIndex;
+    } else {
+      cleanDirectoryUrls(docsDir);
+    }
+  }
+
+  if (fieldsIndex) {
+    const publicDir = join(docsDir, "..", "public");
+    mkdirSync(publicDir, { recursive: true });
+    const jsonIndex: Record<string, string> = {};
+    for (const [url, html] of fieldsIndex.entries()) {
+      jsonIndex[url] = html;
+    }
+    writeFileSync(
+      join(publicDir, "_gql-fields-index.json"),
+      JSON.stringify(jsonIndex),
+      "utf-8",
+    );
   }
 }
 
@@ -119,4 +149,8 @@ export {
   headingLevel,
 } from "./utils.js";
 export { enhanceSeo, detectCategory, extractDescription } from "./seo.js";
-export { cleanDirectoryUrls } from "./urls.js";
+export {
+  cleanDirectoryUrls,
+  collectNumberedDirs,
+  stripMdExtensionFromHrefs,
+} from "./urls.js";
