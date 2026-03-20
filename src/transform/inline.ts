@@ -124,7 +124,7 @@ export function buildFieldsIndex(
 
 function extractTypeRef(line: string, typeHrefRe: RegExp): string | null {
   const match = line.match(typeHrefRe);
-  return match ? match[1] : null;
+  return match ? match[1].replace(/\.md$/, "") : null;
 }
 
 /**
