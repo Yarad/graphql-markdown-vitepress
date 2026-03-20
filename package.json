@@ -1,6 +1,6 @@
 {
   "name": "graphql-markdown-vitepress",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "VitePress integration for GraphQL schema documentation via GraphQL-Markdown",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -54,7 +54,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Yarad/graphql-markdown-vitepress"
+    "url": "git+https://github.com/Yarad/graphql-markdown-vitepress.git"
   },
   "dependencies": {
     "@graphql-markdown/cli": "^0.7.0",
