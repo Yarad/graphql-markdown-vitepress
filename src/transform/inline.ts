@@ -10,16 +10,13 @@ import { join, extname } from "node:path";
 import type { CssClassMap, TransformLabels, TransformOptions } from "../types.js";
 import { resolveTransformConfig } from "./config.js";
 import {
+  escapeRegExp,
   headingLevel,
   mdLinksToHtml,
   stripParentPrefix,
   stripSelfAnchors,
 } from "./utils.js";
 import { parseFieldBlocks } from "./parse.js";
-
-function escapeRegExp(s: string): string {
-  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
 
 /**
  * Builds a regex that matches href attributes pointing to inlineable type pages.
@@ -143,7 +140,7 @@ function wrapInlineFields(
 
   return [
     `<div class="${css.inlineFields}">`,
-    `<span class="${css.argsLabel}">${label}</span>`,
+    `<span class="${css.sectionLabel}">${label}</span>`,
     stripSelfAnchors(rewritten),
     `</div>`,
   ].join("\n");
@@ -160,7 +157,7 @@ function wrapLazyPlaceholder(
 ): string {
   return [
     `<div class="${css.inlineFields} gql-lazy-fields" data-type-url="${typeUrl}">`,
-    `<span class="${css.argsLabel}">${label}</span>`,
+    `<span class="${css.sectionLabel}">${label}</span>`,
     `</div>`,
   ].join("\n");
 }
@@ -199,7 +196,7 @@ function expandFieldsRecursively(
 
     if (
       line.startsWith(`<details class="${css.field}"`) ||
-      line.startsWith(`<details class="${css.arg}"`)
+      line.startsWith(`<details class="${css.inlineField}"`)
     ) {
       const detailLines: string[] = [line];
       i++;
@@ -352,7 +349,7 @@ export function inlineTypeFields(
 
     if (
       line.startsWith(`<details class="${css.field}"`) ||
-      line.startsWith(`<details class="${css.arg}"`)
+      line.startsWith(`<details class="${css.inlineField}"`)
     ) {
       const detailLines: string[] = [line];
       i++;

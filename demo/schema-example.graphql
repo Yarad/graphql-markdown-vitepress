@@ -1,0 +1,595 @@
+"A Go tournament registered in the EGD system."
+type Tournament {
+  "Unique tournament identifier code."
+  code: String!
+
+  "Reliability score of the tournament data."
+  reliability: Int
+
+  "Human-readable tournament description/name."
+  description: String
+
+  "Description of tournament categories."
+  categoriesDescription: String
+
+  "Date the tournament was held."
+  date: String!
+
+  "City where the tournament took place."
+  city: String!
+
+  "2-letter country code where the tournament was held."
+  nation: String!
+
+  "Tournament class (A, B, C, D)."
+  tournamentClass: TournamentClassEnum!
+
+  "Number of rounds played."
+  rounds: Int!
+
+  "Total number of players that participated."
+  totalPlayers: Int
+
+  "Current status of the tournament."
+  status: TournamentStatusEnum!
+
+  "Games played in this tournament."
+  games(
+    "Filter games."
+    filter: GameFilterInput
+
+    "Order games."
+    order: GameOrderInput
+  ): GameList
+
+  "Player placements in this tournament."
+  placements: PlacementList
+
+  "Players who participated in this tournament (via placements)."
+  players(
+    "Filter players."
+    filter: PlayerFilterInput
+
+    "Order players."
+    order: PlayerOrderInput
+  ): PlayerList
+}
+
+"Filter games."
+input GameFilterInput {
+  "Filter by tournament code."
+  tournamentCode: String
+
+  "Filter by round number."
+  round: Int
+
+  "Filter by game result."
+  result: String
+
+  "Filter by player 1 PIN."
+  pinPlayer1: Int
+
+  "Filter by player 2 PIN."
+  pinPlayer2: Int
+
+  "Filter games where either player has this PIN."
+  pinPlayer: Int
+
+  "Filter games on or after this date."
+  dateFrom: String
+
+  "Filter games on or before this date."
+  dateTo: String
+}
+
+"Order games."
+input GameOrderInput {
+  "Column to sort by."
+  field: GameOrderFieldEnum
+
+  "Sort direction."
+  direction: OrderDirectionEnum
+}
+
+type GameList {
+  "List of related items"
+  data: [Game!]!
+
+  "Number of items in the relation"
+  total: Int!
+}
+
+type PlacementList {
+  "List of related items"
+  data: [Placement!]!
+
+  "Number of items in the relation"
+  total: Int!
+}
+
+"Filter tournaments."
+input TournamentFilterInput {
+  "Filter by exact tournament code."
+  code: String
+
+  "Filter by 2-letter country code."
+  nation: String
+
+  "Filter by tournament class (A, B, C, D)."
+  tournamentClass: TournamentClassEnum
+
+  "Filter by category type."
+  categoryType: String
+
+  "Filter by status."
+  status: TournamentStatusEnum
+
+  "Filter by number of rounds."
+  rounds: Int
+
+  "Search tournament description (SQL LIKE)."
+  description: String
+
+  "Search city name (SQL LIKE)."
+  city: String
+
+  "Filter tournaments on or after this date."
+  dateFrom: String
+
+  "Filter tournaments on or before this date."
+  dateTo: String
+}
+
+"Order tournaments."
+input TournamentOrderInput {
+  "Column to sort by."
+  field: TournamentOrderFieldEnum
+
+  "Sort direction."
+  direction: OrderDirectionEnum
+}
+
+type TournamentList {
+  "List of related items"
+  data: [Tournament!]!
+
+  "Number of items in the relation"
+  total: Int!
+}
+
+"Filter players."
+input PlayerFilterInput {
+  "Filter by exact player PIN."
+  pin: Int
+
+  "Filter by 2-letter country code."
+  countryCode: String
+
+  "Filter by grade (e.g. 1d, 5k)."
+  grade: String
+
+  "Filter by club."
+  club: String
+
+  "Search last name (SQL LIKE)."
+  lastName: String
+
+  "Search first name (SQL LIKE)."
+  firstName: String
+
+  "Filter players with rating >= this value."
+  ratingFrom: Int
+
+  "Filter players with rating <= this value."
+  ratingTo: Int
+}
+
+"Order players."
+input PlayerOrderInput {
+  "Column to sort by."
+  field: PlayerOrderFieldEnum
+
+  "Sort direction."
+  direction: OrderDirectionEnum
+}
+
+type PlayerList {
+  "List of related items"
+  data: [Player!]!
+
+  "Number of items in the relation"
+  total: Int!
+}
+
+"A game (individual match) played between two players in a tournament."
+type Game {
+  "Unique game identifier."
+  id: Int!
+
+  "Code of the tournament this game belongs to."
+  tournamentCode: String!
+
+  "Date the game was played."
+  date: String
+
+  "Round number within the tournament."
+  round: Int!
+
+  "PIN of the first player."
+  pinPlayer1: Int!
+
+  "Color assigned to player 1 (b = black, w = white)."
+  color1: GameColorEnum
+
+  "PIN of the second player."
+  pinPlayer2: Int!
+
+  "Color assigned to player 2 (b = black, w = white)."
+  color2: GameColorEnum
+
+  "Handicap stones for this game."
+  handicap: Int!
+
+  "Game result (1 = player 1 wins, 2 = player 2 wins, 0 = jigo, ? = unknown)."
+  result: String!
+
+  "SGF game record code, if available."
+  sgfCode: String
+
+  "The tournament this game was played in."
+  tournament: Tournament
+
+  "Player 1 details."
+  player1: Player
+
+  "Player 2 details."
+  player2: Player
+}
+
+"A Go player registered in the European Go Database."
+type Player {
+  "Unique player identification number (PIN)."
+  pin: Int!
+
+  "AGA (American Go Association) ID."
+  agaId: Int!
+
+  "Player's last name."
+  lastName: String!
+
+  "Player's first name."
+  firstName: String!
+
+  "2-letter country code."
+  countryCode: String!
+
+  "Club the player belongs to."
+  club: String
+
+  "Current grade (e.g. 1d, 5k)."
+  grade: String!
+
+  "EGF placement ranking."
+  egfPlacement: Int
+
+  "Current GoR (Go Rating) value."
+  rating: Int
+
+  "Delta GoR (rating change)."
+  deltaRating: Int
+
+  "Proposed grade based on rating calculations."
+  proposedGrade: String!
+
+  "Total number of rated tournaments played."
+  totalTournaments: Int
+
+  "Date of the player's last tournament appearance."
+  lastAppearance: String
+
+  "Games where this player is player 1."
+  gamesAsPlayer1(
+    "Filter games."
+    filter: GameFilterInput
+
+    "Order games."
+    order: GameOrderInput
+  ): GameList
+
+  "Games where this player is player 2."
+  gamesAsPlayer2(
+    "Filter games."
+    filter: GameFilterInput
+
+    "Order games."
+    order: GameOrderInput
+  ): GameList
+
+  "Tournament placements for this player."
+  placements: PlacementList
+
+  "Tournaments this player participated in (via placements)."
+  tournaments(
+    "Filter tournaments."
+    filter: TournamentFilterInput
+
+    "Order tournaments."
+    order: TournamentOrderInput
+  ): TournamentList
+
+  "Biography if available."
+  biography: Biography
+}
+
+"A player's placement (participation record) in a tournament."
+type Placement {
+  "Unique placement identifier."
+  id: Int!
+
+  "PIN of the player."
+  pinPlayer: Int!
+
+  "Code of the tournament."
+  tournamentCode: String!
+
+  "Player's last name as registered for this tournament."
+  lastName: String
+
+  "Player's first name as registered for this tournament."
+  firstName: String
+
+  "Country code at time of the tournament."
+  countryCode: String!
+
+  "Club at time of the tournament."
+  club: String!
+
+  "Final placement/rank in the tournament."
+  placement: Int!
+
+  "Grade declared at the time of registration."
+  gradeDeclared: String!
+
+  "Number of games won."
+  wonGames: Int!
+
+  "Number of games lost."
+  lostGames: Int!
+
+  "Number of drawn games (jigo)."
+  jigoGames: Int!
+
+  "Rating before this tournament."
+  precedentRating: Float
+
+  "Rating after this tournament."
+  followingRating: Float
+
+  "The player who participated."
+  player: Player
+
+  "The tournament this placement belongs to."
+  tournament: Tournament
+}
+
+"Biography text and photo for a player."
+type Biography {
+  "Type of biography content."
+  type: String!
+
+  "Biography text."
+  biography: String
+
+  "Photo identifier or URL."
+  photo: String
+}
+
+enum GameColorEnum {
+  Black
+  White
+}
+
+enum TournamentClassEnum {
+  A
+  B
+  C
+  D
+}
+
+enum TournamentStatusEnum {
+  Rejected
+  Approved
+  AwaitingValidation
+  Validated
+}
+
+enum OrderDirectionEnum {
+  ASC
+  DESC
+}
+
+enum TournamentOrderFieldEnum {
+  code
+  date
+  city
+  nation
+  tournamentClass
+  rounds
+  totalPlayers
+  status
+}
+
+enum GameOrderFieldEnum {
+  date
+  round
+  handicap
+  result
+  tournamentCode
+}
+
+enum PlayerOrderFieldEnum {
+  pin
+  lastName
+  firstName
+  countryCode
+  rating
+  totalTournaments
+}
+
+type TournamentPagination {
+  "List of items on the current page"
+  data: [Tournament!]!
+
+  "Number of total items selected by the query"
+  total: Int!
+
+  "Number of the first item returned"
+  from: Int
+
+  "Number of the last item returned"
+  to: Int
+
+  "Number of items returned per page"
+  perPage: Int!
+
+  "Current page of the cursor"
+  currentPage: Int!
+
+  "The last page (number of pages)"
+  lastPage: Int!
+
+  "Determines if cursor has more pages after the current page"
+  hasMorePages: Boolean!
+}
+
+type GamePagination {
+  "List of items on the current page"
+  data: [Game!]!
+
+  "Number of total items selected by the query"
+  total: Int!
+
+  "Number of the first item returned"
+  from: Int
+
+  "Number of the last item returned"
+  to: Int
+
+  "Number of items returned per page"
+  perPage: Int!
+
+  "Current page of the cursor"
+  currentPage: Int!
+
+  "The last page (number of pages)"
+  lastPage: Int!
+
+  "Determines if cursor has more pages after the current page"
+  hasMorePages: Boolean!
+}
+
+type PlayerPagination {
+  "List of items on the current page"
+  data: [Player!]!
+
+  "Number of total items selected by the query"
+  total: Int!
+
+  "Number of the first item returned"
+  from: Int
+
+  "Number of the last item returned"
+  to: Int
+
+  "Number of items returned per page"
+  perPage: Int!
+
+  "Current page of the cursor"
+  currentPage: Int!
+
+  "The last page (number of pages)"
+  lastPage: Int!
+
+  "Determines if cursor has more pages after the current page"
+  hasMorePages: Boolean!
+}
+
+type Query {
+  "Find a tournament by its code."
+  tournament(
+    "The unique tournament code."
+    code: String!
+  ): Tournament
+
+  "List tournaments with optional filters and sorting."
+  tournaments(
+    "Filter tournaments."
+    filter: TournamentFilterInput
+
+    "Order tournaments."
+    order: TournamentOrderInput
+
+    "Pagination parameters."
+    pagination: PaginationInput!
+  ): TournamentPagination
+
+  "Find a game by its ID."
+  game(
+    "The unique game ID."
+    id: Int!
+  ): Game
+
+  "List games with optional filters and sorting."
+  games(
+    "Filter games."
+    filter: GameFilterInput
+
+    "Order games."
+    order: GameOrderInput
+
+    "Pagination parameters."
+    pagination: PaginationInput!
+  ): GamePagination
+
+  "Find a player by PIN."
+  player(
+    "The unique player PIN."
+    pin: Int!
+  ): Player
+
+  "List players with optional filters and sorting."
+  players(
+    "Filter players."
+    filter: PlayerFilterInput
+
+    "Order players."
+    order: PlayerOrderInput
+
+    "Pagination parameters."
+    pagination: PaginationInput!
+  ): PlayerPagination
+
+  "Search players by text (typo-tolerant) with optional filters and sorting."
+  playersSearch(
+    "Search term (matches last name, first name, country, club, PIN)."
+    search: String!
+
+    "Filter players."
+    filter: PlayerFilterInput
+
+    "Order players."
+    order: PlayerOrderInput
+
+    "Pagination parameters."
+    pagination: PaginationInput!
+  ): PlayerPagination
+}
+
+"Pagination parameters."
+input PaginationInput {
+  "Page number (defaults to 1)."
+  page: Int
+
+  "Items per page (defaults to 30, max 100)."
+  limit: Int
+}

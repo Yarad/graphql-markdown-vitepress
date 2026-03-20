@@ -7,7 +7,7 @@ const PERMALINK_RE = /\s*\\?\{#([\w-]+)\\?\}\s*$/;
 
 const MD_LINK_RE = /\[((?:[^[\]]|\[[^\]]*\])*)\]\(([^)]+)\)/g;
 
-const PARENT_PREFIX_RE = /<code class="gqlmd-mdx-entity-parent">[^<]*<\/code>\./g;
+const PARENT_PREFIX_RE = /`\w+\./g;
 
 const SELF_ANCHOR_RE = /<a\s+href="#[^"]*"[^>]*>([\s\S]*?)<\/a>/g;
 
@@ -34,12 +34,11 @@ export function stripSelfAnchors(text: string): string {
 }
 
 /**
- * Removes the parent type prefix markup from entity names.
- * Turns `<code class="gqlmd-mdx-entity-parent">Type</code>.<code ...>field</code>`
- * into just `<code ...>field</code>`.
+ * Removes the parent type prefix from entity names inside backtick code spans.
+ * Turns `` `Type.field` `` into `` `field` ``.
  */
 export function stripParentPrefix(text: string): string {
-  return text.replace(PARENT_PREFIX_RE, "");
+  return text.replace(PARENT_PREFIX_RE, "`");
 }
 
 /**
@@ -63,4 +62,12 @@ export function extractPermalinkId(line: string): {
 export function headingLevel(line: string): number {
   const match = line.match(/^(#{1,6})\s/);
   return match ? match[1].length : 0;
+}
+
+/**
+ * Escapes special regex characters in a string so it can be used
+ * as a literal pattern inside a `RegExp` constructor.
+ */
+export function escapeRegExp(s: string): string {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }

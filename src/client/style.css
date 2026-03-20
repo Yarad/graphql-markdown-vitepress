@@ -165,107 +165,7 @@
   line-height: 1.65;
 }
 
-/* ======================================================================
-   Nested arguments (<div class="gql-field-args">)
-   ====================================================================== */
-
-.vp-doc .gql-field-args {
-  padding: 0 0.9rem 0.75rem 2rem;
-  margin: 0;
-}
-
-.vp-doc .gql-field-args > strong,
-.vp-doc .gql-field-args > .gql-args-label {
-  display: block;
-  font-size: 0.72rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--vp-c-text-3);
-  margin-bottom: 0.4rem;
-  margin-top: 0.2rem;
-}
-
-/* ---- Argument details ---- */
-.vp-doc details.gql-arg {
-  border: 1px solid var(--gql-border);
-  border-radius: 6px;
-  margin-top: -1px;
-  overflow: hidden;
-}
-
-.vp-doc details.gql-arg:first-of-type {
-  margin-top: 0;
-  border-top-left-radius: 6px;
-  border-top-right-radius: 6px;
-}
-
-.vp-doc details.gql-arg:last-of-type {
-  border-bottom-left-radius: 6px;
-  border-bottom-right-radius: 6px;
-}
-
-.vp-doc details.gql-arg:not(:first-of-type):not(:last-of-type) {
-  border-radius: 0;
-}
-
-.vp-doc details.gql-arg > summary {
-  font-size: 0.86rem;
-  font-weight: 500;
-  line-height: 1.4;
-  padding: 0.45rem 0.75rem;
-  padding-left: 1.8rem;
-  cursor: pointer;
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.2rem 0.3rem;
-  position: relative;
-  background: var(--vp-c-bg);
-  transition: background 0.15s;
-}
-
-.vp-doc details.gql-arg > summary:hover {
-  background: var(--vp-c-bg-soft);
-}
-
-.vp-doc details.gql-arg > summary::before {
-  content: "";
-  position: absolute;
-  left: 0.65rem;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 3px 0 3px 5px;
-  border-color: transparent transparent transparent var(--vp-c-text-3);
-  transition: transform 0.2s;
-}
-
-.vp-doc details.gql-arg[open] > summary::before {
-  transform: translateY(-50%) rotate(90deg);
-}
-
-.vp-doc details.gql-arg > summary::-webkit-details-marker,
-.vp-doc details.gql-arg > summary::marker {
-  display: none;
-  content: "";
-}
-
-.vp-doc details.gql-arg[open] > summary {
-  border-bottom: 1px solid var(--gql-border);
-}
-
-.vp-doc details.gql-arg > p,
-.vp-doc details.gql-arg > .gql-desc {
-  padding: 0.35rem 0.75rem 0.5rem 1.8rem;
-  margin: 0;
-  font-size: 0.84rem;
-  color: var(--vp-c-text-2);
-  line-height: 1.55;
-}
+/* (Arguments and inline fields now share .gql-inline-fields / .gql-inline-field) */
 
 /* ======================================================================
    Entity names (shared across field and arg summaries)
@@ -289,13 +189,13 @@
 
 /* Type links within summaries */
 .vp-doc details.gql-field > summary a,
-.vp-doc details.gql-arg > summary a {
+.vp-doc details.gql-inline-field > summary a {
   text-decoration: none;
   font-weight: 500;
 }
 
 .vp-doc details.gql-field > summary a:hover,
-.vp-doc details.gql-arg > summary a:hover {
+.vp-doc details.gql-inline-field > summary a:hover {
   text-decoration: underline;
 }
 
@@ -346,7 +246,7 @@
   border-left: 2px solid var(--gql-border);
 }
 
-.vp-doc .gql-inline-fields > .gql-args-label {
+.vp-doc .gql-inline-fields > .gql-section-label {
   display: block;
   font-size: 0.72rem;
   font-weight: 700;
@@ -455,7 +355,7 @@
   transition: opacity 0.2s;
 }
 
-.vp-doc .gql-lazy-fields:empty ~ .gql-args-label {
+.vp-doc .gql-lazy-fields:empty ~ .gql-section-label {
   display: none;
 }
 
@@ -516,7 +416,7 @@
     border: 1px solid #999;
   }
   .vp-doc details.gql-field,
-  .vp-doc details.gql-arg {
+  .vp-doc details.gql-inline-field {
     open: true;
   }
 }
@@ -527,7 +427,7 @@
     font-size: 0.88rem;
     padding: 0.55rem 0.7rem 0.55rem 1.8rem;
   }
-  .vp-doc details.gql-arg > summary {
+  .vp-doc details.gql-inline-field > summary {
     padding-left: 1.4rem;
   }
 }

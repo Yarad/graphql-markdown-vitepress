@@ -1,6 +1,6 @@
 {
   "name": "graphql-markdown-vitepress",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "VitePress integration for GraphQL schema documentation via GraphQL-Markdown",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -41,6 +41,7 @@
     "lint:fix": "eslint src/ --fix",
     "format": "prettier --write \"src/**/*.{ts,css}\" \"*.{json,js,md}\"",
     "format:check": "prettier --check \"src/**/*.{ts,css}\" \"*.{json,js,md}\"",
+    "test": "vitest run",
     "prepublishOnly": "npm run build"
   },
   "keywords": [
@@ -79,6 +80,7 @@
     "typescript-eslint": "^8.57.1",
     "vite": "^5.0.0",
     "vitepress": "^1.0.0",
+    "vitest": "^4.1.0",
     "vue": "^3.5.30"
   },
   "engines": {

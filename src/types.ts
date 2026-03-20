@@ -7,14 +7,10 @@ import type { ConfigOptions } from "@graphql-markdown/types";
 export interface CssClassMap {
   /** @default "gql-field" */
   field?: string;
-  /** @default "gql-arg" */
-  arg?: string;
   /** @default "gql-desc" */
   desc?: string;
-  /** @default "gql-field-args" */
-  fieldArgs?: string;
-  /** @default "gql-args-label" */
-  argsLabel?: string;
+  /** @default "gql-section-label" */
+  sectionLabel?: string;
   /** @default "gql-inline-field" */
   inlineField?: string;
   /** @default "gql-inline-fields" */

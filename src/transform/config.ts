@@ -31,10 +31,8 @@ function resolveCss(css?: string | CssClassMap): Required<CssClassMap> {
   const prefix = typeof css === "string" ? css : DEFAULT_CSS_PREFIX;
   const defaults: Required<CssClassMap> = {
     field: `${prefix}-field`,
-    arg: `${prefix}-arg`,
     desc: `${prefix}-desc`,
-    fieldArgs: `${prefix}-field-args`,
-    argsLabel: `${prefix}-args-label`,
+    sectionLabel: `${prefix}-section-label`,
     inlineField: `${prefix}-inline-field`,
     inlineFields: `${prefix}-inline-fields`,
     responseType: `${prefix}-response-type`,
@@ -43,10 +41,8 @@ function resolveCss(css?: string | CssClassMap): Required<CssClassMap> {
   if (typeof css === "object" && css !== null) {
     return {
       field: css.field ?? defaults.field,
-      arg: css.arg ?? defaults.arg,
       desc: css.desc ?? defaults.desc,
-      fieldArgs: css.fieldArgs ?? defaults.fieldArgs,
-      argsLabel: css.argsLabel ?? defaults.argsLabel,
+      sectionLabel: css.sectionLabel ?? defaults.sectionLabel,
       inlineField: css.inlineField ?? defaults.inlineField,
       inlineFields: css.inlineFields ?? defaults.inlineFields,
       responseType: css.responseType ?? defaults.responseType,

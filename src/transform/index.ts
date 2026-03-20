@@ -122,7 +122,19 @@ export async function transformGeneratedDocs(
   if (fieldsIndex) {
     const publicDir = join(docsDir, "..", "public");
     mkdirSync(publicDir, { recursive: true });
-    const jsonIndex: Record<string, string> = {};
+    const jsonIndex: Record<string, unknown> = {
+      _meta: {
+        css: {
+          field: config.css.field,
+          inlineField: config.css.inlineField,
+          inlineFields: config.css.inlineFields,
+          sectionLabel: config.css.sectionLabel,
+        },
+        labels: {
+          fields: config.labels.fields,
+        },
+      },
+    };
     for (const [url, html] of fieldsIndex.entries()) {
       jsonIndex[url] = html;
     }
@@ -147,6 +159,7 @@ export {
   stripParentPrefix,
   extractPermalinkId,
   headingLevel,
+  escapeRegExp,
 } from "./utils.js";
 export { enhanceSeo, detectCategory, extractDescription } from "./seo.js";
 export {

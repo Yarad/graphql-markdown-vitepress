@@ -73,13 +73,15 @@ async function doGenerate(options: GraphQLDocsOptions): Promise<void> {
   const loaders = ensureLoaders(schema, options.loaders);
 
   const merged: GraphQLDocsOptions = {
-    ...defaultOptions,
     ...options,
-    loaders: loaders ?? options.loaders,
-    mdxParser: options.mdxParser ?? defaultOptions.mdxParser,
-    linkRoot: options.linkRoot ?? defaultOptions.linkRoot,
-    baseURL: options.baseURL ?? defaultOptions.baseURL,
     rootPath: options.rootPath ?? defaultOptions.rootPath,
+    baseURL: options.baseURL ?? defaultOptions.baseURL,
+    linkRoot: options.linkRoot ?? defaultOptions.linkRoot,
+    mdxParser: options.mdxParser ?? defaultOptions.mdxParser,
+    pretty: options.pretty ?? defaultOptions.pretty,
+    printTypeOptions: options.printTypeOptions ?? defaultOptions.printTypeOptions,
+    docOptions: options.docOptions ?? defaultOptions.docOptions,
+    loaders: loaders ?? options.loaders,
   };
 
   await runGraphQLMarkdown(merged, {}, DEFAULT_LOGGER);

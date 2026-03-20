@@ -8,6 +8,7 @@
     "preview": "vitepress preview"
   },
   "dependencies": {
+    "@graphql-tools/graphql-file-loader": "^8.1.12",
     "graphql-markdown-vitepress": "file:..",
     "vitepress": "^1.0.0"
   }

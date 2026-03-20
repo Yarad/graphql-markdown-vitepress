@@ -8,9 +8,34 @@
  * `<details>` element. Circular references are tracked per expansion path.
  */
 
+interface LazyFieldsMeta {
+  css: {
+    field: string;
+    inlineField: string;
+    inlineFields: string;
+    sectionLabel: string;
+  };
+  labels: {
+    fields: string;
+  };
+}
+
 type FieldsIndex = Record<string, string>;
 
+const DEFAULT_META: LazyFieldsMeta = {
+  css: {
+    field: "gql-field",
+    inlineField: "gql-inline-field",
+    inlineFields: "gql-inline-fields",
+    sectionLabel: "gql-section-label",
+  },
+  labels: {
+    fields: "Fields",
+  },
+};
+
 let fieldsIndex: FieldsIndex | null = null;
+let meta: LazyFieldsMeta = DEFAULT_META;
 let indexPromise: Promise<FieldsIndex | null> | null = null;
 
 function loadIndex(): Promise<FieldsIndex | null> {
@@ -29,11 +54,17 @@ function loadIndex(): Promise<FieldsIndex | null> {
           );
           return null;
         }
-        return r.json() as Promise<FieldsIndex>;
+        return r.json() as Promise<Record<string, unknown>>;
       })
       .then((data) => {
-        if (data) fieldsIndex = data;
-        return data;
+        if (data) {
+          if (data._meta) {
+            meta = data._meta as LazyFieldsMeta;
+            delete data._meta;
+          }
+          fieldsIndex = data as FieldsIndex;
+        }
+        return fieldsIndex;
       })
       .catch((err) => {
         console.warn("[graphql-markdown] Failed to load fields index:", err);
@@ -65,8 +96,8 @@ function expandLazy(container: HTMLElement, typeUrl: string, visited: Set<string
   const temp = document.createElement("div");
   temp.innerHTML = html;
 
-  temp.querySelectorAll(".gql-field").forEach((el) => {
-    el.classList.replace("gql-field", "gql-inline-field");
+  temp.querySelectorAll(`.${meta.css.field}`).forEach((el) => {
+    el.classList.replace(meta.css.field, meta.css.inlineField);
   });
 
   stripSelfAnchors(temp);
@@ -83,7 +114,7 @@ function expandLazy(container: HTMLElement, typeUrl: string, visited: Set<string
 
 function attachLazyToChildren(root: Element, visited: Set<string>): void {
   root
-    .querySelectorAll<HTMLDetailsElement>(":scope > details.gql-inline-field")
+    .querySelectorAll<HTMLDetailsElement>(`:scope > details.${meta.css.inlineField}`)
     .forEach((details) => {
       if (details.dataset.lazyBound) return;
 
@@ -93,15 +124,16 @@ function attachLazyToChildren(root: Element, visited: Set<string>): void {
       const link = summary.querySelector<HTMLAnchorElement>("a[href]");
       if (!link) return;
 
-      const href = link.getAttribute("href");
+      const rawHref = link.getAttribute("href");
+      const href = rawHref?.replace(/\.md$/, "");
       if (!href || !fieldsIndex?.[href] || visited.has(href)) return;
 
       details.dataset.lazyBound = "true";
 
       const lazy = document.createElement("div");
-      lazy.className = "gql-inline-fields gql-lazy-fields";
+      lazy.className = `${meta.css.inlineFields} gql-lazy-fields`;
       lazy.dataset.typeUrl = href;
-      lazy.innerHTML = '<span class="gql-args-label">Fields</span>';
+      lazy.innerHTML = `<span class="${meta.css.sectionLabel}">${meta.labels.fields}</span>`;
       details.appendChild(lazy);
 
       details.addEventListener("toggle", () => {

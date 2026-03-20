@@ -40,10 +40,10 @@ function titleFromFile(filePath: string, slug: string): string {
  * @param baseURL - Base path for links (e.g. "graphql"). Defaults to the last segment of docsDir.
  * @returns Sidebar config for themeConfig.sidebar["/baseURL/"].
  */
-export async function createSidebar(
+export function createSidebar(
   docsDir: string,
   baseURL?: string,
-): Promise<SidebarConfig> {
+): SidebarConfig {
   const base = baseURL ?? docsDir.replace(/\/$/, "").split("/").pop() ?? "graphql";
   const basePath = base.startsWith("/") ? base : `/${base}`;
 

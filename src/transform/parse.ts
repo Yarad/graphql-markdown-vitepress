@@ -117,10 +117,10 @@ export function renderFieldBlock(
   }
 
   if (block.children.length > 0) {
-    out.push(`<div class="${css.fieldArgs}">`);
-    out.push(`<span class="${css.argsLabel}">${labels.arguments}</span>`);
+    out.push(`<div class="${css.inlineFields}">`);
+    out.push(`<span class="${css.sectionLabel}">${labels.arguments}</span>`);
     for (const child of block.children) {
-      out.push(...renderFieldBlock(child, css.arg, options));
+      out.push(...renderFieldBlock(child, css.inlineField, options));
     }
     out.push(`</div>`);
   }

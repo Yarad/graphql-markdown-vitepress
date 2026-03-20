@@ -203,16 +203,14 @@ transforms: {
 
 **Default class map** (prefix `"gql"`):
 
-| Key            | Default class       | Used for                                       |
-| -------------- | ------------------- | ---------------------------------------------- |
-| `field`        | `gql-field`         | Field `<details>` elements                     |
-| `arg`          | `gql-arg`           | Argument `<details>` elements                  |
-| `desc`         | `gql-desc`          | Description `<p>` elements                     |
-| `fieldArgs`    | `gql-field-args`    | Arguments container `<div>`                    |
-| `argsLabel`    | `gql-args-label`    | Section label `<span>` ("Arguments", "Fields") |
-| `inlineField`  | `gql-inline-field`  | Inlined field `<details>` elements             |
-| `inlineFields` | `gql-inline-fields` | Inline fields container `<div>`                |
-| `responseType` | `gql-response-type` | Response type `<details>` elements             |
+| Key            | Default class        | Used for                                                |
+| -------------- | -------------------- | ------------------------------------------------------- |
+| `field`        | `gql-field`          | Top-level field `<details>` elements                    |
+| `desc`         | `gql-desc`           | Description `<p>` elements                              |
+| `sectionLabel` | `gql-section-label`  | Section label `<span>` ("Arguments", "Fields")          |
+| `inlineField`  | `gql-inline-field`   | Inline/argument `<details>` elements                    |
+| `inlineFields` | `gql-inline-fields`  | Section container `<div>` (arguments and inline fields) |
+| `responseType` | `gql-response-type`  | Response type `<details>` elements                      |
 
 ## Examples
 
