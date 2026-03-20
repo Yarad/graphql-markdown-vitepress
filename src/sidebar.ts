@@ -21,7 +21,7 @@ function titleFromFile(filePath: string, slug: string): string {
   try {
     const content = readFileSync(filePath, "utf-8");
     const { data } = matter(content);
-    const title = data?.title ?? data?.sidebar_title;
+    const title = data?.sidebar_title ?? data?.title;
     if (typeof title === "string") return title;
   } catch {
     // ignore

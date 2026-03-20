@@ -7,7 +7,7 @@ import {
 import { resolve } from "node:path";
 
 export default async () => {
-  const schemaPath = resolve(__dirname, "../../schema.json");
+  const schemaPath = resolve(__dirname, "../schema-example.json");
   const rootPath = resolve(__dirname, "..");
   const graphqlDir = resolve(rootPath, "graphql");
 

@@ -1,0 +1,533 @@
+/* ======================================================================
+   GraphQL API Docs — Shopify-inspired theme with collapsible fields
+   ====================================================================== */
+
+/* ---- VitePress theme overrides ---- */
+:root {
+  --vp-c-brand-1: #008060;
+  --vp-c-brand-2: #006e52;
+  --vp-c-brand-3: #005a43;
+  --vp-c-brand-soft: rgba(0, 128, 96, 0.12);
+
+  --gql-bg-field: var(--vp-c-bg-soft);
+  --gql-border: var(--vp-c-divider);
+  --gql-radius: 8px;
+  --gql-field-gap: 0px;
+}
+
+.dark {
+  --gql-bg-field: var(--vp-c-bg-soft);
+}
+
+/* ---- Page title ---- */
+.vp-doc h1 {
+  font-size: 1.85rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.25rem;
+}
+
+/* Description paragraph directly after the frontmatter */
+.vp-doc > div > p:first-of-type {
+  font-size: 1.05rem;
+  color: var(--vp-c-text-2);
+  margin-bottom: 1.5rem;
+  line-height: 1.7;
+}
+
+/* ---- Code block (schema definition) ---- */
+.vp-doc div[class*="language-graphql"] {
+  border: 1px solid var(--gql-border);
+  border-radius: var(--gql-radius);
+  margin: 1rem 0 2rem;
+}
+
+.vp-doc div[class*="language-graphql"] pre {
+  font-size: 0.84rem;
+  line-height: 1.65;
+}
+
+/* ---- Section headers (Fields, Arguments, Values, etc.) ---- */
+.vp-doc h3 {
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--vp-c-text-2);
+  border-top: 2px solid var(--gql-border);
+  padding-top: 1.5rem;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.vp-doc h3:first-of-type {
+  margin-top: 0;
+  border-top: none;
+  padding-top: 0;
+}
+
+/* ======================================================================
+   Collapsible field cards (<details class="gql-field">)
+   ====================================================================== */
+
+.vp-doc details.gql-field {
+  border: 1px solid var(--gql-border);
+  border-radius: var(--gql-radius);
+  margin: var(--gql-field-gap) 0 0;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.vp-doc details.gql-field + details.gql-field {
+  margin-top: -1px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.vp-doc details.gql-field:first-of-type {
+  border-top-left-radius: var(--gql-radius);
+  border-top-right-radius: var(--gql-radius);
+}
+
+.vp-doc details.gql-field:last-of-type {
+  border-bottom-left-radius: var(--gql-radius);
+  border-bottom-right-radius: var(--gql-radius);
+}
+
+.vp-doc details.gql-field:not(:first-of-type):not(:last-of-type) {
+  border-radius: 0;
+}
+
+/* ---- Summary (clickable header) ---- */
+.vp-doc details.gql-field > summary {
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1.5;
+  background: var(--gql-bg-field);
+  padding: 0.65rem 0.9rem;
+  padding-left: 2rem;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.35rem;
+  position: relative;
+  user-select: none;
+  transition: background 0.15s;
+}
+
+.vp-doc details.gql-field > summary:hover {
+  background: var(--vp-c-bg-elv);
+}
+
+/* Chevron indicator */
+.vp-doc details.gql-field > summary::before {
+  content: "";
+  position: absolute;
+  left: 0.7rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 4px 0 4px 6px;
+  border-color: transparent transparent transparent var(--vp-c-text-3);
+  transition: transform 0.2s;
+}
+
+.vp-doc details.gql-field[open] > summary::before {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+/* Remove default marker in all browsers */
+.vp-doc details.gql-field > summary::-webkit-details-marker,
+.vp-doc details.gql-field > summary::marker {
+  display: none;
+  content: "";
+}
+
+/* ---- Expanded content area ---- */
+.vp-doc details.gql-field[open] {
+  border-color: var(--vp-c-brand-1);
+}
+
+.vp-doc details.gql-field[open] > summary {
+  border-bottom: 1px solid var(--gql-border);
+}
+
+.vp-doc details.gql-field > p,
+.vp-doc details.gql-field > .gql-desc {
+  padding: 0.6rem 0.9rem 0.6rem 2rem;
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--vp-c-text-2);
+  line-height: 1.65;
+}
+
+/* ======================================================================
+   Nested arguments (<div class="gql-field-args">)
+   ====================================================================== */
+
+.vp-doc .gql-field-args {
+  padding: 0 0.9rem 0.75rem 2rem;
+  margin: 0;
+}
+
+.vp-doc .gql-field-args > strong,
+.vp-doc .gql-field-args > .gql-args-label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--vp-c-text-3);
+  margin-bottom: 0.4rem;
+  margin-top: 0.2rem;
+}
+
+/* ---- Argument details ---- */
+.vp-doc details.gql-arg {
+  border: 1px solid var(--gql-border);
+  border-radius: 6px;
+  margin-top: -1px;
+  overflow: hidden;
+}
+
+.vp-doc details.gql-arg:first-of-type {
+  margin-top: 0;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+}
+
+.vp-doc details.gql-arg:last-of-type {
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+
+.vp-doc details.gql-arg:not(:first-of-type):not(:last-of-type) {
+  border-radius: 0;
+}
+
+.vp-doc details.gql-arg > summary {
+  font-size: 0.86rem;
+  font-weight: 500;
+  line-height: 1.4;
+  padding: 0.45rem 0.75rem;
+  padding-left: 1.8rem;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.2rem 0.3rem;
+  position: relative;
+  background: var(--vp-c-bg);
+  transition: background 0.15s;
+}
+
+.vp-doc details.gql-arg > summary:hover {
+  background: var(--vp-c-bg-soft);
+}
+
+.vp-doc details.gql-arg > summary::before {
+  content: "";
+  position: absolute;
+  left: 0.65rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 3px 0 3px 5px;
+  border-color: transparent transparent transparent var(--vp-c-text-3);
+  transition: transform 0.2s;
+}
+
+.vp-doc details.gql-arg[open] > summary::before {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+.vp-doc details.gql-arg > summary::-webkit-details-marker,
+.vp-doc details.gql-arg > summary::marker {
+  display: none;
+  content: "";
+}
+
+.vp-doc details.gql-arg[open] > summary {
+  border-bottom: 1px solid var(--gql-border);
+}
+
+.vp-doc details.gql-arg > p,
+.vp-doc details.gql-arg > .gql-desc {
+  padding: 0.35rem 0.75rem 0.5rem 1.8rem;
+  margin: 0;
+  font-size: 0.84rem;
+  color: var(--vp-c-text-2);
+  line-height: 1.55;
+}
+
+/* ======================================================================
+   Entity names (shared across field and arg summaries)
+   ====================================================================== */
+
+.gqlmd-mdx-entity {
+  display: inline;
+}
+
+.gqlmd-mdx-entity-parent {
+  font-size: 0.82em;
+  color: var(--vp-c-text-3);
+  font-weight: 400;
+}
+
+.gqlmd-mdx-entity-name {
+  font-weight: 600;
+  color: var(--vp-c-text-1);
+  font-size: 0.92em;
+}
+
+/* Type links within summaries */
+.vp-doc details.gql-field > summary a,
+.vp-doc details.gql-arg > summary a {
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.vp-doc details.gql-field > summary a:hover,
+.vp-doc details.gql-arg > summary a:hover {
+  text-decoration: underline;
+}
+
+/* ======================================================================
+   Badges
+   ====================================================================== */
+
+.gqlmd-mdx-badge {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.15em 0.55em;
+  border-radius: 4px;
+  vertical-align: middle;
+  white-space: nowrap;
+  line-height: 1.6;
+  background: var(--vp-c-brand-soft);
+  color: var(--vp-c-brand-1);
+}
+
+.gqlmd-mdx-badge + .gqlmd-mdx-badge {
+  background: var(--vp-c-default-soft);
+  color: var(--vp-c-text-2);
+}
+
+/* ---- Bullet separator ---- */
+.gqlmd-mdx-bullet {
+  color: var(--vp-c-text-3);
+  font-size: 0.75rem;
+  vertical-align: middle;
+  user-select: none;
+}
+
+/* ======================================================================
+   Inline fields (nested type expansion, recursive)
+   ====================================================================== */
+
+.vp-doc .gql-inline-fields {
+  padding: 0.4rem 0.9rem 0.75rem 2rem;
+  margin: 0;
+}
+
+.vp-doc .gql-inline-fields .gql-inline-fields {
+  padding: 0.3rem 0.5rem 0.6rem 1rem;
+  margin-left: 0.3rem;
+  border-left: 2px solid var(--gql-border);
+}
+
+.vp-doc .gql-inline-fields > .gql-args-label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--vp-c-text-3);
+  margin-bottom: 0.4rem;
+  margin-top: 0.2rem;
+}
+
+.vp-doc details.gql-inline-field {
+  border: 1px solid var(--gql-border);
+  border-radius: 6px;
+  margin-top: -1px;
+  overflow: hidden;
+}
+
+.vp-doc details.gql-inline-field:first-of-type {
+  margin-top: 0;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+}
+
+.vp-doc details.gql-inline-field:last-of-type {
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+
+.vp-doc details.gql-inline-field:not(:first-of-type):not(:last-of-type) {
+  border-radius: 0;
+}
+
+.vp-doc details.gql-inline-field > summary {
+  font-size: 0.84rem;
+  font-weight: 500;
+  line-height: 1.4;
+  padding: 0.4rem 0.7rem 0.4rem 1.6rem;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.2rem 0.3rem;
+  position: relative;
+  background: var(--vp-c-bg);
+  transition: background 0.15s;
+}
+
+.vp-doc details.gql-inline-field > summary:hover {
+  background: var(--vp-c-bg-soft);
+}
+
+.vp-doc details.gql-inline-field > summary::before {
+  content: "";
+  position: absolute;
+  left: 0.55rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 3px 0 3px 5px;
+  border-color: transparent transparent transparent var(--vp-c-text-3);
+  transition: transform 0.2s;
+}
+
+.vp-doc details.gql-inline-field[open] > summary::before {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+.vp-doc details.gql-inline-field > summary::-webkit-details-marker,
+.vp-doc details.gql-inline-field > summary::marker {
+  display: none;
+  content: "";
+}
+
+.vp-doc details.gql-inline-field[open] > summary {
+  border-bottom: 1px solid var(--gql-border);
+}
+
+.vp-doc details.gql-inline-field > .gql-desc {
+  padding: 0.3rem 0.7rem 0.4rem 1.6rem;
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--vp-c-text-2);
+  line-height: 1.5;
+}
+
+.vp-doc details.gql-inline-field > summary a {
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.vp-doc details.gql-inline-field > summary a:hover {
+  text-decoration: underline;
+}
+
+/* Response type details open by default */
+.vp-doc details.gql-response-type {
+  border-color: var(--vp-c-brand-1);
+}
+
+/* ---- Lazy-loaded field placeholders ---- */
+.vp-doc .gql-lazy-fields {
+  min-height: 0;
+  transition: opacity 0.2s;
+}
+
+.vp-doc .gql-lazy-fields:empty ~ .gql-args-label {
+  display: none;
+}
+
+/* ======================================================================
+   Relation sections (Returned By, Member Of — not collapsible)
+   ====================================================================== */
+
+.vp-doc h3 ~ p {
+  font-size: 0.9rem;
+}
+
+.vp-doc h3 ~ p > a {
+  font-weight: 500;
+}
+
+.vp-doc h3 ~ p .gqlmd-mdx-badge {
+  font-size: 0.62rem;
+  padding: 0.1em 0.4em;
+  margin-left: 0.15em;
+}
+
+.vp-doc h3 ~ p .gqlmd-mdx-bullet {
+  margin: 0 0.25rem;
+}
+
+/* ======================================================================
+   Sidebar refinements
+   ====================================================================== */
+
+.VPSidebar .VPSidebarItem .text {
+  font-size: 0.85rem;
+}
+
+/* ---- Scrollbar for code blocks ---- */
+.vp-doc div[class*="language-"] pre::-webkit-scrollbar {
+  height: 6px;
+}
+
+.vp-doc div[class*="language-"] pre::-webkit-scrollbar-thumb {
+  background: var(--vp-c-divider);
+  border-radius: 3px;
+}
+
+/* ---- Homepage hero style ---- */
+.vp-doc h1 + blockquote {
+  border-left: 4px solid var(--vp-c-brand-1);
+  padding: 0.75rem 1rem;
+  margin: 1rem 0 1.5rem;
+  background: var(--vp-c-brand-soft);
+  border-radius: 0 var(--gql-radius) var(--gql-radius) 0;
+  font-size: 0.95rem;
+  color: var(--vp-c-text-1);
+}
+
+/* ---- Print improvements ---- */
+@media print {
+  .gqlmd-mdx-badge {
+    border: 1px solid #999;
+  }
+  .vp-doc details.gql-field,
+  .vp-doc details.gql-arg {
+    open: true;
+  }
+}
+
+/* ---- Mobile adjustments ---- */
+@media (max-width: 640px) {
+  .vp-doc details.gql-field > summary {
+    font-size: 0.88rem;
+    padding: 0.55rem 0.7rem 0.55rem 1.8rem;
+  }
+  .vp-doc details.gql-arg > summary {
+    padding-left: 1.4rem;
+  }
+}
