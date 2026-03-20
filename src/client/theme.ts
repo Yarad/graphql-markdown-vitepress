@@ -1,7 +1,26 @@
 import DefaultTheme from "vitepress/theme";
-import { onMounted, nextTick, watch } from "vue";
-import { useRoute } from "vitepress";
-import { initGqlLazyFields } from "./lazy-fields.js";
+import { onMounted, onUnmounted, onUpdated, nextTick, watch } from "vue";
+import { useRoute, useData, useRouter, withBase } from "vitepress";
+import { initGqlLazyFields, setFieldsIndexBase } from "./lazy-fields.js";
+
+export interface GraphqlThemeOptions {
+  /**
+   * Site base path used to resolve the fields-index JSON URL.
+   * Auto-detected from VitePress `site.base` when omitted.
+   * Only needed if auto-detection fails or you serve the index elsewhere.
+   */
+  base?: string;
+  /**
+   * When set, intercepts clicks on `<a>` elements whose `href` starts with
+   * this prefix and rewrites them through VitePress's SPA router with the
+   * correct `base`. Useful when `linkRoot` differs from the VitePress base
+   * (e.g. `linkRoot: "/"` with `base: "/docs/"`).
+   *
+   * @example
+   * graphqlThemeSetup({ linkPrefix: "/api/graphql/" });
+   */
+  linkPrefix?: string;
+}
 
 /**
  * VitePress theme with GraphQL docs support.
@@ -25,10 +44,43 @@ import { initGqlLazyFields } from "./lazy-fields.js";
  * ```
  */
 
-export function graphqlThemeSetup(): void {
+export function graphqlThemeSetup(options?: GraphqlThemeOptions): void {
   const route = useRoute();
+  const { site } = useData();
+  const router = useRouter();
+
+  const base = options?.base ?? site.value.base;
+  setFieldsIndexBase(base);
+
+  let clickHandler: ((e: MouseEvent) => void) | null = null;
+
+  if (options?.linkPrefix && base !== "/") {
+    const prefix = options.linkPrefix;
+    clickHandler = (e: MouseEvent) => {
+      const link = (e.target as HTMLElement).closest?.("a");
+      if (!link) return;
+      const href = link.getAttribute("href");
+      if (href?.startsWith(prefix)) {
+        e.preventDefault();
+        e.stopPropagation();
+        router.go(withBase(href));
+      }
+    };
+  }
+
   onMounted(() => {
-    initGqlLazyFields();
+    nextTick(() => initGqlLazyFields());
+    if (clickHandler) {
+      document.addEventListener("click", clickHandler, true);
+    }
+  });
+  onUnmounted(() => {
+    if (clickHandler) {
+      document.removeEventListener("click", clickHandler, true);
+    }
+  });
+  onUpdated(() => {
+    nextTick(() => initGqlLazyFields());
   });
   watch(
     () => route.path,

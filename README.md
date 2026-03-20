@@ -150,6 +150,7 @@ Controls the post-generation transform pipeline that converts flat GraphQL-Markd
 | `seo`            | `boolean`                         | `true`  | Enable the SEO enhancement pass (per-page `title` with category qualifier, `description` from GraphQL schema, H1 heading) |
 | `cleanUrls`      | `boolean`                         | `true`  | Strip numeric ordering prefixes from directories (e.g. `01-operations` → `operations`) and rewrite internal links         |
 | `structuredData` | `boolean`                         | `true`  | Inject JSON-LD `TechArticle` structured data into each page (requires `seo` to be enabled)                                |
+| `fieldsIndexOutputDir` | `string`                    | auto    | Absolute path to write `_gql-fields-index.json`. Defaults to `<docsDir>/../public`. Set when auto-derived path is wrong  |
 
 #### Section configuration
 
@@ -344,6 +345,109 @@ await generateDocs({
     },
   },
 });
+```
+
+## Non-root `base` deployment
+
+When your VitePress site uses `base: "/docs/"` (or any subpath), there are a few things to know:
+
+### Fields index URL resolution
+
+The lazy-fields loader needs to fetch `_gql-fields-index.json` from the correct path. As of v0.0.6, `graphqlThemeSetup` **auto-detects** the VitePress `base` and resolves the URL correctly — no configuration needed:
+
+```ts
+// .vitepress/theme/index.ts — works with any base path
+import "graphql-markdown-vitepress/style.css";
+export { default } from "graphql-markdown-vitepress/theme";
+```
+
+If auto-detection fails for your setup, pass the base explicitly:
+
+```ts
+import DefaultTheme from "vitepress/theme";
+import { graphqlThemeSetup } from "graphql-markdown-vitepress/theme";
+import "graphql-markdown-vitepress/style.css";
+
+export default {
+  extends: DefaultTheme,
+  setup() {
+    graphqlThemeSetup({ base: "/docs/" });
+  },
+};
+```
+
+### Fields index output directory
+
+The transform pipeline writes `_gql-fields-index.json` to `<docsDir>/../public/` by default. When your `baseURL` is deeply nested (e.g. `api/graphql/2026.02`), the inferred `public/` path may not match your VitePress `public/` directory. Use `fieldsIndexOutputDir` to write directly to the correct location:
+
+```ts
+import { resolve } from "node:path";
+
+await generateDocs({
+  schema: "./schema.json",
+  rootPath: resolve(__dirname, ".."),
+  baseURL: "api/graphql/2026.02",
+  transforms: {
+    fieldsIndexOutputDir: resolve(__dirname, "../public"),
+  },
+});
+```
+
+### Inline link interception
+
+Generated `<a>` elements use absolute paths (e.g. `/graphql/types/objects/player`). In a non-root base setup, VitePress's router expects paths relative to the base. If you have custom click handlers on inline links, use VitePress's `withBase` helper:
+
+```ts
+import { useRouter, withBase } from "vitepress";
+
+const router = useRouter();
+el.addEventListener("click", (e) => {
+  e.preventDefault();
+  router.go(withBase(el.getAttribute("href")!));
+});
+```
+
+### `linkRoot` stays `"/"`
+
+When using `generateDocs`, keep `linkRoot: "/"` regardless of your site's `base`. The `linkRoot` controls the prefix in generated markdown links, and the inline expansion matcher expects it to start with `"/"`. VitePress's `base` is handled separately at the routing layer.
+
+## Client exports
+
+The `graphql-markdown-vitepress/client` entry point exports `initGqlLazyFields` and `setFieldsIndexBase`. These are useful when building a custom theme setup:
+
+```ts
+import { initGqlLazyFields, setFieldsIndexBase } from "graphql-markdown-vitepress/client";
+```
+
+| Function | Purpose |
+|---|---|
+| `initGqlLazyFields()` | Scans the DOM for `.gql-lazy-fields` placeholders and wires up toggle listeners. Idempotent (tracks via `data-lazy-init`). Called automatically by `graphqlThemeSetup`. |
+| `setFieldsIndexBase(base)` | Sets the base path for fetching `_gql-fields-index.json`. Called automatically by `graphqlThemeSetup` with VitePress's `site.base`. |
+
+If you extend the theme without using `graphqlThemeSetup`, call these functions yourself:
+
+```ts
+import DefaultTheme from "vitepress/theme";
+import { onMounted, onUpdated, nextTick, watch } from "vue";
+import { useRoute, useData } from "vitepress";
+import { initGqlLazyFields, setFieldsIndexBase } from "graphql-markdown-vitepress/client";
+import "graphql-markdown-vitepress/style.css";
+
+export default {
+  extends: DefaultTheme,
+  setup() {
+    const route = useRoute();
+    const { site } = useData();
+
+    setFieldsIndexBase(site.value.base);
+
+    onMounted(() => nextTick(() => initGqlLazyFields()));
+    onUpdated(() => nextTick(() => initGqlLazyFields()));
+    watch(() => route.path, () => nextTick(() => initGqlLazyFields()));
+
+    // your own setup logic
+  },
+};
 ```
 
 ## Advanced: using transform functions directly

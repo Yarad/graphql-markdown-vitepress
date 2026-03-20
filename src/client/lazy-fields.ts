@@ -14,6 +14,7 @@ interface LazyFieldsMeta {
     inlineField: string;
     inlineFields: string;
     sectionLabel: string;
+    responseType: string;
   };
   labels: {
     fields: string;
@@ -28,6 +29,7 @@ const DEFAULT_META: LazyFieldsMeta = {
     inlineField: "gql-inline-field",
     inlineFields: "gql-inline-fields",
     sectionLabel: "gql-section-label",
+    responseType: "gql-response-type",
   },
   labels: {
     fields: "Fields",
@@ -37,13 +39,25 @@ const DEFAULT_META: LazyFieldsMeta = {
 let fieldsIndex: FieldsIndex | null = null;
 let meta: LazyFieldsMeta = DEFAULT_META;
 let indexPromise: Promise<FieldsIndex | null> | null = null;
+let baseOverride: string | null = null;
+
+/**
+ * Sets the site base path used to resolve `_gql-fields-index.json`.
+ * Called automatically by `graphqlThemeSetup` with VitePress's `site.base`.
+ */
+export function setFieldsIndexBase(base: string): void {
+  baseOverride = base;
+}
 
 function loadIndex(): Promise<FieldsIndex | null> {
   if (fieldsIndex) return Promise.resolve(fieldsIndex);
   if (!indexPromise) {
     const base =
-      (typeof document !== "undefined" &&
-        document.querySelector<HTMLBaseElement>("base")?.href) ||
+      baseOverride ??
+      (typeof import.meta !== "undefined"
+        ? (import.meta as unknown as Record<string, Record<string, string>>)
+            .env?.BASE_URL
+        : undefined) ??
       "/";
     const url = `${base.replace(/\/$/, "")}/_gql-fields-index.json`;
     indexPromise = fetch(url)
@@ -178,5 +192,15 @@ export function initGqlLazyFields(): void {
         });
       };
       parentDetails.addEventListener("toggle", handler);
+    });
+
+  // Safety net: ensure response-type details stay open even if Vue's
+  // template compiler strips the boolean `open` attribute.
+  document
+    .querySelectorAll<HTMLDetailsElement>(
+      `details.${meta.css.responseType}:not([open])`,
+    )
+    .forEach((el) => {
+      el.open = true;
     });
 }

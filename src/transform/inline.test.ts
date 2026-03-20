@@ -86,6 +86,44 @@ describe("buildFieldsIndex", () => {
     expect(html).toBeDefined();
     expect(html).toContain("`name`");
   });
+
+  it("includes linkRoot prefix in keys when linkRoot is set", () => {
+    writeDoc(docsDir, "02-types/06-objects/player.md", [
+      "# Player",
+      "",
+      "### Fields",
+      "",
+      "#### `name` ([String](../scalars/string.md))",
+      "",
+      "The player name.",
+    ].join("\n"));
+
+    const index = buildFieldsIndex(docsDir, "api/graphql/2026.02", {
+      linkRoot: "/docs/",
+    });
+    const keys = [...index.keys()];
+
+    expect(keys).toHaveLength(1);
+    expect(keys[0]).toBe("/docs/api/graphql/2026.02/02-types/06-objects/player");
+  });
+
+  it("uses nested baseURL in keys", () => {
+    writeDoc(docsDir, "02-types/06-objects/team.md", [
+      "# Team",
+      "",
+      "### Fields",
+      "",
+      "#### `name` (String)",
+      "",
+      "The team name.",
+    ].join("\n"));
+
+    const index = buildFieldsIndex(docsDir, "api/graphql/v2");
+    const keys = [...index.keys()];
+
+    expect(keys).toHaveLength(1);
+    expect(keys[0]).toBe("/api/graphql/v2/02-types/06-objects/team");
+  });
 });
 
 // ── inlineTypeFields ───────────────────────────────
@@ -191,6 +229,65 @@ describe("inlineTypeFields", () => {
 
     expect(result).toContain("gql-inline-fields");
     expect(result).toContain("Player name");
+  });
+
+  it("matches hrefs with linkRoot prefix", () => {
+    const index = new Map<string, string>();
+    index.set(
+      "/docs/api/graphql/2026.02/02-types/06-objects/address",
+      [
+        '<details class="gql-field" id="city">',
+        "<summary><code>city</code> (String)</summary>",
+        "",
+        '<p class="gql-desc">The city name.</p>',
+        "</details>",
+      ].join("\n"),
+    );
+
+    const content = [
+      '<details class="gql-field" id="home-address">',
+      '<summary><code>homeAddress</code> (<a href="/docs/api/graphql/2026.02/02-types/06-objects/address.md">Address</a>)</summary>',
+      "",
+      '<p class="gql-desc">Home address.</p>',
+      "</details>",
+    ].join("\n");
+
+    const options = {
+      baseURL: "api/graphql/2026.02",
+      linkRoot: "/docs/",
+      lazyInline: false,
+    };
+    const result = inlineTypeFields(content, index, options);
+
+    expect(result).toContain("gql-inline-fields");
+    expect(result).toContain("city");
+  });
+
+  it("does NOT match when linkRoot is misaligned with hrefs", () => {
+    const index = new Map<string, string>();
+    index.set(
+      "/graphql/02-types/06-objects/address",
+      [
+        '<details class="gql-field" id="city">',
+        "<summary><code>city</code> (String)</summary>",
+        "</details>",
+      ].join("\n"),
+    );
+
+    const content = [
+      '<details class="gql-field" id="home-address">',
+      '<summary><code>homeAddress</code> (<a href="/docs/graphql/02-types/06-objects/address">Address</a>)</summary>',
+      "",
+      '<p class="gql-desc">Home address.</p>',
+      "</details>",
+    ].join("\n");
+
+    const result = inlineTypeFields(content, index, {
+      baseURL: "graphql",
+      lazyInline: false,
+    });
+
+    expect(result).not.toContain("gql-inline-fields");
   });
 });
 
@@ -346,5 +443,80 @@ describe("transformGeneratedDocs", () => {
       if (key === "_meta") continue;
       expect(html as string).not.toMatch(/href="[^"]+\.md"/);
     }
+  });
+
+  it("writes fields index to fieldsIndexOutputDir when set", async () => {
+    const tmpRoot = makeTmpDir();
+    const customPublic = join(tmpRoot, "custom-public");
+    const nestedDocs = join(tmpRoot, "site", "api", "graphql", "v2");
+    mkdirSync(nestedDocs, { recursive: true });
+
+    writeDoc(nestedDocs, "02-types/06-objects/player.md", [
+      "# Player",
+      "",
+      "### Fields",
+      "",
+      "#### `name` ([String](/graphql/02-types/05-scalars/string.md))",
+      "",
+      "The player name.",
+    ].join("\n"));
+
+    await transformGeneratedDocs(nestedDocs, {
+      baseURL: "api/graphql/v2",
+      collapsible: true,
+      inline: true,
+      lazyInline: true,
+      seo: false,
+      cleanUrls: false,
+      fieldsIndexOutputDir: customPublic,
+    });
+
+    const jsonPath = join(customPublic, "_gql-fields-index.json");
+    expect(existsSync(jsonPath)).toBe(true);
+
+    const wrongPath = join(nestedDocs, "..", "public", "_gql-fields-index.json");
+    expect(existsSync(wrongPath)).toBe(false);
+
+    rmSync(tmpRoot, { recursive: true, force: true });
+  });
+
+  it("includes linkRoot in fields index keys", async () => {
+    writeDoc(docsDir, "02-types/06-objects/player.md", [
+      "# Player",
+      "",
+      "### Fields",
+      "",
+      "#### `name` ([String](/docs/api/graphql/v2/02-types/05-scalars/string.md))",
+      "",
+      "The player name.",
+    ].join("\n"));
+
+    writeDoc(docsDir, "01-operations/01-queries/players.md", [
+      "# Players",
+      "",
+      "### Type",
+      "",
+      "#### [PlayerPagination](/docs/api/graphql/v2/02-types/06-objects/player.md)",
+      "",
+      "The paginated result.",
+    ].join("\n"));
+
+    await transformGeneratedDocs(docsDir, {
+      baseURL: "api/graphql/v2",
+      linkRoot: "/docs/",
+      collapsible: true,
+      inline: true,
+      lazyInline: true,
+      seo: false,
+      cleanUrls: false,
+    });
+
+    const jsonPath = join(docsDir, "..", "public", "_gql-fields-index.json");
+    expect(existsSync(jsonPath)).toBe(true);
+
+    const jsonIndex = JSON.parse(readFileSync(jsonPath, "utf-8"));
+    const keys = Object.keys(jsonIndex).filter((k) => k !== "_meta");
+
+    expect(keys[0]).toMatch(/^\/docs\/api\/graphql\/v2\//);
   });
 });

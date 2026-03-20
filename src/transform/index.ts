@@ -60,13 +60,23 @@ export async function transformGeneratedDocs(
 
   if (config.inline) {
     const index = buildFieldsIndex(docsDir, config.baseURL, options);
+    let expandedCount = 0;
 
     for (const filePath of files) {
       const content = readFileSync(filePath, "utf-8");
       const expanded = inlineTypeFields(content, index, options);
       if (expanded !== content) {
         writeFileSync(filePath, expanded, "utf-8");
+        expandedCount++;
       }
+    }
+
+    if (expandedCount === 0 && index.size > 0) {
+      console.warn(
+        `[graphql-markdown] Inline expansion is enabled but no documents were expanded. ` +
+          `This typically means linkRoot and baseURL don't align with generated link hrefs. ` +
+          `Current linkRoot: "${config.linkRoot}", baseURL: "${config.baseURL}"`,
+      );
     }
 
     if (config.lazyInline) {
@@ -120,7 +130,7 @@ export async function transformGeneratedDocs(
   }
 
   if (fieldsIndex) {
-    const publicDir = join(docsDir, "..", "public");
+    const publicDir = config.fieldsIndexOutputDir ?? join(docsDir, "..", "public");
     mkdirSync(publicDir, { recursive: true });
     const jsonIndex: Record<string, unknown> = {
       _meta: {

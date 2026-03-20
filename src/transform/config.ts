@@ -8,6 +8,7 @@ import type { CssClassMap, TransformLabels, TransformOptions } from "../types.js
 
 export interface ResolvedTransformConfig {
   baseURL: string;
+  linkRoot: string;
   collapsible: boolean;
   inline: boolean;
   inlineDepth: number;
@@ -23,6 +24,7 @@ export interface ResolvedTransformConfig {
   seo: boolean;
   cleanUrls: boolean;
   structuredData: boolean;
+  fieldsIndexOutputDir?: string;
 }
 
 const DEFAULT_CSS_PREFIX = "gql";
@@ -57,6 +59,7 @@ export function resolveTransformConfig(
 ): ResolvedTransformConfig {
   return {
     baseURL: options?.baseURL ?? "graphql",
+    linkRoot: options?.linkRoot ?? "/",
     collapsible: options?.collapsible ?? true,
     inline: options?.inline ?? true,
     inlineDepth: options?.inlineDepth ?? 3,
@@ -80,5 +83,6 @@ export function resolveTransformConfig(
     seo: options?.seo ?? true,
     cleanUrls: options?.cleanUrls ?? true,
     structuredData: options?.structuredData ?? true,
+    fieldsIndexOutputDir: options?.fieldsIndexOutputDir,
   };
 }

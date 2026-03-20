@@ -14,6 +14,7 @@ export {
 } from "./transform/index.js";
 export type {
   GraphQLDocsOptions,
+  GeneratedContext,
   SidebarConfig,
   SidebarItem,
   SidebarLink,

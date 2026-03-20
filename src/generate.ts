@@ -1,4 +1,5 @@
-import { resolve } from "node:path";
+import { resolve, join } from "node:path";
+import { existsSync } from "node:fs";
 import { runGraphQLMarkdown } from "@graphql-markdown/cli";
 import type { GraphQLDocsOptions, TransformOptions } from "./types.js";
 import { transformGeneratedDocs } from "./transform/index.js";
@@ -72,11 +73,14 @@ async function doGenerate(options: GraphQLDocsOptions): Promise<void> {
   const schema = options.schema;
   const loaders = ensureLoaders(schema, options.loaders);
 
+  const resolvedLinkRoot =
+    options.linkRoot ?? options.base ?? defaultOptions.linkRoot;
+
   const merged: GraphQLDocsOptions = {
     ...options,
     rootPath: options.rootPath ?? defaultOptions.rootPath,
     baseURL: options.baseURL ?? defaultOptions.baseURL,
-    linkRoot: options.linkRoot ?? defaultOptions.linkRoot,
+    linkRoot: resolvedLinkRoot,
     mdxParser: options.mdxParser ?? defaultOptions.mdxParser,
     pretty: options.pretty ?? defaultOptions.pretty,
     printTypeOptions: options.printTypeOptions ?? defaultOptions.printTypeOptions,
@@ -86,17 +90,31 @@ async function doGenerate(options: GraphQLDocsOptions): Promise<void> {
 
   await runGraphQLMarkdown(merged, {}, DEFAULT_LOGGER);
 
-  const outputDir = resolve(merged.rootPath ?? "./docs", merged.baseURL ?? "graphql");
+  const rootPath = resolve(merged.rootPath ?? "./docs");
+  const baseURL = merged.baseURL ?? "graphql";
+  const outputDir = resolve(rootPath, baseURL);
+  const publicDir = resolve(rootPath, "public");
 
   if (merged.transforms !== false) {
     const transformOpts: TransformOptions = {
-      baseURL: merged.baseURL ?? "graphql",
+      baseURL,
+      linkRoot: resolvedLinkRoot,
+      fieldsIndexOutputDir: publicDir,
       ...(typeof merged.transforms === "object" ? merged.transforms : {}),
     };
     await transformGeneratedDocs(outputDir, transformOpts);
   }
 
   if (merged.onGenerated) {
-    await merged.onGenerated(outputDir);
+    const fieldsIndexPath = join(publicDir, "_gql-fields-index.json");
+    await merged.onGenerated(outputDir, {
+      outputDir,
+      rootPath,
+      baseURL,
+      publicDir,
+      fieldsIndexPath: existsSync(fieldsIndexPath)
+        ? fieldsIndexPath
+        : null,
+    });
   }
 }

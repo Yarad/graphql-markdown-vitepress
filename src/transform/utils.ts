@@ -11,6 +11,11 @@ const PARENT_PREFIX_RE = /`\w+\./g;
 
 const SELF_ANCHOR_RE = /<a\s+href="#[^"]*"[^>]*>([\s\S]*?)<\/a>/g;
 
+const BADGE_RE = /<Badge type="[^"]*">([^<]*)<\/Badge>/g;
+const BACKTICK_WITH_PARENT_RE = /`(\w+)\.([^`]+)`/g;
+const BACKTICK_RE = /`([^`]+)`/g;
+const ENTITY_THEN_LINK_RE = /(<\/span>)\s*(<a\s)/;
+
 /**
  * Converts markdown link syntax `[text](url)` to HTML `<a>` tags.
  * Handles one level of nested brackets (e.g. `[[Game!]!](url)`).
@@ -39,6 +44,39 @@ export function stripSelfAnchors(text: string): string {
  */
 export function stripParentPrefix(text: string): string {
   return text.replace(PARENT_PREFIX_RE, "`");
+}
+
+/**
+ * Converts markdown-style summary text to styled HTML suitable for
+ * `<summary>` elements where VitePress won't process markdown or
+ * Vue components.
+ *
+ * - Backtick entities → `.gqlmd-mdx-entity` spans with parent/name separation
+ * - `<Badge>` components → `.gqlmd-mdx-badge` spans
+ * - Bullet separator inserted between field entity and type link
+ */
+export function summaryToHtml(text: string): string {
+  let result = text.replace(
+    BADGE_RE,
+    '<span class="gqlmd-mdx-badge">$1</span>',
+  );
+
+  result = result.replace(
+    BACKTICK_WITH_PARENT_RE,
+    '<span class="gqlmd-mdx-entity"><span class="gqlmd-mdx-entity-parent">$1.</span><span class="gqlmd-mdx-entity-name">$2</span></span>',
+  );
+
+  result = result.replace(
+    BACKTICK_RE,
+    '<span class="gqlmd-mdx-entity"><span class="gqlmd-mdx-entity-name">$1</span></span>',
+  );
+
+  result = result.replace(
+    ENTITY_THEN_LINK_RE,
+    '$1 <span class="gqlmd-mdx-bullet">\u2022</span> $2',
+  );
+
+  return result.trim();
 }
 
 /**

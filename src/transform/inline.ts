@@ -13,21 +13,44 @@ import {
   escapeRegExp,
   headingLevel,
   mdLinksToHtml,
-  stripParentPrefix,
   stripSelfAnchors,
+  summaryToHtml,
 } from "./utils.js";
 import { parseFieldBlocks } from "./parse.js";
+
+/**
+ * Normalizes `linkRoot` into a prefix string without trailing slash.
+ * `"/"` → `""`, `"/docs/"` → `"/docs"`, `"/docs"` → `"/docs"`.
+ */
+function normalizeLinkRoot(linkRoot?: string): string {
+  if (!linkRoot || linkRoot === "/") return "";
+  let prefix = linkRoot;
+  if (!prefix.startsWith("/")) prefix = "/" + prefix;
+  if (prefix.endsWith("/")) prefix = prefix.slice(0, -1);
+  return prefix;
+}
 
 /**
  * Builds a regex that matches href attributes pointing to inlineable type pages.
  * Supports both prefixed (`/{baseURL}/{NN}-{group}/{NN}-{category}/{slug}`)
  * and clean (`/{baseURL}/{group}/{category}/{slug}`) URL formats.
+ * When `linkRoot` is set (e.g. `"/docs/"`), the regex accounts for the prefix.
  */
-function buildTypeHrefRegex(baseURL: string, categories: string[]): RegExp {
+function buildTypeHrefRegex(
+  baseURL: string,
+  categories: string[],
+  linkRoot: string,
+): RegExp {
+  const linkPrefix = normalizeLinkRoot(linkRoot);
+  const escapedPrefix = linkPrefix
+    ? escapeRegExp(linkPrefix) + "\\/"
+    : "\\/";
   const escapedBase = escapeRegExp(baseURL);
-  const catPattern = categories.map((c) => `(?:\\d+-)?${escapeRegExp(c)}`).join("|");
+  const catPattern = categories
+    .map((c) => `(?:\\d+-)?${escapeRegExp(c)}`)
+    .join("|");
   return new RegExp(
-    `href="(\\/${escapedBase}\\/(?:\\d+-)?[^/]+\\/(?:${catPattern})\\/[^"]+)"`,
+    `href="(${escapedPrefix}${escapedBase}\\/(?:\\d+-)?[^/]+\\/(?:${catPattern})\\/[^"]+)"`,
   );
 }
 
@@ -84,7 +107,8 @@ export function buildFieldsIndex(
   baseURL: string,
   options?: TransformOptions,
 ): Map<string, string> {
-  const { fieldSections } = resolveTransformConfig(options);
+  const { fieldSections, linkRoot } = resolveTransformConfig(options);
+  const linkPrefix = normalizeLinkRoot(linkRoot);
   const index = new Map<string, string>();
 
   function walk(dir: string, urlPrefix: string): void {
@@ -103,7 +127,7 @@ export function buildFieldsIndex(
       }
 
       const slug = entry.name.replace(/\.md$/, "");
-      const urlPath = `/${baseURL}${urlPrefix}/${slug}`;
+      const urlPath = `${linkPrefix}/${baseURL}${urlPrefix}/${slug}`;
       const content = readFileSync(fullPath, "utf-8");
       const fieldsHtml = extractFieldsHtml(content, fieldSections);
 
@@ -277,7 +301,11 @@ export function inlineTypeFields(
 ): string {
   const config = resolveTransformConfig(options);
   const { css, labels, responseSections, inlineDepth, lazyInline } = config;
-  const typeHrefRe = buildTypeHrefRegex(config.baseURL, config.inlineTypeCategories);
+  const typeHrefRe = buildTypeHrefRegex(
+    config.baseURL,
+    config.inlineTypeCategories,
+    config.linkRoot,
+  );
   const lazyAfterDepth = lazyInline ? 1 : undefined;
 
   const lines = content.split("\n");
@@ -307,8 +335,9 @@ export function inlineTypeFields(
 
         const blocks = parseFieldBlocks(sectionLines, 4);
         for (const block of blocks) {
-          const summaryHtml = stripParentPrefix(mdLinksToHtml(block.heading));
-          const typeRef = extractTypeRef(summaryHtml, typeHrefRe);
+          const rawHtml = mdLinksToHtml(block.heading);
+          const typeRef = extractTypeRef(rawHtml, typeHrefRe);
+          const styledHtml = summaryToHtml(stripSelfAnchors(rawHtml));
           const descText = block.description
             .map((l) => l.trim())
             .filter(Boolean)
@@ -316,7 +345,7 @@ export function inlineTypeFields(
 
           output.push("");
           output.push(`<details class="${css.field} ${css.responseType}" open>`);
-          output.push(`<summary>${summaryHtml}</summary>`);
+          output.push(`<summary>${styledHtml}</summary>`);
           if (descText) {
             output.push(`<p class="${css.desc}">${descText}</p>`);
           }

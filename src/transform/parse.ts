@@ -10,8 +10,8 @@ import {
   extractPermalinkId,
   headingLevel,
   mdLinksToHtml,
-  stripParentPrefix,
   stripSelfAnchors,
+  summaryToHtml,
 } from "./utils.js";
 
 export interface FieldBlock {
@@ -106,7 +106,7 @@ export function renderFieldBlock(
   const idAttr = block.id ? ` id="${block.id}"` : "";
   out.push(`<details class="${cssClass}"${idAttr}>`);
   out.push(
-    `<summary>${stripSelfAnchors(stripParentPrefix(mdLinksToHtml(block.heading)))}</summary>`,
+    `<summary>${summaryToHtml(stripSelfAnchors(mdLinksToHtml(block.heading)))}</summary>`,
   );
   out.push("");
 
