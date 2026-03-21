@@ -56,6 +56,10 @@ export function stripParentPrefix(text: string): string {
  * - Bullet separator inserted between field entity and type link
  */
 export function summaryToHtml(text: string): string {
+  if (text.includes("gqlmd-mdx-")) {
+    return text.trim();
+  }
+
   let result = text.replace(
     BADGE_RE,
     '<span class="gqlmd-mdx-badge">$1</span>',
