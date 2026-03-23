@@ -122,6 +122,20 @@ export interface TransformOptions {
    */
   structuredData?: boolean;
   /**
+   * VitePress outline (local page navigation / "On this page") level
+   * injected into each page's frontmatter. Generated pages use H1 for
+   * the title and H3 for sections (Fields, Arguments, Response, etc.)
+   * with no H2 headings, so the default `[2, 3]` ensures the H3
+   * sections appear in the page outline.
+   *
+   * Set to `false` to omit the `outline` frontmatter key entirely
+   * (falls back to VitePress site-level config).
+   *
+   * Only effective when `seo` is also enabled.
+   * @default [2, 3]
+   */
+  outline?: number | [number, number] | "deep" | false;
+  /**
    * Show the parent type name as a prefix on field entities
    * (e.g. `GamePagination.data` instead of `data`).
    * @default false

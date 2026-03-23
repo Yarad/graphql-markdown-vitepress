@@ -196,6 +196,7 @@ Controls the post-generation transform pipeline that converts flat GraphQL-Markd
 | `seo`            | `boolean`                         | `true`  | Enable the SEO enhancement pass (per-page `title` with category qualifier, `description` from GraphQL schema, H1 heading) |
 | `cleanUrls`      | `boolean`                         | `true`  | Strip numeric ordering prefixes from directories (e.g. `01-operations` → `operations`) and rewrite internal links         |
 | `structuredData` | `boolean`                         | `true`  | Inject JSON-LD `TechArticle` structured data into each page (requires `seo` to be enabled)                                |
+| `outline`        | `number \| [number, number] \| 'deep' \| false` | `[2, 3]` | VitePress [outline](https://vitepress.dev/reference/frontmatter-config#outline) level injected into each page's frontmatter. Generated pages use H3 for section headings (Fields, Arguments, Response, etc.) so `[2, 3]` shows them in the page's "On this page" nav. Set `false` to omit (falls back to site-level config). Requires `seo` to be enabled |
 | `fieldsIndexOutputDir` | `string`                    | auto    | Absolute path to write `_gql-fields-index.json`. Defaults to `<docsDir>/../public`. Set when auto-derived path is wrong  |
 
 #### Section configuration
@@ -428,6 +429,28 @@ await generateDocs({
   schema: "./schema.graphql",
   transforms: {
     inlineTypeCategories: ["objects", "inputs", "unions"],
+  },
+});
+```
+
+### Customize page outline
+
+Control the VitePress "On this page" local navigation on generated pages:
+
+```ts
+// Show all heading levels in the outline
+await generateDocs({
+  schema: "./schema.graphql",
+  transforms: {
+    outline: "deep",
+  },
+});
+
+// Disable per-page outline (use site-level config instead)
+await generateDocs({
+  schema: "./schema.graphql",
+  transforms: {
+    outline: false,
   },
 });
 ```

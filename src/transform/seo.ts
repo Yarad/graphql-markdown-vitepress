@@ -78,11 +78,14 @@ export function extractDescription(body: string): string {
  * @param content - Raw markdown file content (with frontmatter).
  * @param relativePath - File path relative to the docs directory.
  * @param addStructuredData - Whether to inject JSON-LD structured data.
+ * @param outline - VitePress outline level to inject into frontmatter.
+ *   `false` omits the key entirely.
  */
 export function enhanceSeo(
   content: string,
   relativePath: string,
   addStructuredData: boolean,
+  outline: number | [number, number] | "deep" | false = [2, 3],
 ): string {
   const filename = relativePath.split(/[/\\]/).pop() ?? "";
   if (filename === "index.md" || filename === "generated.md") {
@@ -102,6 +105,10 @@ export function enhanceSeo(
 
   if (description) {
     data.description = description;
+  }
+
+  if (outline !== false && data.outline === undefined) {
+    data.outline = outline;
   }
 
   const hasJsonLd =

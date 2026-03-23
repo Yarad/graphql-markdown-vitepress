@@ -25,6 +25,7 @@ export interface ResolvedTransformConfig {
   seo: boolean;
   cleanUrls: boolean;
   structuredData: boolean;
+  outline: number | [number, number] | "deep" | false;
   fieldsIndexOutputDir?: string;
 }
 
@@ -85,6 +86,7 @@ export function resolveTransformConfig(
     seo: options?.seo ?? true,
     cleanUrls: options?.cleanUrls ?? true,
     structuredData: options?.structuredData ?? true,
+    outline: options?.outline ?? [2, 3],
     fieldsIndexOutputDir: options?.fieldsIndexOutputDir,
   };
 }

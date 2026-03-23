@@ -98,7 +98,7 @@ export async function transformGeneratedDocs(
     for (const filePath of files) {
       const content = readFileSync(filePath, "utf-8");
       const relPath = relative(docsDir, filePath);
-      const enhanced = enhanceSeo(content, relPath, config.structuredData);
+      const enhanced = enhanceSeo(content, relPath, config.structuredData, config.outline);
       if (enhanced !== content) {
         writeFileSync(filePath, enhanced, "utf-8");
       }
