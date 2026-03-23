@@ -44,6 +44,9 @@ function ensureLoaders(
   if (schema.endsWith(".json")) {
     loaders.JsonFileLoader = "@graphql-tools/json-file-loader";
   }
+  if (schema.endsWith(".graphql") || schema.endsWith(".gql")) {
+    loaders.GraphQLFileLoader = "@graphql-tools/graphql-file-loader";
+  }
   return Object.keys(loaders).length > 0 ? loaders : undefined;
 }
 
@@ -96,10 +99,13 @@ async function doGenerate(options: GraphQLDocsOptions): Promise<void> {
   const publicDir = resolve(rootPath, "public");
 
   if (merged.transforms !== false) {
+    const parentTypePrefix =
+      merged.printTypeOptions?.parentTypePrefix ?? false;
     const transformOpts: TransformOptions = {
       baseURL,
       linkRoot: resolvedLinkRoot,
       fieldsIndexOutputDir: publicDir,
+      parentTypePrefix,
       ...(typeof merged.transforms === "object" ? merged.transforms : {}),
     };
     await transformGeneratedDocs(outputDir, transformOpts);

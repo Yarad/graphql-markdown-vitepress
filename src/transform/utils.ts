@@ -8,6 +8,8 @@ const PERMALINK_RE = /\s*\\?\{#([\w-]+)\\?\}\s*$/;
 const MD_LINK_RE = /\[((?:[^[\]]|\[[^\]]*\])*)\]\(([^)]+)\)/g;
 
 const PARENT_PREFIX_RE = /`\w+\./g;
+const HTML_PARENT_PREFIX_RE =
+  /<(?:code|span) class="gqlmd-mdx-entity-parent">[^<]*<\/(?:code|span)>\./g;
 
 const SELF_ANCHOR_RE = /<a\s+href="#[^"]*"[^>]*>([\s\S]*?)<\/a>/g;
 
@@ -39,11 +41,12 @@ export function stripSelfAnchors(text: string): string {
 }
 
 /**
- * Removes the parent type prefix from entity names inside backtick code spans.
- * Turns `` `Type.field` `` into `` `field` ``.
+ * Removes the parent type prefix from entity names.
+ * Handles both backtick markdown (`` `Type.field` `` → `` `field` ``)
+ * and pre-rendered HTML (`<code class="gqlmd-mdx-entity-parent">Type</code>.` → removed).
  */
 export function stripParentPrefix(text: string): string {
-  return text.replace(PARENT_PREFIX_RE, "`");
+  return text.replace(PARENT_PREFIX_RE, "`").replace(HTML_PARENT_PREFIX_RE, "");
 }
 
 /**

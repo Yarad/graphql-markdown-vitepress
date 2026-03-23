@@ -122,6 +122,12 @@ export interface TransformOptions {
    */
   structuredData?: boolean;
   /**
+   * Show the parent type name as a prefix on field entities
+   * (e.g. `GamePagination.data` instead of `data`).
+   * @default false
+   */
+  parentTypePrefix?: boolean;
+  /**
    * Absolute path to the directory where `_gql-fields-index.json` is written.
    * Defaults to `<docsDir>/../public` (VitePress's default `public/` folder).
    * Set this when your `baseURL` is nested deeply and the auto-derived path

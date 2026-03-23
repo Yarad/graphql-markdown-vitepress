@@ -10,6 +10,7 @@ import {
   extractPermalinkId,
   headingLevel,
   mdLinksToHtml,
+  stripParentPrefix,
   stripSelfAnchors,
   summaryToHtml,
 } from "./utils.js";
@@ -100,13 +101,17 @@ export function renderFieldBlock(
   cssClass: string,
   options?: TransformOptions,
 ): string[] {
-  const { css, labels } = resolveTransformConfig(options);
+  const { css, labels, parentTypePrefix } = resolveTransformConfig(options);
 
   const out: string[] = [];
   const idAttr = block.id ? ` id="${block.id}"` : "";
   out.push(`<details class="${cssClass}"${idAttr}>`);
+  let heading = stripSelfAnchors(mdLinksToHtml(block.heading));
+  if (!parentTypePrefix) {
+    heading = stripParentPrefix(heading);
+  }
   out.push(
-    `<summary>${summaryToHtml(stripSelfAnchors(mdLinksToHtml(block.heading)))}</summary>`,
+    `<summary>${summaryToHtml(heading)}</summary>`,
   );
   out.push("");
 
