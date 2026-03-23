@@ -15,6 +15,7 @@ export {
 export type {
   GraphQLDocsOptions,
   GeneratedContext,
+  LandingPageOptions,
   SidebarConfig,
   SidebarItem,
   SidebarLink,

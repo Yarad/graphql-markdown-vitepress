@@ -166,9 +166,21 @@ All options passed to `generateDocs` and `graphqlDocsPlugin`.
 | `mdxParser`   | `string`                                       | built-in formatter | Custom formatter module path                                 |
 | `loaders`     | `Record<string, ...>`                          | auto for `.json`   | Schema loaders                                               |
 | `transforms`  | `TransformOptions \| false`                    | `{}` (all enabled) | Transform pipeline configuration; `false` to skip            |
+| `landingPage` | `LandingPageOptions`                           | —                  | Customize the auto-generated landing page (see below)        |
 | `onGenerated` | `(outputDir: string) => void \| Promise<void>` | —                  | Callback after generation and transforms complete            |
 
 All [GraphQL-Markdown config options](https://graphql-markdown.dev/docs/configuration) (`pretty`, `printTypeOptions`, `docOptions`, `groupByDirective`, etc.) are also supported.
+
+#### `LandingPageOptions`
+
+`@graphql-markdown/cli` generates a `generated.md` file at the docs root that serves as the schema overview page. Use `landingPage` to customize it:
+
+| Option        | Type                       | Default                    | Description                                                                  |
+| ------------- | -------------------------- | -------------------------- | ---------------------------------------------------------------------------- |
+| `label`       | `string`                   | derived from filename      | Sidebar link text. Written as `sidebar_title` in frontmatter.                |
+| `content`     | `string`                   | CLI-generated content      | Replace the markdown body below the frontmatter.                             |
+| `frontMatter` | `Record<string, unknown>`  | CLI defaults               | Extra frontmatter fields merged into the existing frontmatter.               |
+| `hidden`      | `boolean`                  | `false`                    | Hide from the sidebar. The page is still generated and accessible via URL.   |
 
 ### `TransformOptions`
 
@@ -275,6 +287,33 @@ const sidebar = await createSidebar(graphqlDir, "graphql", {
     types: (a, b) =>
       (priority[a] ?? 99) - (priority[b] ?? 99) || a.localeCompare(b),
   },
+});
+```
+
+### Customize the landing page
+
+Change the sidebar label and replace the page content:
+
+```ts
+await generateDocs({
+  schema: "./schema.graphql",
+  landingPage: {
+    label: "API Reference",
+    content: "# My GraphQL API\n\nWelcome to the API documentation.\n",
+    frontMatter: {
+      title: "API Reference",
+      description: "Complete GraphQL API documentation",
+    },
+  },
+});
+```
+
+Hide the landing page from the sidebar (the page still exists at `/graphql/generated`):
+
+```ts
+await generateDocs({
+  schema: "./schema.graphql",
+  landingPage: { hidden: true },
 });
 ```
 

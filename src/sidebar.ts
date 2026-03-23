@@ -20,22 +20,35 @@ function categoryLabel(dirName: string): string {
     .join(" ");
 }
 
+interface FileMeta {
+  title: string;
+  hidden: boolean;
+}
+
 /**
- * Title from frontmatter or fallback to slug (filename).
+ * Reads frontmatter from a markdown file, returning sidebar title and hidden flag.
  */
-function titleFromFile(filePath: string, slug: string): string {
+function readFileMeta(filePath: string, slug: string): FileMeta {
   try {
     const content = readFileSync(filePath, "utf-8");
     const { data } = matter(content);
-    const title = data?.sidebar_title ?? data?.title;
-    if (typeof title === "string") return title;
+    const title =
+      typeof (data?.sidebar_title ?? data?.title) === "string"
+        ? (data.sidebar_title ?? data.title)
+        : slug
+            .split(/[-_]/)
+            .map((s) => s.charAt(0).toUpperCase() + s.slice(1).toLowerCase())
+            .join(" ");
+    return { title, hidden: !!data?.sidebar_hidden };
   } catch {
-    // ignore
+    return {
+      title: slug
+        .split(/[-_]/)
+        .map((s) => s.charAt(0).toUpperCase() + s.slice(1).toLowerCase())
+        .join(" "),
+      hidden: false,
+    };
   }
-  return slug
-    .split(/[-_]/)
-    .map((s) => s.charAt(0).toUpperCase() + s.slice(1).toLowerCase())
-    .join(" ");
 }
 
 /**
@@ -113,10 +126,15 @@ export function createSidebar(
     return [];
   }
 
-  // Group by first path segment (01-operations, 02-types), then by second (07-queries, 06-objects).
+  const rootFileMap = new Map<string, ScannedFile>();
   const byTop = new Map<string, Map<string, ScannedFile[]>>();
+
   for (const f of files) {
     const parts = f.relativePath.split("/");
+    if (parts.length === 1) {
+      rootFileMap.set(f.relativePath, f);
+      continue;
+    }
     const top = parts[0];
     const sub = parts.length > 2 ? parts[1] : "";
     const key = sub || top;
@@ -126,10 +144,25 @@ export function createSidebar(
     subMap.get(key)!.push(f);
   }
 
+  // Merge root filenames and directory names into a single list for unified ordering.
+  const allTopKeys = [
+    ...rootFileMap.keys(),
+    ...byTop.keys(),
+  ];
+  const sortedTops = applyCategoryOrder(allTopKeys, options?.order);
+
   const sidebar: SidebarConfig = [];
-  const sortedTops = applyCategoryOrder([...byTop.keys()], options?.order);
 
   for (const top of sortedTops) {
+    const rootFile = rootFileMap.get(top);
+    if (rootFile) {
+      const meta = readFileMeta(rootFile.fullPath, rootFile.slug);
+      if (meta.hidden) continue;
+      const link = `${basePath}/${rootFile.relativePath.replace(/\.md$/, "")}`;
+      sidebar.push({ text: meta.title, link, items: [] });
+      continue;
+    }
+
     const subMap = byTop.get(top)!;
     const topKey = dirToKey(top);
     const subKeys = applyCategoryOrder(
@@ -138,22 +171,20 @@ export function createSidebar(
     );
 
     if (subKeys.length === 1 && subKeys[0] === top) {
-      // Single level: top dir has files directly (e.g. generated.md at root)
       const list = subMap.get(top)!;
       const items: (SidebarLink | SidebarItem)[] = list.map((f) => {
+        const { title: text } = readFileMeta(f.fullPath, f.slug);
         const link = `${basePath}/${f.relativePath.replace(/\.md$/, "")}`;
-        const text = titleFromFile(f.fullPath, f.slug);
         return { text, link };
       });
       sidebar.push({ text: categoryLabel(top), collapsed: false, items });
     } else {
-      // Nested: e.g. 01-operations -> 07-queries -> [files]
       const sections: SidebarItem[] = [];
       for (const sub of subKeys) {
         const list = subMap.get(sub)!;
         const items: (SidebarLink | SidebarItem)[] = list.map((f) => {
+          const { title: text } = readFileMeta(f.fullPath, f.slug);
           const link = `${basePath}/${f.relativePath.replace(/\.md$/, "")}`;
-          const text = titleFromFile(f.fullPath, f.slug);
           return { text, link };
         });
         sections.push({ text: categoryLabel(sub), collapsed: false, items });

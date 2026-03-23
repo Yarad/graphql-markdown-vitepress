@@ -153,6 +153,53 @@ export interface GeneratedContext {
 }
 
 /**
+ * Customization for the auto-generated landing page (`generated.md`).
+ *
+ * `@graphql-markdown/cli` emits a `generated.md` file at the docs root that
+ * serves as the schema overview / landing page. These options let you replace
+ * its content, tweak its frontmatter, change the sidebar label, or hide it
+ * from the sidebar entirely.
+ *
+ * @example
+ * ```ts
+ * await generateDocs({
+ *   schema: "./schema.graphql",
+ *   landingPage: {
+ *     label: "API Reference",
+ *     content: "# My API\n\nWelcome to the docs.",
+ *     frontMatter: { description: "GraphQL API reference" },
+ *   },
+ * });
+ * ```
+ */
+export interface LandingPageOptions {
+  /**
+   * Sidebar group label displayed in the VitePress sidebar.
+   * Written as `sidebar_title` in the file's frontmatter so
+   * {@link createSidebar} picks it up automatically.
+   * @default derived from filename ("Generated")
+   */
+  label?: string;
+  /**
+   * Replace the markdown body of the landing page.
+   * When set, the entire body below the frontmatter fence is replaced.
+   */
+  content?: string;
+  /**
+   * Extra frontmatter fields merged into the existing frontmatter.
+   * Use this to set `title`, `description`, `layout`, or any custom keys.
+   */
+  frontMatter?: Record<string, unknown>;
+  /**
+   * Hide the landing page from the sidebar.
+   * The file is still generated (so `/graphql/generated` resolves),
+   * but `createSidebar` will skip it.
+   * @default false
+   */
+  hidden?: boolean;
+}
+
+/**
  * Options for generating GraphQL docs with VitePress.
  * Extends GraphQL-Markdown config with VitePress-specific options.
  */
@@ -206,6 +253,11 @@ export type GraphQLDocsOptions = Omit<ConfigOptions, "schema"> & {
    * Pass an object to configure individual passes.
    */
   transforms?: TransformOptions | false;
+  /**
+   * Customize the auto-generated landing page (`generated.md`).
+   * @see {@link LandingPageOptions}
+   */
+  landingPage?: LandingPageOptions;
   /**
    * Called after docs are generated and transforms are applied.
    * Receives the output directory path and a context object with all resolved paths.

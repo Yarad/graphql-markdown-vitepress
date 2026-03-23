@@ -1,7 +1,8 @@
 import { resolve, join } from "node:path";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import matter from "gray-matter";
 import { runGraphQLMarkdown } from "@graphql-markdown/cli";
-import type { GraphQLDocsOptions, TransformOptions } from "./types.js";
+import type { GraphQLDocsOptions, LandingPageOptions, TransformOptions } from "./types.js";
 import { transformGeneratedDocs } from "./transform/index.js";
 
 const DEFAULT_LOGGER = "@graphql-markdown/logger";
@@ -98,6 +99,10 @@ async function doGenerate(options: GraphQLDocsOptions): Promise<void> {
   const outputDir = resolve(rootPath, baseURL);
   const publicDir = resolve(rootPath, "public");
 
+  if (merged.landingPage) {
+    applyLandingPageOverrides(outputDir, merged.landingPage);
+  }
+
   if (merged.transforms !== false) {
     const parentTypePrefix =
       merged.printTypeOptions?.parentTypePrefix ?? false;
@@ -123,4 +128,34 @@ async function doGenerate(options: GraphQLDocsOptions): Promise<void> {
         : null,
     });
   }
+}
+
+const LANDING_PAGE_FILENAME = "generated.md";
+
+/**
+ * Applies user overrides to the CLI-generated landing page.
+ * Runs before the transform pipeline so transforms can still process the file.
+ */
+function applyLandingPageOverrides(
+  outputDir: string,
+  options: LandingPageOptions,
+): void {
+  const filePath = join(outputDir, LANDING_PAGE_FILENAME);
+  if (!existsSync(filePath)) return;
+
+  const raw = readFileSync(filePath, "utf-8");
+  const { data, content: body } = matter(raw);
+
+  if (options.label) {
+    data.sidebar_title = options.label;
+  }
+  if (options.hidden) {
+    data.sidebar_hidden = true;
+  }
+  if (options.frontMatter) {
+    Object.assign(data, options.frontMatter);
+  }
+
+  const newBody = options.content != null ? `\n${options.content}\n` : body;
+  writeFileSync(filePath, matter.stringify(newBody, data), "utf-8");
 }

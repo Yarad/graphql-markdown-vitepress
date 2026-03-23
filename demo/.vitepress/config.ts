@@ -16,6 +16,9 @@ export default async () => {
     rootPath,
     baseURL: "graphql",
     linkRoot: "/",
+    landingPage: {
+      label: "Schema",
+    },
   });
 
   const sidebar = await createSidebar(graphqlDir, "graphql", {
