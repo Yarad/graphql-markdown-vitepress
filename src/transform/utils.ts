@@ -16,7 +16,7 @@ const SELF_ANCHOR_RE = /<a\s+href="#[^"]*"[^>]*>([\s\S]*?)<\/a>/g;
 const BADGE_RE = /<Badge type="[^"]*">([^<]*)<\/Badge>/g;
 const BACKTICK_WITH_PARENT_RE = /`(\w+)\.([^`]+)`/g;
 const BACKTICK_RE = /`([^`]+)`/g;
-const ENTITY_THEN_LINK_RE = /(<\/span>)\s*(<a\s)/;
+const ENTITY_THEN_LINK_RE = /(<\/code>)\s*(<a\s)/;
 
 /**
  * Converts markdown link syntax `[text](url)` to HTML `<a>` tags.
@@ -54,7 +54,7 @@ export function stripParentPrefix(text: string): string {
  * `<summary>` elements where VitePress won't process markdown or
  * Vue components.
  *
- * - Backtick entities → `.gqlmd-mdx-entity` spans with parent/name separation
+ * - Backtick entities → `<code class="gqlmd-mdx-entity">` with parent/name spans
  * - `<Badge>` components → `.gqlmd-mdx-badge` spans
  * - Bullet separator inserted between field entity and type link
  */
@@ -70,12 +70,12 @@ export function summaryToHtml(text: string): string {
 
   result = result.replace(
     BACKTICK_WITH_PARENT_RE,
-    '<span class="gqlmd-mdx-entity"><span class="gqlmd-mdx-entity-parent">$1.</span><span class="gqlmd-mdx-entity-name">$2</span></span>',
+    '<code class="gqlmd-mdx-entity"><span class="gqlmd-mdx-entity-parent">$1.</span><span class="gqlmd-mdx-entity-name">$2</span></code>',
   );
 
   result = result.replace(
     BACKTICK_RE,
-    '<span class="gqlmd-mdx-entity"><span class="gqlmd-mdx-entity-name">$1</span></span>',
+    '<code class="gqlmd-mdx-entity"><span class="gqlmd-mdx-entity-name">$1</span></code>',
   );
 
   result = result.replace(

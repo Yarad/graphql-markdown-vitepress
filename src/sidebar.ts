@@ -13,7 +13,7 @@ import { scanMdFiles, type ScannedFile } from "./fs.js";
  * Humanizes a category folder name (e.g. "01-objects" -> "Objects").
  */
 function categoryLabel(dirName: string): string {
-  const withoutOrder = dirName.replace(/^\d+-/, "");
+  const withoutOrder = dirName.replace(/^\d+-/, "").replace(/\.md$/i, "");
   return withoutOrder
     .split(/[-_]/)
     .map((s) => s.charAt(0).toUpperCase() + s.slice(1).toLowerCase())

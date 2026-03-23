@@ -171,8 +171,13 @@
    Entity names (shared across field and arg summaries)
    ====================================================================== */
 
-.gqlmd-mdx-entity {
+code.gqlmd-mdx-entity {
   display: inline;
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  font-size: inherit;
+  color: inherit;
 }
 
 .gqlmd-mdx-entity-parent {
