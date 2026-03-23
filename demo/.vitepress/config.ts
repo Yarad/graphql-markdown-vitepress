@@ -18,7 +18,13 @@ export default async () => {
     linkRoot: "/",
   });
 
-  const sidebar = await createSidebar(graphqlDir, "graphql");
+  const sidebar = await createSidebar(graphqlDir, "graphql", {
+    order: ["generated.md", "operations", "types"],
+    subOrder: {
+      operations: ["queries", "directives"],
+      types: ["objects", "inputs", "enums", "directives", "scalars"],
+    },
+  });
 
   return defineConfig({
     title: "GraphQL API Docs",

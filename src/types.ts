@@ -238,3 +238,44 @@ export interface SidebarItem {
  * Sidebar config for a path prefix (VitePress themeConfig.sidebar format).
  */
 export type SidebarConfig = SidebarItem[];
+
+/**
+ * Category ordering: an explicit name list or a custom comparator.
+ *
+ * - **Array** — category directory names in desired order.
+ *   Unlisted categories are appended alphabetically.
+ * - **Function** — `(a, b) => number` comparator (same contract as `Array.sort`).
+ *   Receives lowercase directory names stripped of numeric prefixes.
+ */
+export type CategoryOrder = string[] | ((a: string, b: string) => number);
+
+/**
+ * Options for controlling sidebar category ordering in {@link createSidebar}.
+ */
+export interface SidebarOptions {
+  /**
+   * Top-level category order.
+   * Pass an array of lowercase directory names, or a comparator function.
+   *
+   * @example
+   * ```ts
+   * order: ["types", "operations"]
+   * order: (a, b) => a.localeCompare(b)
+   * ```
+   */
+  order?: CategoryOrder;
+  /**
+   * Per-category subcategory ordering.
+   * Keys are lowercase directory names of the parent category.
+   * Values are arrays of subcategory names or comparator functions.
+   *
+   * @example
+   * ```ts
+   * {
+   *   operations: ["queries", "directives"],
+   *   types: (a, b) => a.localeCompare(b),
+   * }
+   * ```
+   */
+  subOrder?: Record<string, CategoryOrder>;
+}

@@ -96,14 +96,48 @@ npm run build # or vitepress build
 
 Generates GraphQL schema documentation as Markdown under `rootPath/baseURL`, then runs the transform pipeline to produce collapsible, nested documentation.
 
-### `createSidebar(docsDir, baseURL?)`
+### `createSidebar(docsDir, baseURL?, options?)`
 
 Builds a VitePress sidebar config from the generated docs directory. Supports nested category folders (e.g. `01-operations/07-queries/`, `02-types/06-objects/`).
 
 - `docsDir` — Path to the generated docs folder (e.g. `resolve(__dirname, "../graphql")`)
 - `baseURL` — Base path for links (e.g. `"graphql"`). Defaults to the last segment of `docsDir`.
+- `options` — Optional `SidebarOptions` to control category ordering (see below).
 
 Returns a `SidebarConfig` suitable for `themeConfig.sidebar["/graphql/"]`.
+
+#### `SidebarOptions`
+
+| Option     | Type                              | Default      | Description                                                                                                     |
+| ---------- | --------------------------------- | ------------ | --------------------------------------------------------------------------------------------------------------- |
+| `order`    | `CategoryOrder`                   | alphabetical | Top-level category order (see below).                                                                           |
+| `subOrder` | `Record<string, CategoryOrder>`   | alphabetical | Per-category subcategory ordering. Keys are lowercase parent directory names.                                    |
+
+#### `CategoryOrder`
+
+`string[] | ((a: string, b: string) => number)`
+
+- **Array** — lowercase directory names in desired order. Unlisted categories are appended alphabetically.
+- **Function** — comparator with the same contract as `Array.sort`. Receives lowercase, prefix-stripped directory names.
+
+```ts
+// Array form: explicit ordering with alphabetical fallback for unlisted items
+const sidebar = await createSidebar(graphqlDir, "graphql", {
+  order: ["operations", "types"],
+  subOrder: {
+    operations: ["queries", "directives"],
+    types: ["objects", "inputs", "enums", "directives", "scalars"],
+  },
+});
+
+// Function form: fully custom sort logic
+const sidebar = await createSidebar(graphqlDir, "graphql", {
+  order: (a, b) => a.localeCompare(b),
+  subOrder: {
+    types: (a, b) => b.localeCompare(a), // reverse alphabetical
+  },
+});
+```
 
 ### `graphqlDocsPlugin(options)`
 
@@ -214,6 +248,35 @@ transforms: {
 | `responseType` | `gql-response-type`  | Response type `<details>` elements                      |
 
 ## Examples
+
+### Custom sidebar ordering
+
+Control the order of categories and subcategories in the sidebar using arrays:
+
+```ts
+const sidebar = await createSidebar(graphqlDir, "graphql", {
+  order: ["operations", "types"],
+  subOrder: {
+    operations: ["queries", "directives"],
+    types: ["objects", "inputs", "enums", "directives", "scalars"],
+  },
+});
+```
+
+Categories or subcategories not listed in the arrays are appended in alphabetical order after the explicitly ordered ones.
+
+For fully custom sorting logic, pass a comparator function instead:
+
+```ts
+const priority = { objects: 0, inputs: 1, enums: 2 };
+const sidebar = await createSidebar(graphqlDir, "graphql", {
+  order: ["operations", "types"],
+  subOrder: {
+    types: (a, b) =>
+      (priority[a] ?? 99) - (priority[b] ?? 99) || a.localeCompare(b),
+  },
+});
+```
 
 ### Disable inline expansion
 

@@ -18,6 +18,8 @@ export type {
   SidebarConfig,
   SidebarItem,
   SidebarLink,
+  SidebarOptions,
+  CategoryOrder,
   TransformOptions,
   TransformLabels,
   CssClassMap,

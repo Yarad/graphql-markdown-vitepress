@@ -1,6 +1,12 @@
 import { readFileSync } from "node:fs";
 import matter from "gray-matter";
-import type { SidebarConfig, SidebarItem, SidebarLink } from "./types.js";
+import type {
+  CategoryOrder,
+  SidebarConfig,
+  SidebarItem,
+  SidebarLink,
+  SidebarOptions,
+} from "./types.js";
 import { scanMdFiles, type ScannedFile } from "./fs.js";
 
 /**
@@ -33,18 +39,67 @@ function titleFromFile(filePath: string, slug: string): string {
 }
 
 /**
+ * Sorts items using a {@link CategoryOrder}: an explicit name list,
+ * a comparator function, or undefined (alphabetical fallback).
+ *
+ * - **Array** — listed items come first in given sequence; unlisted items
+ *   are appended alphabetically. Matching is case-insensitive.
+ * - **Function** — items are sorted with the comparator applied to
+ *   their normalized (lowercase, prefix-stripped) names.
+ * - **undefined** — plain alphabetical sort.
+ */
+function applyCategoryOrder(items: string[], order?: CategoryOrder): string[] {
+  if (!order) {
+    return [...items].sort();
+  }
+
+  if (typeof order === "function") {
+    return [...items].sort((a, b) => order(dirToKey(a), dirToKey(b)));
+  }
+
+  if (order.length === 0) {
+    return [...items].sort();
+  }
+
+  const orderLower = order.map((o) => o.toLowerCase());
+
+  const ordered: string[] = [];
+  for (const name of orderLower) {
+    const match = items.find((i) => i.toLowerCase() === name);
+    if (match) ordered.push(match);
+  }
+
+  const remaining = items
+    .filter((i) => !orderLower.includes(i.toLowerCase()))
+    .sort();
+
+  return [...ordered, ...remaining];
+}
+
+/**
+ * Normalizes a directory name to its lowercase label form
+ * (strips numeric prefix, replaces separators with spaces, lowercases).
+ */
+function dirToKey(dirName: string): string {
+  return dirName.replace(/^\d+-/, "").toLowerCase();
+}
+
+/**
  * Builds VitePress sidebar config from a generated GraphQL docs directory.
  * Supports nested dirs (e.g. 01-operations/07-queries/, 02-types/06-objects/).
  *
  * @param docsDir - Absolute or relative path to the generated docs folder (e.g. "./docs/graphql" or "./graphql").
  * @param baseURL - Base path for links (e.g. "graphql"). Defaults to the last segment of docsDir.
+ * @param options - Ordering options. Use `order` for top-level categories and `subOrder` for subcategories.
  * @returns Sidebar config for themeConfig.sidebar["/baseURL/"].
  */
 export function createSidebar(
   docsDir: string,
   baseURL?: string,
+  options?: SidebarOptions,
 ): SidebarConfig {
-  const base = baseURL ?? docsDir.replace(/\/$/, "").split("/").pop() ?? "graphql";
+  const base =
+    baseURL ?? docsDir.replace(/\/$/, "").split("/").pop() ?? "graphql";
   const basePath = base.startsWith("/") ? base : `/${base}`;
 
   let files: ScannedFile[];
@@ -72,11 +127,15 @@ export function createSidebar(
   }
 
   const sidebar: SidebarConfig = [];
-  const sortedTops = [...byTop.keys()].sort();
+  const sortedTops = applyCategoryOrder([...byTop.keys()], options?.order);
 
   for (const top of sortedTops) {
     const subMap = byTop.get(top)!;
-    const subKeys = [...subMap.keys()].sort();
+    const topKey = dirToKey(top);
+    const subKeys = applyCategoryOrder(
+      [...subMap.keys()],
+      options?.subOrder?.[topKey],
+    );
 
     if (subKeys.length === 1 && subKeys[0] === top) {
       // Single level: top dir has files directly (e.g. generated.md at root)
