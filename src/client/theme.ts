@@ -59,13 +59,21 @@ export function graphqlThemeSetup(options?: GraphqlThemeOptions): void {
     clickHandler = (e: MouseEvent) => {
       const link = (e.target as HTMLElement).closest?.("a");
       if (!link) return;
-      if (link.closest("summary")) return;
       const href = link.getAttribute("href");
-      if (href?.startsWith(prefix)) {
-        e.preventDefault();
-        e.stopPropagation();
-        router.go(withBase(href));
+      if (!href?.startsWith(prefix)) return;
+
+      if (link.closest("summary")) {
+        // Rewrite the href so VitePress's built-in router (or a full-page
+        // load) lands on the correct base-prefixed URL. Don't call
+        // preventDefault — let <details> toggle and VitePress handle the
+        // navigation naturally.
+        link.setAttribute("href", withBase(href));
+        return;
       }
+
+      e.preventDefault();
+      e.stopPropagation();
+      router.go(withBase(href));
     };
   }
 

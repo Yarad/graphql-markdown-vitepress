@@ -1,6 +1,6 @@
 {
   "name": "graphql-markdown-vitepress",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "VitePress integration for GraphQL schema documentation via GraphQL-Markdown",
   "type": "module",
   "main": "./dist/index.cjs",
