@@ -1,5 +1,8 @@
 # graphql-markdown-vitepress
 
+[![npm version](https://img.shields.io/npm/v/graphql-markdown-vitepress)](https://www.npmjs.com/package/graphql-markdown-vitepress)
+[![npm downloads](https://img.shields.io/npm/dm/graphql-markdown-vitepress)](https://www.npmjs.com/package/graphql-markdown-vitepress)
+
 VitePress integration for **GraphQL schema documentation** using [GraphQL-Markdown](https://graphql-markdown.dev). Generate Markdown docs from any GraphQL schema (`.graphql`, `.json` introspection, or URL) and plug them into your VitePress site with automatic sidebar generation.
 
 ## Installation
