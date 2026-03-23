@@ -59,6 +59,7 @@ export function graphqlThemeSetup(options?: GraphqlThemeOptions): void {
     clickHandler = (e: MouseEvent) => {
       const link = (e.target as HTMLElement).closest?.("a");
       if (!link) return;
+      if (link.closest("summary")) return;
       const href = link.getAttribute("href");
       if (href?.startsWith(prefix)) {
         e.preventDefault();

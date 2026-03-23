@@ -63,10 +63,11 @@ function loadIndex(): Promise<FieldsIndex | null> {
     indexPromise = fetch(url)
       .then((r) => {
         if (!r.ok) {
-          console.warn(
-            `[graphql-markdown] Failed to load fields index: ${r.status} ${r.statusText}`,
-          );
-          return null;
+          throw new Error(`${r.status} ${r.statusText}`);
+        }
+        const ct = r.headers.get("content-type") || "";
+        if (!ct.includes("json")) {
+          throw new Error(`Expected JSON, got ${ct}`);
         }
         return r.json() as Promise<Record<string, unknown>>;
       })
@@ -82,6 +83,7 @@ function loadIndex(): Promise<FieldsIndex | null> {
       })
       .catch((err) => {
         console.warn("[graphql-markdown] Failed to load fields index:", err);
+        indexPromise = null;
         return null;
       });
   }
