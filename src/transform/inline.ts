@@ -13,7 +13,6 @@ import {
   escapeRegExp,
   headingLevel,
   mdLinksToHtml,
-  stripParentPrefix,
   stripSelfAnchors,
   summaryToHtml,
 } from "./utils.js";
@@ -338,11 +337,8 @@ export function inlineTypeFields(
         for (const block of blocks) {
           const rawHtml = mdLinksToHtml(block.heading);
           const typeRef = extractTypeRef(rawHtml, typeHrefRe);
-          let cleanedHtml = stripSelfAnchors(rawHtml);
-          if (!parentTypePrefix) {
-            cleanedHtml = stripParentPrefix(cleanedHtml);
-          }
-          const styledHtml = summaryToHtml(cleanedHtml);
+          const cleanedHtml = stripSelfAnchors(rawHtml);
+          const styledHtml = summaryToHtml(cleanedHtml, { parentTypePrefix });
           const descText = block.description
             .map((l) => l.trim())
             .filter(Boolean)

@@ -9,7 +9,7 @@ const MD_LINK_RE = /\[((?:[^[\]]|\[[^\]]*\])*)\]\(([^)]+)\)/g;
 
 const PARENT_PREFIX_RE = /`\w+\./g;
 const HTML_PARENT_PREFIX_RE =
-  /<(?:code|span) class="gqlmd-mdx-entity-parent">[^<]*<\/(?:code|span)>\./g;
+  /<(?:code|span) class="gqlmd-mdx-entity-parent">[^<]*<\/(?:code|span)>/g;
 
 const SELF_ANCHOR_RE = /<a\s+href="#[^"]*"[^>]*>([\s\S]*?)<\/a>/g;
 
@@ -43,10 +43,14 @@ export function stripSelfAnchors(text: string): string {
 /**
  * Removes the parent type prefix from entity names.
  * Handles both backtick markdown (`` `Type.field` `` → `` `field` ``)
- * and pre-rendered HTML (`<code class="gqlmd-mdx-entity-parent">Type</code>.` → removed).
+ * and pre-rendered HTML (`<span class="gqlmd-mdx-entity-parent">Type.</span>` → removed).
  */
 export function stripParentPrefix(text: string): string {
   return text.replace(PARENT_PREFIX_RE, "`").replace(HTML_PARENT_PREFIX_RE, "");
+}
+
+export interface SummaryToHtmlOptions {
+  parentTypePrefix?: boolean;
 }
 
 /**
@@ -57,13 +61,21 @@ export function stripParentPrefix(text: string): string {
  * - Backtick entities → `<code class="gqlmd-mdx-entity">` with parent/name spans
  * - `<Badge>` components → `.gqlmd-mdx-badge` spans
  * - Bullet separator inserted between field entity and type link
+ *
+ * When `parentTypePrefix` is false (default), parent prefixes are stripped
+ * automatically — both from backtick markdown and pre-rendered HTML.
+ * This centralizes prefix handling so callers don't need to manage it.
  */
-export function summaryToHtml(text: string): string {
+export function summaryToHtml(text: string, options?: SummaryToHtmlOptions): string {
+  const keepPrefix = options?.parentTypePrefix ?? false;
+
   if (text.includes("gqlmd-mdx-")) {
-    return text.trim();
+    return keepPrefix ? text.trim() : stripParentPrefix(text).trim();
   }
 
-  let result = text.replace(
+  let result = keepPrefix ? text : stripParentPrefix(text);
+
+  result = result.replace(
     BADGE_RE,
     '<span class="gqlmd-mdx-badge">$1</span>',
   );

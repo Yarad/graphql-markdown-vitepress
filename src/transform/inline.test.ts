@@ -5,6 +5,9 @@ import { tmpdir } from "node:os";
 import { buildFieldsIndex, inlineTypeFields } from "./inline.js";
 import { transformGeneratedDocs } from "./index.js";
 import { readFileSync, existsSync } from "node:fs";
+import { stripParentPrefix, summaryToHtml } from "./utils.js";
+import { renderFieldBlock, parseFieldBlocks } from "./parse.js";
+import { transformMarkdown } from "./collapsible.js";
 
 function makeTmpDir(): string {
   const dir = join(tmpdir(), `gql-test-${Date.now()}-${Math.random().toString(36).slice(2)}`);
@@ -518,5 +521,150 @@ describe("transformGeneratedDocs", () => {
     const keys = Object.keys(jsonIndex).filter((k) => k !== "_meta");
 
     expect(keys[0]).toMatch(/^\/docs\/api\/graphql\/v2\//);
+  });
+});
+
+// ── Parent prefix stripping ────────────────────────
+
+describe("stripParentPrefix", () => {
+  it("strips backtick parent prefix", () => {
+    expect(stripParentPrefix("`players.filter`")).toBe("`filter`");
+  });
+
+  it("strips HTML parent prefix (span format)", () => {
+    const html =
+      '<span class="gqlmd-mdx-entity-parent">players.</span><span class="gqlmd-mdx-entity-name">filter</span>';
+    expect(stripParentPrefix(html)).toBe(
+      '<span class="gqlmd-mdx-entity-name">filter</span>',
+    );
+  });
+
+  it("strips HTML parent prefix (code format)", () => {
+    const html =
+      '<code class="gqlmd-mdx-entity-parent">Tournament.</code><span class="gqlmd-mdx-entity-name">players</span>';
+    expect(stripParentPrefix(html)).toBe(
+      '<span class="gqlmd-mdx-entity-name">players</span>',
+    );
+  });
+
+  it("handles text without prefix", () => {
+    expect(stripParentPrefix("`filter`")).toBe("`filter`");
+  });
+});
+
+describe("summaryToHtml – parentTypePrefix integration", () => {
+  it("strips backtick prefix when parentTypePrefix is false", () => {
+    const result = summaryToHtml("`players.filter`", {
+      parentTypePrefix: false,
+    });
+    expect(result).toContain("gqlmd-mdx-entity-name");
+    expect(result).not.toContain("gqlmd-mdx-entity-parent");
+    expect(result).not.toContain("players.");
+    expect(result).toContain("filter");
+  });
+
+  it("preserves backtick prefix when parentTypePrefix is true", () => {
+    const result = summaryToHtml("`players.filter`", {
+      parentTypePrefix: true,
+    });
+    expect(result).toContain("gqlmd-mdx-entity-parent");
+    expect(result).toContain("players.");
+    expect(result).toContain("filter");
+  });
+
+  it("strips HTML prefix from pre-rendered content when parentTypePrefix is false", () => {
+    const preRendered =
+      '<code class="gqlmd-mdx-entity"><span class="gqlmd-mdx-entity-parent">players.</span><span class="gqlmd-mdx-entity-name">filter</span></code>';
+    const result = summaryToHtml(preRendered, { parentTypePrefix: false });
+    expect(result).not.toContain("gqlmd-mdx-entity-parent");
+    expect(result).not.toContain("players.");
+    expect(result).toContain("filter");
+  });
+
+  it("preserves HTML prefix from pre-rendered content when parentTypePrefix is true", () => {
+    const preRendered =
+      '<code class="gqlmd-mdx-entity"><span class="gqlmd-mdx-entity-parent">players.</span><span class="gqlmd-mdx-entity-name">filter</span></code>';
+    const result = summaryToHtml(preRendered, { parentTypePrefix: true });
+    expect(result).toContain("gqlmd-mdx-entity-parent");
+    expect(result).toContain("players.");
+  });
+
+  it("defaults to stripping prefix (parentTypePrefix false by default)", () => {
+    const result = summaryToHtml("`Tournament.code`");
+    expect(result).not.toContain("Tournament.");
+    expect(result).toContain("code");
+    expect(result).not.toContain("gqlmd-mdx-entity-parent");
+  });
+});
+
+describe("renderFieldBlock – argument prefix stripping", () => {
+  it("strips parent prefix from nested argument headings", () => {
+    const lines = [
+      "#### `Tournament.players` [PlayerList](/graphql/types/objects/player-list.md) {#tournament-players}",
+      "",
+      "Players who participated.",
+      "",
+      "##### `players.filter` [PlayerFilterInput](/graphql/types/inputs/player-filter-input.md) {#tournament-players-filter}",
+      "",
+      "Filter players.",
+    ];
+    const blocks = parseFieldBlocks(lines, 4);
+    expect(blocks).toHaveLength(1);
+    expect(blocks[0].children).toHaveLength(1);
+
+    const html = renderFieldBlock(blocks[0], "gql-field", {
+      parentTypePrefix: false,
+    }).join("\n");
+
+    expect(html).not.toContain("players.filter");
+    expect(html).not.toContain("Tournament.players");
+    expect(html).not.toContain("gqlmd-mdx-entity-parent");
+  });
+
+  it("preserves parent prefix in argument headings when parentTypePrefix is true", () => {
+    const lines = [
+      "#### `Tournament.players` [PlayerList](/graphql/types/objects/player-list.md) {#tournament-players}",
+      "",
+      "Players who participated.",
+      "",
+      "##### `players.filter` [PlayerFilterInput](/graphql/types/inputs/player-filter-input.md) {#tournament-players-filter}",
+      "",
+      "Filter players.",
+    ];
+    const blocks = parseFieldBlocks(lines, 4);
+    const html = renderFieldBlock(blocks[0], "gql-field", {
+      parentTypePrefix: true,
+    }).join("\n");
+
+    expect(html).toContain("gqlmd-mdx-entity-parent");
+  });
+});
+
+describe("transformMarkdown + inlineTypeFields – end-to-end prefix stripping", () => {
+  it("strips argument prefix through the full pipeline", () => {
+    const typePage = [
+      "# Tournament",
+      "",
+      "### Fields",
+      "",
+      "#### `Tournament.players` [PlayerList](/graphql/types/objects/player-list.md) {#tournament-players}",
+      "",
+      "Players who participated.",
+      "",
+      "##### `players.filter` [PlayerFilterInput](/graphql/types/inputs/player-filter-input.md) {#tournament-players-filter}",
+      "",
+      "Filter players.",
+    ].join("\n");
+
+    const transformed = transformMarkdown(typePage, {
+      parentTypePrefix: false,
+    });
+
+    expect(transformed).not.toContain("players.filter");
+    expect(transformed).not.toContain("Tournament.players");
+    expect(transformed).not.toContain("gqlmd-mdx-entity-parent");
+    expect(transformed).toContain("tournament-players-filter");
+    expect(transformed).toContain(">filter<");
+    expect(transformed).toContain(">players<");
   });
 });

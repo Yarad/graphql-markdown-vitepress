@@ -167,10 +167,12 @@ export {
   mdLinksToHtml,
   stripSelfAnchors,
   stripParentPrefix,
+  summaryToHtml,
   extractPermalinkId,
   headingLevel,
   escapeRegExp,
 } from "./utils.js";
+export type { SummaryToHtmlOptions } from "./utils.js";
 export { enhanceSeo, detectCategory, extractDescription } from "./seo.js";
 export {
   cleanDirectoryUrls,
