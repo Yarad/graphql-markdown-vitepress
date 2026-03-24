@@ -95,13 +95,14 @@ export const formatMDXLink = ({ text, url }: TypeLink): TypeLink => {
 
 /**
  * Named entity as inline code.
+ * parentType is ignored — the VitePress transform pipeline never needs
+ * parent-type prefixes (parentTypePrefix defaults to false).
  */
 export const formatMDXNameEntity = (
   name: string,
-  parentType?: Maybe<string>,
+  _parentType?: Maybe<string>,
 ): MDXString => {
-  const full = parentType ? `${parentType}.${name}` : name;
-  return ` \`${escapeMDX(full)}\` ` as MDXString;
+  return ` \`${escapeMDX(name)}\` ` as MDXString;
 };
 
 /**

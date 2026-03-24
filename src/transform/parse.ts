@@ -100,14 +100,14 @@ export function renderFieldBlock(
   cssClass: string,
   options?: TransformOptions,
 ): string[] {
-  const { css, labels, parentTypePrefix } = resolveTransformConfig(options);
+  const { css, labels } = resolveTransformConfig(options);
 
   const out: string[] = [];
   const idAttr = block.id ? ` id="${block.id}"` : "";
   out.push(`<details class="${cssClass}"${idAttr}>`);
   const heading = stripSelfAnchors(mdLinksToHtml(block.heading));
   out.push(
-    `<summary>${summaryToHtml(heading, { parentTypePrefix })}</summary>`,
+    `<summary>${summaryToHtml(heading)}</summary>`,
   );
   out.push("");
 

@@ -7,14 +7,10 @@ const PERMALINK_RE = /\s*\\?\{#([\w-]+)\\?\}\s*$/;
 
 const MD_LINK_RE = /\[((?:[^[\]]|\[[^\]]*\])*)\]\(([^)]+)\)/g;
 
-const PARENT_PREFIX_RE = /`\w+\./g;
-const HTML_PARENT_PREFIX_RE =
-  /<(?:code|span) class="gqlmd-mdx-entity-parent">[^<]*<\/(?:code|span)>/g;
-
 const SELF_ANCHOR_RE = /<a\s+href="#[^"]*"[^>]*>([\s\S]*?)<\/a>/g;
 
 const BADGE_RE = /<Badge type="[^"]*">([^<]*)<\/Badge>/g;
-const BACKTICK_WITH_PARENT_RE = /`(\w+)\.([^`]+)`/g;
+const HTML_BADGE_RE = /<mark class="gqlmd-mdx-badge">([^<]*)<\/mark>/g;
 const BACKTICK_RE = /`([^`]+)`/g;
 const ENTITY_THEN_LINK_RE = /(<\/code>)\s*(<a\s)/;
 
@@ -41,39 +37,16 @@ export function stripSelfAnchors(text: string): string {
 }
 
 /**
- * Removes the parent type prefix from entity names.
- * Handles both backtick markdown (`` `Type.field` `` → `` `field` ``)
- * and pre-rendered HTML (`<span class="gqlmd-mdx-entity-parent">Type.</span>` → removed).
- */
-export function stripParentPrefix(text: string): string {
-  return text.replace(PARENT_PREFIX_RE, "`").replace(HTML_PARENT_PREFIX_RE, "");
-}
-
-export interface SummaryToHtmlOptions {
-  parentTypePrefix?: boolean;
-}
-
-/**
  * Converts markdown-style summary text to styled HTML suitable for
  * `<summary>` elements where VitePress won't process markdown or
  * Vue components.
  *
- * - Backtick entities → `<code class="gqlmd-mdx-entity">` with parent/name spans
- * - `<Badge>` components → `.gqlmd-mdx-badge` spans
+ * - Backtick entities → `<code class="gqlmd-mdx-entity">` with name span
+ * - `<Badge>` / `<mark>` badges → `.gqlmd-mdx-badge` spans
  * - Bullet separator inserted between field entity and type link
- *
- * When `parentTypePrefix` is false (default), parent prefixes are stripped
- * automatically — both from backtick markdown and pre-rendered HTML.
- * This centralizes prefix handling so callers don't need to manage it.
  */
-export function summaryToHtml(text: string, options?: SummaryToHtmlOptions): string {
-  const keepPrefix = options?.parentTypePrefix ?? false;
-
-  if (text.includes("gqlmd-mdx-")) {
-    return keepPrefix ? text.trim() : stripParentPrefix(text).trim();
-  }
-
-  let result = keepPrefix ? text : stripParentPrefix(text);
+export function summaryToHtml(text: string): string {
+  let result = text;
 
   result = result.replace(
     BADGE_RE,
@@ -81,8 +54,8 @@ export function summaryToHtml(text: string, options?: SummaryToHtmlOptions): str
   );
 
   result = result.replace(
-    BACKTICK_WITH_PARENT_RE,
-    '<code class="gqlmd-mdx-entity"><span class="gqlmd-mdx-entity-parent">$1.</span><span class="gqlmd-mdx-entity-name">$2</span></code>',
+    HTML_BADGE_RE,
+    '<span class="gqlmd-mdx-badge">$1</span>',
   );
 
   result = result.replace(

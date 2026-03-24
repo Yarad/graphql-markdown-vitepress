@@ -1,12 +1,18 @@
-import { resolve, join } from "node:path";
+import { resolve, join, dirname } from "node:path";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 import matter from "gray-matter";
 import { runGraphQLMarkdown } from "@graphql-markdown/cli";
 import type { GraphQLDocsOptions, LandingPageOptions, TransformOptions } from "./types.js";
 import { transformGeneratedDocs } from "./transform/index.js";
 
 const DEFAULT_LOGGER = "@graphql-markdown/logger";
-const DEFAULT_MDX_PARSER = "graphql-markdown-vitepress/formatter";
+
+// Resolve the formatter's absolute path so the CLI can always find it.
+// CJS has __dirname; ESM has import.meta.url. tsup sets import.meta = {} in CJS.
+// @ts-ignore __dirname exists in CJS but not in TS ESM source
+const _moduleDir: string = typeof __dirname === "string" ? __dirname : dirname(fileURLToPath(import.meta.url));
+const DEFAULT_MDX_PARSER = join(_moduleDir, "formatter", "index.cjs");
 
 const generationCache = new Map<string, Promise<void>>();
 
@@ -104,13 +110,10 @@ async function doGenerate(options: GraphQLDocsOptions): Promise<void> {
   }
 
   if (merged.transforms !== false) {
-    const parentTypePrefix =
-      merged.printTypeOptions?.parentTypePrefix ?? false;
     const transformOpts: TransformOptions = {
       baseURL,
       linkRoot: resolvedLinkRoot,
       fieldsIndexOutputDir: publicDir,
-      parentTypePrefix,
       ...(typeof merged.transforms === "object" ? merged.transforms : {}),
     };
     await transformGeneratedDocs(outputDir, transformOpts);

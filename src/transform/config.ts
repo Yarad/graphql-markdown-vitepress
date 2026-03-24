@@ -21,7 +21,6 @@ export interface ResolvedTransformConfig {
   fieldSections: string[];
   labels: Required<TransformLabels>;
   css: Required<CssClassMap>;
-  parentTypePrefix: boolean;
   seo: boolean;
   cleanUrls: boolean;
   structuredData: boolean;
@@ -82,7 +81,6 @@ export function resolveTransformConfig(
       fields: options?.labels?.fields ?? "Fields",
     },
     css: resolveCss(options?.css),
-    parentTypePrefix: options?.parentTypePrefix ?? false,
     seo: options?.seo ?? true,
     cleanUrls: options?.cleanUrls ?? true,
     structuredData: options?.structuredData ?? true,

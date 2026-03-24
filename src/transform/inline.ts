@@ -300,7 +300,7 @@ export function inlineTypeFields(
   options?: TransformOptions,
 ): string {
   const config = resolveTransformConfig(options);
-  const { css, labels, responseSections, inlineDepth, lazyInline, parentTypePrefix } = config;
+  const { css, labels, responseSections, inlineDepth, lazyInline } = config;
   const typeHrefRe = buildTypeHrefRegex(
     config.baseURL,
     config.inlineTypeCategories,
@@ -338,7 +338,7 @@ export function inlineTypeFields(
           const rawHtml = mdLinksToHtml(block.heading);
           const typeRef = extractTypeRef(rawHtml, typeHrefRe);
           const cleanedHtml = stripSelfAnchors(rawHtml);
-          const styledHtml = summaryToHtml(cleanedHtml, { parentTypePrefix });
+          const styledHtml = summaryToHtml(cleanedHtml);
           const descText = block.description
             .map((l) => l.trim())
             .filter(Boolean)
