@@ -87,8 +87,7 @@ export function enhanceSeo(
   addStructuredData: boolean,
   outline: number | [number, number] | "deep" | false = [2, 3],
 ): string {
-  const filename = relativePath.split(/[/\\]/).pop() ?? "";
-  if (filename === "index.md" || filename === "generated.md") {
+  if (!relativePath.includes("/") && !relativePath.includes("\\")) {
     return content;
   }
 

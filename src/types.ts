@@ -161,11 +161,12 @@ export interface GeneratedContext {
 }
 
 /**
- * Customization for the auto-generated landing page (`generated.md`).
+ * Customization for the auto-generated landing page.
  *
  * `@graphql-markdown/cli` emits a `generated.md` file at the docs root that
- * serves as the schema overview / landing page. These options let you replace
- * its content, tweak its frontmatter, change the sidebar label, or hide it
+ * serves as the schema overview / landing page. These options let you rename
+ * it (e.g. to `index.md` for VitePress directory indexes), replace its
+ * content, tweak its frontmatter, change the sidebar label, or hide it
  * from the sidebar entirely.
  *
  * @example
@@ -174,6 +175,7 @@ export interface GeneratedContext {
  *   schema: "./schema.graphql",
  *   landingPage: {
  *     label: "API Reference",
+ *     filename: "index.md",
  *     content: "# My API\n\nWelcome to the docs.",
  *     frontMatter: { description: "GraphQL API reference" },
  *   },
@@ -200,11 +202,25 @@ export interface LandingPageOptions {
   frontMatter?: Record<string, unknown>;
   /**
    * Hide the landing page from the sidebar.
-   * The file is still generated (so `/graphql/generated` resolves),
-   * but `createSidebar` will skip it.
+   * The file is still written, but `createSidebar` will skip it.
    * @default false
    */
   hidden?: boolean;
+  /**
+   * Output filename for the landing page. The CLI-generated `generated.md`
+   * is renamed to this value. The default `"index.md"` makes the landing
+   * page act as a VitePress directory index so `/api/graphql/` resolves
+   * correctly without an `onGenerated` workaround.
+   *
+   * Any stale file at the target path is removed before writing, and
+   * the original `generated.md` is deleted when the filename differs
+   * to prevent duplicate sidebar entries on repeated runs.
+   *
+   * Set to `"generated.md"` to preserve legacy behavior.
+   *
+   * @default "index.md"
+   */
+  filename?: string;
 }
 
 /**
@@ -262,7 +278,8 @@ export type GraphQLDocsOptions = Omit<ConfigOptions, "schema"> & {
    */
   transforms?: TransformOptions | false;
   /**
-   * Customize the auto-generated landing page (`generated.md`).
+   * Customize the auto-generated landing page (default `generated.md`).
+   * Use `filename` to rename it (e.g. `"index.md"` for VitePress directory indexes).
    * @see {@link LandingPageOptions}
    */
   landingPage?: LandingPageOptions;

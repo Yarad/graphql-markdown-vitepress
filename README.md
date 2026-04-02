@@ -178,12 +178,13 @@ All [GraphQL-Markdown config options](https://graphql-markdown.dev/docs/configur
 
 `@graphql-markdown/cli` generates a `generated.md` file at the docs root that serves as the schema overview page. Use `landingPage` to customize it:
 
-| Option        | Type                       | Default                    | Description                                                                  |
-| ------------- | -------------------------- | -------------------------- | ---------------------------------------------------------------------------- |
-| `label`       | `string`                   | derived from filename      | Sidebar link text. Written as `sidebar_title` in frontmatter.                |
-| `content`     | `string`                   | CLI-generated content      | Replace the markdown body below the frontmatter.                             |
-| `frontMatter` | `Record<string, unknown>`  | CLI defaults               | Extra frontmatter fields merged into the existing frontmatter.               |
-| `hidden`      | `boolean`                  | `false`                    | Hide from the sidebar. The page is still generated and accessible via URL.   |
+| Option        | Type                       | Default            | Description                                                                                          |
+| ------------- | -------------------------- | ------------------ | ---------------------------------------------------------------------------------------------------- |
+| `label`       | `string`                   | derived from filename | Sidebar link text. Written as `sidebar_title` in frontmatter.                                     |
+| `content`     | `string`                   | CLI-generated content | Replace the markdown body below the frontmatter.                                                  |
+| `frontMatter` | `Record<string, unknown>`  | CLI defaults       | Extra frontmatter fields merged into the existing frontmatter.                                       |
+| `hidden`      | `boolean`                  | `false`            | Hide from the sidebar. The page is still generated and accessible via URL.                           |
+| `filename`    | `string`                   | `"index.md"`       | Output filename. Defaults to `index.md` for VitePress directory indexes. Set to `"generated.md"` for legacy behavior. Cleans up stale files on rename. |
 
 ### `TransformOptions`
 

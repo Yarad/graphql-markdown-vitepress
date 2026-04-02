@@ -1,5 +1,5 @@
 import { resolve, join, dirname } from "node:path";
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync, unlinkSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import matter from "gray-matter";
 import { runGraphQLMarkdown } from "@graphql-markdown/cli";
@@ -133,20 +133,31 @@ async function doGenerate(options: GraphQLDocsOptions): Promise<void> {
   }
 }
 
-const LANDING_PAGE_FILENAME = "generated.md";
+const CLI_LANDING_PAGE_FILENAME = "generated.md";
+const DEFAULT_LANDING_PAGE_FILENAME = "index.md";
 
 /**
  * Applies user overrides to the CLI-generated landing page.
  * Runs before the transform pipeline so transforms can still process the file.
+ *
+ * The CLI always emits `generated.md`; this function renames it to the
+ * configured filename (default `index.md`) and cleans up stale files.
  */
 function applyLandingPageOverrides(
   outputDir: string,
   options: LandingPageOptions,
 ): void {
-  const filePath = join(outputDir, LANDING_PAGE_FILENAME);
-  if (!existsSync(filePath)) return;
+  const sourcePath = join(outputDir, CLI_LANDING_PAGE_FILENAME);
+  if (!existsSync(sourcePath)) return;
 
-  const raw = readFileSync(filePath, "utf-8");
+  const targetFilename = options.filename ?? DEFAULT_LANDING_PAGE_FILENAME;
+  const targetPath = join(outputDir, targetFilename);
+
+  if (targetPath !== sourcePath && existsSync(targetPath)) {
+    unlinkSync(targetPath);
+  }
+
+  const raw = readFileSync(sourcePath, "utf-8");
   const { data, content: body } = matter(raw);
 
   if (options.label) {
@@ -160,5 +171,9 @@ function applyLandingPageOverrides(
   }
 
   const newBody = options.content != null ? `\n${options.content}\n` : body;
-  writeFileSync(filePath, matter.stringify(newBody, data), "utf-8");
+  writeFileSync(targetPath, matter.stringify(newBody, data), "utf-8");
+
+  if (targetPath !== sourcePath) {
+    unlinkSync(sourcePath);
+  }
 }

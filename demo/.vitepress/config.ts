@@ -17,12 +17,41 @@ export default async () => {
     baseURL: "graphql",
     linkRoot: "/",
     landingPage: {
-      label: "Schema",
+      label: "Overview",
+      filename: "index.md",
+      frontMatter: { title: "Overview" },
+      content: `# EGD Go Tournament API
+
+Welcome to the **European Go Database** GraphQL API reference.
+
+This API provides access to tournament results, player ratings, and game
+records from the EGD system. Use it to build tournament browsers, player
+profile pages, leaderboards, and more.
+
+## Quick start
+
+\`\`\`graphql
+query {
+  tournaments(pagination: { first: 5 }) {
+    data { code description date city nation }
+  }
+}
+\`\`\`
+
+## What's inside
+
+- **Queries** — look up tournaments, games, and players by ID or search criteria.
+- **Object types** — \`Tournament\`, \`Game\`, \`Player\`, \`Placement\`, and their paginated list wrappers.
+- **Input types** — filters and ordering inputs for fine-grained pagination.
+- **Enums** — tournament class, order direction, game colors, and more.
+
+Browse the sidebar to explore every type and operation in detail.
+`,
     },
   });
 
   const sidebar = await createSidebar(graphqlDir, "graphql", {
-    order: ["generated.md", "operations", "types"],
+    order: ["index.md", "operations", "types"],
     subOrder: {
       operations: ["queries", "directives"],
       types: ["objects", "inputs", "enums", "directives", "scalars"],
