@@ -60,14 +60,9 @@ export default async () => {
 2. **Set up the theme** in `.vitepress/theme/index.ts`:
 
 ```ts
-import "graphql-markdown-vitepress/style.css";
-export { default } from "graphql-markdown-vitepress/theme";
-```
-
-This registers the styles (collapsible fields, badges, inline types) and the lazy-loading runtime for nested type expansion. If you need to extend the theme further:
-
-```ts
 import DefaultTheme from "vitepress/theme";
+import { onMounted, onUnmounted, watch } from "vue";
+import { useRoute } from "vitepress";
 import { graphqlThemeSetup } from "graphql-markdown-vitepress/theme";
 import "graphql-markdown-vitepress/style.css";
 
@@ -75,10 +70,25 @@ export default {
   extends: DefaultTheme,
   setup() {
     graphqlThemeSetup();
-    // your own setup logic
+
+    // Apply the GraphQL stylesheet only on plugin-rendered routes by
+    // toggling `gql-page` on <html>. See "Style scoping" below.
+    const route = useRoute();
+    const apply = () =>
+      document.documentElement.classList.toggle(
+        "gql-page",
+        route.path.startsWith("/graphql/"),
+      );
+    onMounted(apply);
+    onUnmounted(() =>
+      document.documentElement.classList.remove("gql-page"),
+    );
+    watch(() => route.path, apply);
   },
 };
 ```
+
+This registers the lazy-loading runtime for nested type expansion and toggles the `gql-page` class on `<html>` only on routes under `/graphql/`. The shipped stylesheet is scoped under that class, so styles never bleed onto hand-authored pages (see [Style scoping](#style-scoping)).
 
 3. **Schema formats**
 
@@ -486,23 +496,13 @@ The lazy-fields loader needs to fetch `_gql-fields-index.json` from the correct 
 
 ```ts
 // .vitepress/theme/index.ts — works with any base path
-import "graphql-markdown-vitepress/style.css";
 export { default } from "graphql-markdown-vitepress/theme";
 ```
 
 If auto-detection fails for your setup, pass the base explicitly:
 
 ```ts
-import DefaultTheme from "vitepress/theme";
-import { graphqlThemeSetup } from "graphql-markdown-vitepress/theme";
-import "graphql-markdown-vitepress/style.css";
-
-export default {
-  extends: DefaultTheme,
-  setup() {
-    graphqlThemeSetup({ base: "/docs/" });
-  },
-};
+graphqlThemeSetup({ base: "/docs/" });
 ```
 
 ### Fields index output directory
@@ -604,6 +604,60 @@ const final = inlineTypeFields(collapsible, index, options);
 ## Styling
 
 The default styles are included via `import "graphql-markdown-vitepress/style.css"` (see Quick Start). When using a custom `css` prefix or class map, override the corresponding classes in your own stylesheet.
+
+## Style scoping
+
+Every rule in the shipped `style.css` is wrapped under a `.gql-page` scope class so the package can be dropped into a VitePress site without restyling unrelated pages (page titles, h3s, sidebar items, brand colours, etc.). The package itself does not decide when to apply the class — the consumer's theme adds it to `<html>` on whichever routes should receive the GraphQL styling.
+
+### Recipe: route-based toggling
+
+```ts
+// .vitepress/theme/index.ts
+import DefaultTheme from "vitepress/theme";
+import { onMounted, onUnmounted, watch } from "vue";
+import { useRoute } from "vitepress";
+import { graphqlThemeSetup } from "graphql-markdown-vitepress/theme";
+import "graphql-markdown-vitepress/style.css";
+
+export default {
+  extends: DefaultTheme,
+  setup() {
+    graphqlThemeSetup();
+
+    const route = useRoute();
+    const apply = () =>
+      document.documentElement.classList.toggle(
+        "gql-page",
+        route.path.startsWith("/graphql/"),
+      );
+    onMounted(apply);
+    onUnmounted(() =>
+      document.documentElement.classList.remove("gql-page"),
+    );
+    watch(() => route.path, apply);
+  },
+};
+```
+
+Substitute any predicate that returns `true` on plugin-generated routes — a regex, a Set lookup, multiple prefixes, etc. If you want the styles applied site-wide, add the class once on mount and skip the watcher.
+
+### Custom scope class
+
+If `gql-page` clashes with another class in your project, rename it on both sides — the class you toggle on `<html>`, and the selectors in the shipped CSS — using the `graphqlScopedCss` Vite plugin from `graphql-markdown-vitepress/vite`:
+
+```ts
+// .vitepress/config.ts
+import { defineConfig } from "vitepress";
+import { graphqlScopedCss } from "graphql-markdown-vitepress/vite";
+
+export default defineConfig({
+  vite: {
+    plugins: [graphqlScopedCss({ scopeClass: "my-gql-scope" })],
+  },
+});
+```
+
+Then toggle `my-gql-scope` (instead of `gql-page`) in your theme setup. The plugin rewrites every occurrence of `gql-page` in the shipped stylesheet to your class name when Vite loads it. When `scopeClass` is the default the plugin is a no-op and can be omitted.
 
 ## Demo
 

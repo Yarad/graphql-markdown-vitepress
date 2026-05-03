@@ -1,9 +1,21 @@
 /* ======================================================================
    GraphQL API Docs — Shopify-inspired theme with collapsible fields
+
+   Every rule below is scoped under `.gql-page`. The class is toggled on
+   <html> by `graphqlThemeSetup()` only on routes that match the configured
+   `scope`, so the styles never leak onto hand-authored pages.
+
+   The literal `gql-page` (and `html.gql-page` / `.dark.gql-page`) is the
+   default scope class. To use a different class, add the
+   `graphqlScopedCss({ scopeClass })` Vite plugin to your `vite.plugins`;
+   it rewrites every occurrence at build time. Keep the runtime
+   `scopeClass` passed to `graphqlThemeSetup` in sync.
    ====================================================================== */
 
-/* ---- VitePress theme overrides ---- */
-:root {
+/* ---- VitePress brand overrides ---- */
+/* `html.gql-page` has higher specificity than VitePress's `:root` so the
+   brand override wins regardless of stylesheet import order. */
+html.gql-page {
   --vp-c-brand-1: #008060;
   --vp-c-brand-2: #006e52;
   --vp-c-brand-3: #005a43;
@@ -15,12 +27,12 @@
   --gql-field-gap: 0px;
 }
 
-.dark {
+.dark.gql-page {
   --gql-bg-field: var(--vp-c-bg-soft);
 }
 
 /* ---- Page title ---- */
-.vp-doc h1 {
+.gql-page .vp-doc h1 {
   font-size: 1.85rem;
   font-weight: 700;
   letter-spacing: -0.02em;
@@ -28,7 +40,7 @@
 }
 
 /* Description paragraph directly after the frontmatter */
-.vp-doc > div > p:first-of-type {
+.gql-page .vp-doc > div > p:first-of-type {
   font-size: 1.05rem;
   color: var(--vp-c-text-2);
   margin-bottom: 1.5rem;
@@ -36,19 +48,19 @@
 }
 
 /* ---- Code block (schema definition) ---- */
-.vp-doc div[class*="language-graphql"] {
+.gql-page .vp-doc div[class*="language-graphql"] {
   border: 1px solid var(--gql-border);
   border-radius: var(--gql-radius);
   margin: 1rem 0 2rem;
 }
 
-.vp-doc div[class*="language-graphql"] pre {
+.gql-page .vp-doc div[class*="language-graphql"] pre {
   font-size: 0.84rem;
   line-height: 1.65;
 }
 
 /* ---- Section headers (Fields, Arguments, Values, etc.) ---- */
-.vp-doc h3 {
+.gql-page .vp-doc h3 {
   font-size: 0.82rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -60,7 +72,7 @@
   margin-bottom: 1rem;
 }
 
-.vp-doc h3:first-of-type {
+.gql-page .vp-doc h3:first-of-type {
   margin-top: 0;
   border-top: none;
   padding-top: 0;
@@ -70,7 +82,7 @@
    Collapsible field cards (<details class="gql-field">)
    ====================================================================== */
 
-.vp-doc details.gql-field {
+.gql-page .vp-doc details.gql-field {
   border: 1px solid var(--gql-border);
   border-radius: var(--gql-radius);
   margin: var(--gql-field-gap) 0 0;
@@ -78,28 +90,28 @@
   transition: border-color 0.2s;
 }
 
-.vp-doc details.gql-field + details.gql-field {
+.gql-page .vp-doc details.gql-field + details.gql-field {
   margin-top: -1px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
 
-.vp-doc details.gql-field:first-of-type {
+.gql-page .vp-doc details.gql-field:first-of-type {
   border-top-left-radius: var(--gql-radius);
   border-top-right-radius: var(--gql-radius);
 }
 
-.vp-doc details.gql-field:last-of-type {
+.gql-page .vp-doc details.gql-field:last-of-type {
   border-bottom-left-radius: var(--gql-radius);
   border-bottom-right-radius: var(--gql-radius);
 }
 
-.vp-doc details.gql-field:not(:first-of-type):not(:last-of-type) {
+.gql-page .vp-doc details.gql-field:not(:first-of-type):not(:last-of-type) {
   border-radius: 0;
 }
 
 /* ---- Summary (clickable header) ---- */
-.vp-doc details.gql-field > summary {
+.gql-page .vp-doc details.gql-field > summary {
   font-size: 0.95rem;
   font-weight: 500;
   line-height: 1.5;
@@ -117,12 +129,12 @@
   transition: background 0.15s;
 }
 
-.vp-doc details.gql-field > summary:hover {
+.gql-page .vp-doc details.gql-field > summary:hover {
   background: var(--vp-c-bg-elv);
 }
 
 /* Chevron indicator */
-.vp-doc details.gql-field > summary::before {
+.gql-page .vp-doc details.gql-field > summary::before {
   content: "";
   position: absolute;
   left: 0.7rem;
@@ -136,28 +148,28 @@
   transition: transform 0.2s;
 }
 
-.vp-doc details.gql-field[open] > summary::before {
+.gql-page .vp-doc details.gql-field[open] > summary::before {
   transform: translateY(-50%) rotate(90deg);
 }
 
 /* Remove default marker in all browsers */
-.vp-doc details.gql-field > summary::-webkit-details-marker,
-.vp-doc details.gql-field > summary::marker {
+.gql-page .vp-doc details.gql-field > summary::-webkit-details-marker,
+.gql-page .vp-doc details.gql-field > summary::marker {
   display: none;
   content: "";
 }
 
 /* ---- Expanded content area ---- */
-.vp-doc details.gql-field[open] {
+.gql-page .vp-doc details.gql-field[open] {
   border-color: var(--vp-c-brand-1);
 }
 
-.vp-doc details.gql-field[open] > summary {
+.gql-page .vp-doc details.gql-field[open] > summary {
   border-bottom: 1px solid var(--gql-border);
 }
 
-.vp-doc details.gql-field > p,
-.vp-doc details.gql-field > .gql-desc {
+.gql-page .vp-doc details.gql-field > p,
+.gql-page .vp-doc details.gql-field > .gql-desc {
   padding: 0.6rem 0.9rem 0.6rem 2rem;
   margin: 0;
   font-size: 0.88rem;
@@ -171,7 +183,7 @@
    Entity names (shared across field and arg summaries)
    ====================================================================== */
 
-code.gqlmd-mdx-entity {
+.gql-page code.gqlmd-mdx-entity {
   display: inline;
   background: transparent;
   padding: 0;
@@ -180,27 +192,27 @@ code.gqlmd-mdx-entity {
   color: inherit;
 }
 
-.gqlmd-mdx-entity-parent {
+.gql-page .gqlmd-mdx-entity-parent {
   font-size: 0.82em;
   color: var(--vp-c-text-3);
   font-weight: 400;
 }
 
-.gqlmd-mdx-entity-name {
+.gql-page .gqlmd-mdx-entity-name {
   font-weight: 600;
   color: var(--vp-c-text-1);
   font-size: 0.92em;
 }
 
 /* Type links within summaries */
-.vp-doc details.gql-field > summary a,
-.vp-doc details.gql-inline-field > summary a {
+.gql-page .vp-doc details.gql-field > summary a,
+.gql-page .vp-doc details.gql-inline-field > summary a {
   text-decoration: none;
   font-weight: 500;
 }
 
-.vp-doc details.gql-field > summary a:hover,
-.vp-doc details.gql-inline-field > summary a:hover {
+.gql-page .vp-doc details.gql-field > summary a:hover,
+.gql-page .vp-doc details.gql-inline-field > summary a:hover {
   text-decoration: underline;
 }
 
@@ -208,7 +220,7 @@ code.gqlmd-mdx-entity {
    Badges
    ====================================================================== */
 
-.gqlmd-mdx-badge {
+.gql-page .gqlmd-mdx-badge {
   display: inline-block;
   font-size: 0.68rem;
   font-weight: 700;
@@ -223,13 +235,13 @@ code.gqlmd-mdx-entity {
   color: var(--vp-c-brand-1);
 }
 
-.gqlmd-mdx-badge + .gqlmd-mdx-badge {
+.gql-page .gqlmd-mdx-badge + .gqlmd-mdx-badge {
   background: var(--vp-c-default-soft);
   color: var(--vp-c-text-2);
 }
 
 /* ---- Bullet separator ---- */
-.gqlmd-mdx-bullet {
+.gql-page .gqlmd-mdx-bullet {
   color: var(--vp-c-text-3);
   font-size: 0.75rem;
   vertical-align: middle;
@@ -240,18 +252,18 @@ code.gqlmd-mdx-entity {
    Inline fields (nested type expansion, recursive)
    ====================================================================== */
 
-.vp-doc .gql-inline-fields {
+.gql-page .vp-doc .gql-inline-fields {
   padding: 0.4rem 0.9rem 0.75rem 2rem;
   margin: 0;
 }
 
-.vp-doc .gql-inline-fields .gql-inline-fields {
+.gql-page .vp-doc .gql-inline-fields .gql-inline-fields {
   padding: 0.3rem 0.5rem 0.6rem 1rem;
   margin-left: 0.3rem;
   border-left: 2px solid var(--gql-border);
 }
 
-.vp-doc .gql-inline-fields > .gql-section-label {
+.gql-page .vp-doc .gql-inline-fields > .gql-section-label {
   display: block;
   font-size: 0.72rem;
   font-weight: 700;
@@ -262,29 +274,29 @@ code.gqlmd-mdx-entity {
   margin-top: 0.2rem;
 }
 
-.vp-doc details.gql-inline-field {
+.gql-page .vp-doc details.gql-inline-field {
   border: 1px solid var(--gql-border);
   border-radius: 6px;
   margin-top: -1px;
   overflow: hidden;
 }
 
-.vp-doc details.gql-inline-field:first-of-type {
+.gql-page .vp-doc details.gql-inline-field:first-of-type {
   margin-top: 0;
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
 }
 
-.vp-doc details.gql-inline-field:last-of-type {
+.gql-page .vp-doc details.gql-inline-field:last-of-type {
   border-bottom-left-radius: 6px;
   border-bottom-right-radius: 6px;
 }
 
-.vp-doc details.gql-inline-field:not(:first-of-type):not(:last-of-type) {
+.gql-page .vp-doc details.gql-inline-field:not(:first-of-type):not(:last-of-type) {
   border-radius: 0;
 }
 
-.vp-doc details.gql-inline-field > summary {
+.gql-page .vp-doc details.gql-inline-field > summary {
   font-size: 0.84rem;
   font-weight: 500;
   line-height: 1.4;
@@ -300,11 +312,11 @@ code.gqlmd-mdx-entity {
   transition: background 0.15s;
 }
 
-.vp-doc details.gql-inline-field > summary:hover {
+.gql-page .vp-doc details.gql-inline-field > summary:hover {
   background: var(--vp-c-bg-soft);
 }
 
-.vp-doc details.gql-inline-field > summary::before {
+.gql-page .vp-doc details.gql-inline-field > summary::before {
   content: "";
   position: absolute;
   left: 0.55rem;
@@ -318,21 +330,21 @@ code.gqlmd-mdx-entity {
   transition: transform 0.2s;
 }
 
-.vp-doc details.gql-inline-field[open] > summary::before {
+.gql-page .vp-doc details.gql-inline-field[open] > summary::before {
   transform: translateY(-50%) rotate(90deg);
 }
 
-.vp-doc details.gql-inline-field > summary::-webkit-details-marker,
-.vp-doc details.gql-inline-field > summary::marker {
+.gql-page .vp-doc details.gql-inline-field > summary::-webkit-details-marker,
+.gql-page .vp-doc details.gql-inline-field > summary::marker {
   display: none;
   content: "";
 }
 
-.vp-doc details.gql-inline-field[open] > summary {
+.gql-page .vp-doc details.gql-inline-field[open] > summary {
   border-bottom: 1px solid var(--gql-border);
 }
 
-.vp-doc details.gql-inline-field > .gql-desc {
+.gql-page .vp-doc details.gql-inline-field > .gql-desc {
   padding: 0.3rem 0.7rem 0.4rem 1.6rem;
   margin: 0;
   font-size: 0.82rem;
@@ -340,27 +352,27 @@ code.gqlmd-mdx-entity {
   line-height: 1.5;
 }
 
-.vp-doc details.gql-inline-field > summary a {
+.gql-page .vp-doc details.gql-inline-field > summary a {
   text-decoration: none;
   font-weight: 500;
 }
 
-.vp-doc details.gql-inline-field > summary a:hover {
+.gql-page .vp-doc details.gql-inline-field > summary a:hover {
   text-decoration: underline;
 }
 
 /* Response type details open by default */
-.vp-doc details.gql-response-type {
+.gql-page .vp-doc details.gql-response-type {
   border-color: var(--vp-c-brand-1);
 }
 
 /* ---- Lazy-loaded field placeholders ---- */
-.vp-doc .gql-lazy-fields {
+.gql-page .vp-doc .gql-lazy-fields {
   min-height: 0;
   transition: opacity 0.2s;
 }
 
-.vp-doc .gql-lazy-fields:empty ~ .gql-section-label {
+.gql-page .vp-doc .gql-lazy-fields:empty ~ .gql-section-label {
   display: none;
 }
 
@@ -368,21 +380,21 @@ code.gqlmd-mdx-entity {
    Relation sections (Returned By, Member Of — not collapsible)
    ====================================================================== */
 
-.vp-doc h3 ~ p {
+.gql-page .vp-doc h3 ~ p {
   font-size: 0.9rem;
 }
 
-.vp-doc h3 ~ p > a {
+.gql-page .vp-doc h3 ~ p > a {
   font-weight: 500;
 }
 
-.vp-doc h3 ~ p .gqlmd-mdx-badge {
+.gql-page .vp-doc h3 ~ p .gqlmd-mdx-badge {
   font-size: 0.62rem;
   padding: 0.1em 0.4em;
   margin-left: 0.15em;
 }
 
-.vp-doc h3 ~ p .gqlmd-mdx-bullet {
+.gql-page .vp-doc h3 ~ p .gqlmd-mdx-bullet {
   margin: 0 0.25rem;
 }
 
@@ -390,22 +402,22 @@ code.gqlmd-mdx-entity {
    Sidebar refinements
    ====================================================================== */
 
-.VPSidebar .VPSidebarItem .text {
+.gql-page .VPSidebar .VPSidebarItem .text {
   font-size: 0.85rem;
 }
 
 /* ---- Scrollbar for code blocks ---- */
-.vp-doc div[class*="language-"] pre::-webkit-scrollbar {
+.gql-page .vp-doc div[class*="language-"] pre::-webkit-scrollbar {
   height: 6px;
 }
 
-.vp-doc div[class*="language-"] pre::-webkit-scrollbar-thumb {
+.gql-page .vp-doc div[class*="language-"] pre::-webkit-scrollbar-thumb {
   background: var(--vp-c-divider);
   border-radius: 3px;
 }
 
 /* ---- Homepage hero style ---- */
-.vp-doc h1 + blockquote {
+.gql-page .vp-doc h1 + blockquote {
   border-left: 4px solid var(--vp-c-brand-1);
   padding: 0.75rem 1rem;
   margin: 1rem 0 1.5rem;
@@ -417,22 +429,18 @@ code.gqlmd-mdx-entity {
 
 /* ---- Print improvements ---- */
 @media print {
-  .gqlmd-mdx-badge {
+  .gql-page .gqlmd-mdx-badge {
     border: 1px solid #999;
-  }
-  .vp-doc details.gql-field,
-  .vp-doc details.gql-inline-field {
-    open: true;
   }
 }
 
 /* ---- Mobile adjustments ---- */
 @media (max-width: 640px) {
-  .vp-doc details.gql-field > summary {
+  .gql-page .vp-doc details.gql-field > summary {
     font-size: 0.88rem;
     padding: 0.55rem 0.7rem 0.55rem 1.8rem;
   }
-  .vp-doc details.gql-inline-field > summary {
+  .gql-page .vp-doc details.gql-inline-field > summary {
     padding-left: 1.4rem;
   }
 }

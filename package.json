@@ -27,6 +27,11 @@
       "import": "./dist/client/lazy-fields.js",
       "require": "./dist/client/lazy-fields.cjs"
     },
+    "./vite": {
+      "types": "./dist/vite-plugin.d.ts",
+      "import": "./dist/vite-plugin.js",
+      "require": "./dist/vite-plugin.cjs"
+    },
     "./style.css": "./src/client/style.css"
   },
   "files": [

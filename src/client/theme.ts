@@ -26,7 +26,13 @@ export interface GraphqlThemeOptions {
  * VitePress theme with GraphQL docs support.
  * Extends the default theme with lazy field loading and GraphQL-specific styles.
  *
- * Usage (one-liner):
+ * The shipped stylesheet is scoped under the `.gql-page` class — apply that
+ * class to `<html>` (or rename it via the `graphqlScopedCss` Vite plugin)
+ * on whichever routes should receive the GraphQL styling. See
+ * [Style scoping](../../README.md#style-scoping) for a copy-pasteable
+ * route-watcher recipe.
+ *
+ * Usage:
  * ```ts
  * export { default } from "graphql-markdown-vitepress/theme";
  * ```

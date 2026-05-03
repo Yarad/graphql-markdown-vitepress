@@ -5,13 +5,14 @@ export default defineConfig([
     entry: {
       index: "src/index.ts",
       "formatter/index": "src/formatter/index.ts",
+      "vite-plugin": "src/vite-plugin.ts",
     },
     format: ["esm", "cjs"],
     dts: true,
     splitting: false,
     sourcemap: true,
     clean: true,
-    external: ["vitepress", "vue", "graphql"],
+    external: ["vite", "vitepress", "vue", "graphql"],
   },
   {
     entry: {
