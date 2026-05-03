@@ -2,6 +2,7 @@ import DefaultTheme from "vitepress/theme";
 import { onMounted, onUnmounted, onUpdated, nextTick, watch } from "vue";
 import { useRoute, useData, useRouter, withBase } from "vitepress";
 import { initGqlLazyFields, setFieldsIndexBase } from "./lazy-fields.js";
+import { stripBase } from "./path.js";
 
 export interface GraphqlThemeOptions {
   /**
@@ -75,7 +76,7 @@ export function graphqlThemeSetup(options?: GraphqlThemeOptions): void {
   const scopeClass = options?.scopeClass ?? DEFAULT_SCOPE_CLASS;
   const linkPrefix = options?.linkPrefix;
   const matchScope = linkPrefix
-    ? (path: string) => path.startsWith(linkPrefix)
+    ? (path: string) => stripBase(path, base).startsWith(linkPrefix)
     : () => true;
 
   const applyScope = () => {

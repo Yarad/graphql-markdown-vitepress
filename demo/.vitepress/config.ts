@@ -61,7 +61,7 @@ Browse the sidebar to explore every type and operation in detail.
   return defineConfig({
     title: "GraphQL API Docs",
     description: "Auto-generated GraphQL schema documentation",
-    base: "/",
+    base: "/docs/",
     themeConfig: {
       nav: [
         { text: "Home", link: "/" },
