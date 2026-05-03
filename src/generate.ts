@@ -9,9 +9,12 @@ import { transformGeneratedDocs } from "./transform/index.js";
 const DEFAULT_LOGGER = "@graphql-markdown/logger";
 
 // Resolve the formatter's absolute path so the CLI can always find it.
-// CJS has __dirname; ESM has import.meta.url. tsup sets import.meta = {} in CJS.
+// CJS has __dirname; ESM has import.meta.url. tsup silences the
+// `empty-import-meta` advisory for the CJS bundle, where the second branch
+// is dead code (Node always defines __dirname under CJS).
 // @ts-ignore __dirname exists in CJS but not in TS ESM source
-const _moduleDir: string = typeof __dirname === "string" ? __dirname : dirname(fileURLToPath(import.meta.url));
+const _moduleDir: string =
+  typeof __dirname === "string" ? __dirname : dirname(fileURLToPath(import.meta.url));
 const DEFAULT_MDX_PARSER = join(_moduleDir, "formatter", "index.cjs");
 
 const generationCache = new Map<string, Promise<void>>();

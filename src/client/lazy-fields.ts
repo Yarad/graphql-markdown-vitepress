@@ -52,13 +52,7 @@ export function setFieldsIndexBase(base: string): void {
 function loadIndex(): Promise<FieldsIndex | null> {
   if (fieldsIndex) return Promise.resolve(fieldsIndex);
   if (!indexPromise) {
-    const base =
-      baseOverride ??
-      (typeof import.meta !== "undefined"
-        ? (import.meta as unknown as Record<string, Record<string, string>>)
-            .env?.BASE_URL
-        : undefined) ??
-      "/";
+    const base = baseOverride ?? "/";
     const url = `${base.replace(/\/$/, "")}/_gql-fields-index.json`;
     indexPromise = fetch(url)
       .then((r) => {
